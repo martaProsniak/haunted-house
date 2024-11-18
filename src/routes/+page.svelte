@@ -1,7 +1,10 @@
 <script lang="ts">
+    import "../app.css";
+
     const rows = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => '')));
     let selectedRowIndex = $state(0);
     let selectedCellIndex = $state(4);
+    let pillPosition: 'h-default' | 'v-up' | 'h-flipped' | 'v-down' = 'h-default'
     let position: 'vertical' | 'horizontal' = $state("horizontal");
     let initialTop = 4;
     let offset = 36;
@@ -10,16 +13,43 @@
     let topPosition = $derived(initialTop + (offset * selectedRowIndex) - topCorrection);
     let left = $state(108);
 
-    rows[13][4] = 'virus virus_yellow';
-    rows[7][6] = 'virus virus_pink';
-    rows[9][2] = 'virus virus_blue';
+    const pillBorderClasses = {
+        'h-left': 'border-none border-stone-950 border-y-2 border-l-2 rounded-l-lg',
+        'h-right': 'border-none border-stone-950 border-y-2 border-r-2 rounded-r-lg',
+        'v-up': 'border-none border-stone-950 border-x-2 border-t-2 rounded-t-lg',
+        'v-down': 'border-none border-stone-950 border-x-2 border-b-2 rounded-b-lg',
+    }
 
-    setInterval(() => {
-        selectedRowIndex += 1;
-        if (selectedRowIndex === rows.length - 1) {
-            selectedRowIndex = 0;
-        }
-    }, 1000)
+    const colorClasses = {
+        pink: 'bg-pink-500',
+        blue: 'bg-sky-500',
+        yellow: 'bg-amber-500',
+    }
+
+    rows[13][4] = `virus rounded-full ${colorClasses.yellow}`;
+    rows[7][6] = `virus rounded-full ${colorClasses.pink}`;
+    rows[9][2] = `virus rounded-full ${colorClasses.blue}`;
+
+
+    // setInterval(() => {
+    //     selectedRowIndex += 1;
+    //     if (selectedRowIndex === rows.length - 1) {
+    //         selectedRowIndex = 0;
+    //     }
+    // }, 1000)
+
+    $effect(() => {
+        // const interval = setInterval(() => {
+        //     selectedRowIndex += 1;
+        //     if (selectedRowIndex === rows.length - 1) {
+        //         selectedRowIndex = 0;
+        //     }
+        // }, 1000);
+        //
+        // return () => {
+        //     clearInterval(interval);
+        // };
+    });
 
     const rotationHandler: Record<number, () => void> = {
         0: () => {
@@ -78,18 +108,9 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <div class="container">
-    <div
-            style:top={`${topPosition}px`}
-            style:left={`${left}px`}
-            style:transform="{`rotate(${rotation}deg`}"
-            class="pill">
-        <div class="pill-part-pink"></div>
-        <div class="pill-part-break"></div>
-        <div class="pill-part-yellow"></div>
-    </div>
-    <div class="board">
+    <div class="w-fit flex flex-nowrap flex-col gap-1 p-1 relative bg-stone-950">
         {#each rows as row, rowIndex}
-            <div class="row">
+            <div class="w-fit flex flex-row flex-nowrap gap-1">
                 {#each row as cell, cellIndex}
                     <div class={`cell ${cell}`}></div>
                 {/each}
@@ -101,81 +122,7 @@
 
 <style>
     .container {
-        margin-top: 30px;
-    }
-    .board {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        gap: 4px;
-        width: fit-content;
-        padding: 4px;
-    }
-    .row {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-
-        width: fit-content;
-        gap: 4px;
-        justify-content: center;
-        align-items: center;
-
-        .cell {
-            width: 32px;
-            height: 32px;
-            transition: background-color 0.25s ease;
-            background-color: lightpink;
-            border: none;
-
-            &.virus {
-                box-sizing: border-box;
-                border: 2px solid black;
-                border-radius: 50%;
-            }
-
-            &.virus_yellow {
-                background-color: yellow;
-                content: "v"
-            }
-
-            &.virus_blue {
-                background-color: dodgerblue;
-                content: "v"
-            }
-
-            &.virus_pink {
-                background-color: hotpink;
-                content: "v"
-            }
-        }
-    }
-
-    .pill {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        border-radius: 16px;
-        border: 4px black solid;
-        width: 68px;
-        height: 32px;
-        position: relative;
-        z-index: 10;
-
-        .pill-part-pink {
-            background-color: hotpink;
-            width: 32px;
-        }
-
-        .pill-part-break {
-            background-color: black;
-            width: 4px;
-        }
-
-        .pill-part-yellow {
-            background-color: yellow;
-            width: 32px;
-        }
+        margin-top: 50px;
+        margin-left: 50px;
     }
 </style>
