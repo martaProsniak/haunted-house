@@ -3,12 +3,12 @@
     let selectedRowIndex = $state(0);
     let selectedCellIndex = $state(4);
     let position: 'vertical' | 'horizontal' = $state("horizontal");
-    let initialTop = 78;
+    let initialTop = 4;
     let offset = 36;
     let rotation = $state(0);
     let topCorrection = $state(0)
     let topPosition = $derived(initialTop + (offset * selectedRowIndex) - topCorrection);
-    let left = $state(116);
+    let left = $state(108);
 
     rows[13][4] = 'virus virus_yellow';
     rows[7][6] = 'virus virus_pink';
@@ -20,6 +20,29 @@
             selectedRowIndex = 0;
         }
     }, 1000)
+
+    const rotationHandler: Record<number, () => void> = {
+        0: () => {
+            rotation = 270;
+            left -= (offset / 2 );
+            topCorrection = offset / 2;
+        },
+        270: () => {
+            rotation = 180;
+            left -= ( offset / 2 );
+            topCorrection = 0;
+        },
+        180: () => {
+            rotation = 90;
+            left += (offset / 2 );
+            topCorrection = -(offset / 2);
+        },
+        90: () => {
+            rotation = 0;
+            left += ( offset / 2 );
+            topCorrection = 0;
+        }
+    }
 
     const handleKeyDown = (ev: KeyboardEvent) => {
         console.log(ev)
@@ -38,19 +61,12 @@
         }
 
         if (ev.key === 'ArrowUp') {
-            if (rotation === 0) {
-                rotation = 270;
-            } else {
-                rotation -= 90;
-            }
+            rotationHandler[rotation]();
+
             if (position === 'horizontal') {
                 position = 'vertical';
-                left -= (offset / 2 );
-                topCorrection = offset / 2;
             } else {
                 position = 'horizontal'
-                left += (offset / 2 );
-                topCorrection = 0;
             }
         }
     }
@@ -61,25 +77,38 @@
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
-<div class="board">
-    {#each rows as row, rowIndex}
-        <div class="row">
-            {#each row as cell, cellIndex}
-                <div class={`cell ${cell}`}></div>
-            {/each}
-        </div>
-    {/each}
+<div class="container">
+    <div
+            style:top={`${topPosition}px`}
+            style:left={`${left}px`}
+            style:transform="{`rotate(${rotation}deg`}"
+            class="pill">
+        <div class="pill-part-pink"></div>
+        <div class="pill-part-break"></div>
+        <div class="pill-part-yellow"></div>
+    </div>
+    <div class="board">
+        {#each rows as row, rowIndex}
+            <div class="row">
+                {#each row as cell, cellIndex}
+                    <div class={`cell ${cell}`}></div>
+                {/each}
+            </div>
+        {/each}
+    </div>
+
 </div>
-<div style:top={`${topPosition}px`} style:left={`${left}px`} style:transform="{`rotate(${rotation}deg`}" class="pill"><div class="pill-part-pink"></div><div class="pill-part-break"></div><div class="pill-part-yellow"></div></div>
 
 <style>
+    .container {
+        margin-top: 30px;
+    }
     .board {
         position: relative;
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
         gap: 4px;
-        background-color: cornflowerblue;
         width: fit-content;
         padding: 4px;
     }
@@ -92,7 +121,6 @@
         gap: 4px;
         justify-content: center;
         align-items: center;
-        background-color: darkslateblue;
 
         .cell {
             width: 32px;
@@ -132,8 +160,8 @@
         border: 4px black solid;
         width: 68px;
         height: 32px;
-        position: absolute;
-        left: 98px;
+        position: relative;
+        z-index: 10;
 
         .pill-part-pink {
             background-color: hotpink;
