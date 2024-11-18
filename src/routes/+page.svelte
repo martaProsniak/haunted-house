@@ -90,6 +90,13 @@
         flippedCell = 'none';
     }
 
+    function getRandomColor() {
+        return Object.values(colors)[Math.floor(Math.random() * 3)];
+    }
+
+    function createPill() {
+        return {state: {pillBorder: pillBorders[pillPosition].state, color: getRandomColor()}, derived: {pillBorder: pillBorders[pillPosition].derived, color: getRandomColor()}}
+    }
 
     const clearCell = (row: number, cell: number) => {
         matrix[row][cell] = null
@@ -97,22 +104,40 @@
 
     $effect(() => {
         matrix[currentRow][currentCell] = {pillBorder: pillBorders[pillPosition].state, color: colors.pink};
-        matrix[derivedRow][derivedCell] = {pillBorder: pillBorders[pillPosition].derived, color: colors.yellow}
+        matrix[derivedRow][derivedCell] = {pillBorder: pillBorders[pillPosition].derived, color: colors.blue}
 
-        // const interval = setInterval(() => {
-        //
-        //     currentRow += 1;
-        //     clearCell(currentRow - 1, currentCell);
-        //     clearCell(currentRow - 1, currentCell + 1);
-        //     if (currentRow === matrix.length - 1) {
-        //         currentRow = 0;
-        //     }
-        // }, 1000);
-        //
-        // return () => {
-        //     clearInterval(interval);
-        // };
+        const interval = setInterval(() => {
+
+            movePillDown();
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
     });
+
+    const movePillDown = () => {
+        if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
+            return;
+        }
+
+        resetFlippedRow();
+        resetFlippedCell();
+
+        if (pillPosition.startsWith('h')) {
+            currentRow += 1;
+            clearCell(currentRow - 1, currentCell);
+            clearCell(derivedRow - 1, derivedCell);
+        }
+        if (pillPosition === 'vUp') {
+            currentRow += 1;
+            clearCell(derivedRow - 1, derivedCell);
+        }
+        if (pillPosition === 'vDown') {
+            currentRow += 1;
+            clearCell(currentRow - 1, currentCell);
+        }
+    }
 
 
     const handleKeyDown = (ev: KeyboardEvent) => {
@@ -128,10 +153,14 @@
                 currentCell -= 1;
                 clearCell(currentRow, derivedCell + 1);
             }
-            if (pillPosition === 'vUp') {
+            if (pillPosition.startsWith('v')) {
                 currentCell -= 1;
                 clearCell(currentRow, currentCell + 1);
                 clearCell(derivedRow, currentCell + 1);
+            }
+            if (pillPosition === 'hFlipped') {
+                currentCell -= 1;
+                clearCell(currentRow, currentCell + 1);
             }
         }
 
@@ -147,39 +176,54 @@
                 currentCell += 1;
                 clearCell(currentRow, currentCell - 1);
             }
-            if (pillPosition === 'vUp') {
+            if (pillPosition.startsWith('v')) {
                 currentCell += 1;
                 clearCell(currentRow, currentCell - 1);
+                clearCell(derivedRow, derivedCell - 1);
+            }
+            if (pillPosition === 'hFlipped') {
+                currentCell += 1;
                 clearCell(derivedRow, derivedCell - 1);
             }
 
         }
 
         if (ev.key === 'ArrowDown') {
-            if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
-                return;
-            }
-
-            resetFlippedRow();
-            resetFlippedCell();
-
-            if (pillPosition === 'hDefault') {
-                currentRow += 1;
-                clearCell(currentRow - 1, currentCell);
-                clearCell(currentRow - 1, currentCell + 1);
-            }
-            if (pillPosition === 'vUp') {
-                currentRow += 1;
-                clearCell(derivedRow - 1, derivedCell);
-            }
+            movePillDown();
         }
 
         if (ev.key === 'ArrowUp') {
+            if (currentRow === matrix.length - 1) {
+                return;
+            }
+
             if (pillPosition === 'hDefault') {
                 flippedRow = currentRow - 1;
                 flippedCell = currentCell;
                 clearCell(currentRow, currentCell + 1);
                 pillPosition = 'vUp'
+                return;
+            }
+            if (pillPosition === 'vUp') {
+                flippedRow = currentRow;
+                flippedCell = currentCell - 1;
+                clearCell(currentRow - 1, currentCell);
+                pillPosition = 'hFlipped';
+                return;
+            }
+            if (pillPosition === 'hFlipped') {
+                flippedRow = currentRow + 1;
+                flippedCell = currentCell;
+                clearCell(currentRow, currentCell - 1);
+                pillPosition = 'vDown';
+                return;
+            }
+            if (pillPosition === 'vDown') {
+                flippedRow = currentRow;
+                flippedCell = currentCell + 1;
+                clearCell(currentRow + 1, currentCell);
+                pillPosition = 'hDefault';
+                return;
             }
 
         }
