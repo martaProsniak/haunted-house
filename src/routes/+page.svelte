@@ -13,6 +13,8 @@
     let pillPosition: PillPosition = $state('hDefault');
     let currentRow = $state(0);
     let currentCell = $state(4);
+    let flippedRow: number | 'none' = $state('none');
+    let flippedCell: number | 'none' = $state('none');
 
     const derivedRowHelper = {
         hDefault: () => (currentRow),
@@ -28,8 +30,20 @@
         vDown: () => (currentCell),
     }
 
-    let derivedRow = $derived.by(() => derivedRowHelper[pillPosition]());
-    let derivedCell = $derived.by(() => deriveCellHelper[pillPosition]());
+    let derivedRow = $derived.by(() => {
+        if (flippedRow === 'none') {
+            return derivedRowHelper[pillPosition]();
+        }
+        return flippedRow;
+    });
+
+    let derivedCell = $derived.by(() => {
+        if (flippedCell === 'none') {
+            return deriveCellHelper[pillPosition]();
+        }
+
+        return flippedCell;
+    });
 
 
     const borderKind = {
@@ -68,6 +82,14 @@
     matrix[7][6] = {virus: 'virus rounded-full', color: colors.pink};
     matrix[9][2] = {virus: 'virus rounded-full', color: colors.blue};
 
+    function resetFlippedRow () {
+        flippedRow = 'none';
+    }
+
+    function resetFlippedCell () {
+        flippedCell = 'none';
+    }
+
 
     const clearCell = (row: number, cell: number) => {
         matrix[row][cell] = null
@@ -78,6 +100,7 @@
         matrix[derivedRow][derivedCell] = {pillBorder: pillBorders[pillPosition].derived, color: colors.yellow}
 
         // const interval = setInterval(() => {
+        //
         //     currentRow += 1;
         //     clearCell(currentRow - 1, currentCell);
         //     clearCell(currentRow - 1, currentCell + 1);
@@ -97,9 +120,18 @@
             if (currentCell === 0 || derivedCell === 0) {
                 return;
             }
+
+            resetFlippedRow();
+            resetFlippedCell();
+
             if (pillPosition === 'hDefault') {
                 currentCell -= 1;
                 clearCell(currentRow, derivedCell + 1);
+            }
+            if (pillPosition === 'vUp') {
+                currentCell -= 1;
+                clearCell(currentRow, currentCell + 1);
+                clearCell(derivedRow, currentCell + 1);
             }
         }
 
@@ -107,22 +139,48 @@
             if (currentCell === 7 || derivedCell === 7) {
                 return;
             }
-            currentCell += 1;
-            clearCell(currentRow, currentCell - 1);
+
+            resetFlippedRow();
+            resetFlippedCell();
+
+            if (pillPosition === 'hDefault') {
+                currentCell += 1;
+                clearCell(currentRow, currentCell - 1);
+            }
+            if (pillPosition === 'vUp') {
+                currentCell += 1;
+                clearCell(currentRow, currentCell - 1);
+                clearCell(derivedRow, derivedCell - 1);
+            }
+
         }
 
         if (ev.key === 'ArrowDown') {
             if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
                 return;
             }
+
+            resetFlippedRow();
+            resetFlippedCell();
+
             if (pillPosition === 'hDefault') {
                 currentRow += 1;
                 clearCell(currentRow - 1, currentCell);
                 clearCell(currentRow - 1, currentCell + 1);
             }
+            if (pillPosition === 'vUp') {
+                currentRow += 1;
+                clearCell(derivedRow - 1, derivedCell);
+            }
         }
 
         if (ev.key === 'ArrowUp') {
+            if (pillPosition === 'hDefault') {
+                flippedRow = currentRow - 1;
+                flippedCell = currentCell;
+                clearCell(currentRow, currentCell + 1);
+                pillPosition = 'vUp'
+            }
 
         }
     }
