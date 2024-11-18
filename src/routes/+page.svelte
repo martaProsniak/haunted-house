@@ -7,27 +7,56 @@
         virus?: string,
     }
 
+    type PillPosition = 'hDefault' | 'vUp' | 'hFlipped' | 'vDown'
+
     const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
-    const statePill = $state({row: 0, cell: 4});
-    let pillPosition: 'hDefault' | 'vUp' | 'hFlipped' | 'vDown' = $state('hDefault');
-    const derivedPillPositionHelper = {
-        hDefault: () => ({row: statePill.row, cell: statePill.cell + 1}),
-        vUp: () => ({row: statePill.row - 1, cell: statePill.cell}),
-        hFlipped: () => ({row: statePill.row, cell: statePill.cell - 1}),
-        vDown: () => ({row: statePill.row + 1, cell: statePill.cell}),
+    let pillPosition: PillPosition = $state('hDefault');
+    let currentRow = $state(0);
+    let currentCell = $state(4);
+
+    const derivedRowHelper = {
+        hDefault: () => (currentRow),
+        vUp: () => (currentRow - 1),
+        hFlipped: () => (currentRow),
+        vDown: () => (currentRow + 1),
     }
 
-    let derivedPill = $derived.by(() => {
-        return derivedPillPositionHelper[pillPosition]();
-    })
-
-
-    const pillBorderClasses = {
-        'h-left': 'border-none border-stone-950 border-y-2 border-l-2 rounded-l-lg',
-        'h-right': 'border-none border-stone-950 border-y-2 border-r-2 rounded-r-lg',
-        'v-up': 'border-none border-stone-950 border-x-2 border-t-2 rounded-t-lg',
-        'v-down': 'border-none border-stone-950 border-x-2 border-b-2 rounded-b-lg',
+    const deriveCellHelper = {
+        hDefault: () => (currentCell + 1),
+        vUp: () => (currentCell),
+        hFlipped: () => (currentCell - 1),
+        vDown: () => (currentCell),
     }
+
+    let derivedRow = $derived.by(() => derivedRowHelper[pillPosition]());
+    let derivedCell = $derived.by(() => deriveCellHelper[pillPosition]());
+
+
+    const borderKind = {
+        left: 'border-none border-stone-950 border-y-2 border-l-2 rounded-l-lg',
+        right: 'border-none border-stone-950 border-y-2 border-r-2 rounded-r-lg',
+        top: 'border-none border-stone-950 border-x-2 border-t-2 rounded-t-lg',
+        bottom: 'border-none border-stone-950 border-x-2 border-b-2 rounded-b-lg',
+    }
+
+    const pillBorders = {
+        hDefault: {
+            state: borderKind.left,
+            derived: borderKind.right,
+        },
+        hFlipped: {
+            state: borderKind.right,
+            derived: borderKind.left,
+        },
+        vUp: {
+            state: borderKind.bottom,
+            derived: borderKind.top,
+        },
+        vDown: {
+            state: borderKind.top,
+            derived: borderKind.bottom,
+        }
+    };
 
     const colors = {
         pink: 'bg-pink-500',
@@ -45,25 +74,15 @@
     }
 
     $effect(() => {
-        // matrix[statePill.row][statePill.cell] = `${pillBorderClasses['h-left']} ${colors.yellow}`;
-        matrix[statePill.row][statePill.cell] = {
-            pillBorder: pillBorderClasses['h-left'],
-            color: colors.yellow,
-        };
-        matrix[derivedPill.row][derivedPill.cell] = {
-            pillBorder: pillBorderClasses['h-right'],
-            color: colors.pink,
-        };
-        // matrix[derivedPill.row][derivedPill.cell] = `${pillBorderClasses['h-right']} ${colors.pink}`;
+        matrix[currentRow][currentCell] = {pillBorder: pillBorders[pillPosition].state, color: colors.pink};
+        matrix[derivedRow][derivedCell] = {pillBorder: pillBorders[pillPosition].derived, color: colors.yellow}
+
         // const interval = setInterval(() => {
-        //     matrix[statePill.row][statePill.cell] = ``;
-        //     matrix[derivedPill.row][derivedPill.cell] = ``;
-        //     statePill.row += 1;
-        //     matrix[statePill.row][statePill.cell] = `${pillBorderClasses['h-left']} ${colors.yellow}`;
-        //     matrix[derivedPill.row][derivedPill.cell] = `${pillBorderClasses['h-right']} ${colors.pink}`;
-        //     console.log(matrix[statePill.row][statePill.cell])
-        //     if (statePill.row === matrix.length - 1) {
-        //         statePill.row = 0;
+        //     currentRow += 1;
+        //     clearCell(currentRow - 1, currentCell);
+        //     clearCell(currentRow - 1, currentCell + 1);
+        //     if (currentRow === matrix.length - 1) {
+        //         currentRow = 0;
         //     }
         // }, 1000);
         //
@@ -75,39 +94,36 @@
 
     const handleKeyDown = (ev: KeyboardEvent) => {
         if (ev.key === 'ArrowLeft') {
-            console.log('Arrow left')
-            if (statePill.cell === 0 || derivedPill.cell === 0) {
+            if (currentCell === 0 || derivedCell === 0) {
                 return;
             }
             if (pillPosition === 'hDefault') {
-                statePill.cell -= 1;
-                matrix[statePill.row][statePill.cell + 2] = null;
+                currentCell -= 1;
+                clearCell(currentRow, derivedCell + 1);
             }
         }
 
         if (ev.key === 'ArrowRight') {
-            if (statePill.cell === 7 || derivedPill.cell === 7) {
+            if (currentCell === 7 || derivedCell === 7) {
                 return;
             }
-            if (pillPosition === 'hDefault') {
-                statePill.cell += 1;
-                matrix[statePill.row][statePill.cell - 1] = null;
-            }
+            currentCell += 1;
+            clearCell(currentRow, currentCell - 1);
         }
 
         if (ev.key === 'ArrowDown') {
-            if (statePill.row < matrix.length - 1) {
-                matrix[statePill.row][statePill.cell] = null;
-                matrix[derivedPill.row][derivedPill.cell] = null;
-                statePill.row += 1;
+            if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
+                return;
+            }
+            if (pillPosition === 'hDefault') {
+                currentRow += 1;
+                clearCell(currentRow - 1, currentCell);
+                clearCell(currentRow - 1, currentCell + 1);
             }
         }
 
         if (ev.key === 'ArrowUp') {
-            if (pillPosition === 'hDefault') {
-                pillPosition = 'vUp';
 
-            }
         }
     }
 
