@@ -1,17 +1,26 @@
 <script lang="ts">
     import "../app.css";
 
-    const rows = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => '')));
-    let selectedRowIndex = $state(0);
-    let selectedCellIndex = $state(4);
-    let pillPosition: 'h-default' | 'v-up' | 'h-flipped' | 'v-down' = 'h-default'
-    let position: 'vertical' | 'horizontal' = $state("horizontal");
-    let initialTop = 4;
-    let offset = 36;
-    let rotation = $state(0);
-    let topCorrection = $state(0)
-    let topPosition = $derived(initialTop + (offset * selectedRowIndex) - topCorrection);
-    let left = $state(108);
+    interface MatrixItem {
+        pillBorder?: string,
+        color: string,
+        virus?: string,
+    }
+
+    const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
+    const statePill = $state({row: 0, cell: 4});
+    let pillPosition: 'hDefault' | 'vUp' | 'hFlipped' | 'vDown' = $state('hDefault');
+    const derivedPillPositionHelper = {
+        hDefault: () => ({row: statePill.row, cell: statePill.cell + 1}),
+        vUp: () => ({row: statePill.row - 1, cell: statePill.cell}),
+        hFlipped: () => ({row: statePill.row, cell: statePill.cell - 1}),
+        vDown: () => ({row: statePill.row + 1, cell: statePill.cell}),
+    }
+
+    let derivedPill = $derived.by(() => {
+        return derivedPillPositionHelper[pillPosition]();
+    })
+
 
     const pillBorderClasses = {
         'h-left': 'border-none border-stone-950 border-y-2 border-l-2 rounded-l-lg',
@@ -20,29 +29,41 @@
         'v-down': 'border-none border-stone-950 border-x-2 border-b-2 rounded-b-lg',
     }
 
-    const colorClasses = {
+    const colors = {
         pink: 'bg-pink-500',
         blue: 'bg-sky-500',
         yellow: 'bg-amber-500',
     }
 
-    rows[13][4] = `virus rounded-full ${colorClasses.yellow}`;
-    rows[7][6] = `virus rounded-full ${colorClasses.pink}`;
-    rows[9][2] = `virus rounded-full ${colorClasses.blue}`;
+    matrix[13][4] = {virus: 'virus rounded-full', color: colors.yellow};
+    matrix[7][6] = {virus: 'virus rounded-full', color: colors.pink};
+    matrix[9][2] = {virus: 'virus rounded-full', color: colors.blue};
 
 
-    // setInterval(() => {
-    //     selectedRowIndex += 1;
-    //     if (selectedRowIndex === rows.length - 1) {
-    //         selectedRowIndex = 0;
-    //     }
-    // }, 1000)
+    const clearCell = (row: number, cell: number) => {
+        matrix[row][cell] = null
+    }
 
     $effect(() => {
+        // matrix[statePill.row][statePill.cell] = `${pillBorderClasses['h-left']} ${colors.yellow}`;
+        matrix[statePill.row][statePill.cell] = {
+            pillBorder: pillBorderClasses['h-left'],
+            color: colors.yellow,
+        };
+        matrix[derivedPill.row][derivedPill.cell] = {
+            pillBorder: pillBorderClasses['h-right'],
+            color: colors.pink,
+        };
+        // matrix[derivedPill.row][derivedPill.cell] = `${pillBorderClasses['h-right']} ${colors.pink}`;
         // const interval = setInterval(() => {
-        //     selectedRowIndex += 1;
-        //     if (selectedRowIndex === rows.length - 1) {
-        //         selectedRowIndex = 0;
+        //     matrix[statePill.row][statePill.cell] = ``;
+        //     matrix[derivedPill.row][derivedPill.cell] = ``;
+        //     statePill.row += 1;
+        //     matrix[statePill.row][statePill.cell] = `${pillBorderClasses['h-left']} ${colors.yellow}`;
+        //     matrix[derivedPill.row][derivedPill.cell] = `${pillBorderClasses['h-right']} ${colors.pink}`;
+        //     console.log(matrix[statePill.row][statePill.cell])
+        //     if (statePill.row === matrix.length - 1) {
+        //         statePill.row = 0;
         //     }
         // }, 1000);
         //
@@ -51,54 +72,53 @@
         // };
     });
 
-    const rotationHandler: Record<number, () => void> = {
-        0: () => {
-            rotation = 270;
-            left -= (offset / 2 );
-            topCorrection = offset / 2;
-        },
-        270: () => {
-            rotation = 180;
-            left -= ( offset / 2 );
-            topCorrection = 0;
-        },
-        180: () => {
-            rotation = 90;
-            left += (offset / 2 );
-            topCorrection = -(offset / 2);
-        },
-        90: () => {
-            rotation = 0;
-            left += ( offset / 2 );
-            topCorrection = 0;
-        }
-    }
 
     const handleKeyDown = (ev: KeyboardEvent) => {
-        console.log(ev)
         if (ev.key === 'ArrowLeft') {
-            left -= offset;
+            console.log('Arrow left')
+            if (statePill.cell === 0 || derivedPill.cell === 0) {
+                return;
+            }
+            if (pillPosition === 'hDefault') {
+                statePill.cell -= 1;
+                matrix[statePill.row][statePill.cell + 2] = null;
+            }
         }
 
         if (ev.key === 'ArrowRight') {
-            left += offset;
+            if (statePill.cell === 7 || derivedPill.cell === 7) {
+                return;
+            }
+            if (pillPosition === 'hDefault') {
+                statePill.cell += 1;
+                matrix[statePill.row][statePill.cell - 1] = null;
+            }
         }
 
         if (ev.key === 'ArrowDown') {
-            if (selectedRowIndex > 0) {
-                selectedRowIndex += 1;
+            if (statePill.row < matrix.length - 1) {
+                matrix[statePill.row][statePill.cell] = null;
+                matrix[derivedPill.row][derivedPill.cell] = null;
+                statePill.row += 1;
             }
         }
 
         if (ev.key === 'ArrowUp') {
-            rotationHandler[rotation]();
+            if (pillPosition === 'hDefault') {
+                pillPosition = 'vUp';
 
-            if (position === 'horizontal') {
-                position = 'vertical';
-            } else {
-                position = 'horizontal'
             }
         }
+    }
+
+    const getCellClasses = (row: number, cell: number) => {
+        const classes: MatrixItem | null = matrix[row][cell];
+        if (!classes) {
+            return '';
+        }
+        return Object.values(classes).reduce((acc, current) => {
+            return acc + ' ' + current;
+        }, '')
     }
 </script>
 
@@ -109,10 +129,10 @@
 
 <div class="container">
     <div class="w-fit flex flex-nowrap flex-col gap-1 p-1 relative bg-stone-950">
-        {#each rows as row, rowIndex}
+        {#each matrix as row, rowIndex}
             <div class="w-fit flex flex-row flex-nowrap gap-1">
                 {#each row as cell, cellIndex}
-                    <div class={`cell ${cell}`}></div>
+                    <div class={`cell ${getCellClasses(rowIndex, cellIndex)}`}></div>
                 {/each}
             </div>
         {/each}
@@ -125,4 +145,12 @@
         margin-top: 50px;
         margin-left: 50px;
     }
+
+    .cell {
+        width: 32px;
+        height: 32px;
+        border: none;
+        box-sizing: border-box;
+    }
+
 </style>
