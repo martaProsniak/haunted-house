@@ -20,7 +20,8 @@
     interface Pill extends MatrixItem {
         type: 'pill-single' | 'pill-double',
         row: number,
-        column: number
+        column: number,
+        border: string
     }
 
     const colors: Record<string, Color> = {
@@ -30,10 +31,14 @@
     }
 
     const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
-    let currentRow = $state(0);
-    let currentColumn = $state(3);
     const initialTop = 4;
     const offset = 36;
+    const initialRow = 0;
+    const initialColumn = 3;
+
+    let currentRow = $state(initialRow);
+    let currentColumn = $state(initialColumn);
+
     let rotation: Rotation = $state(0);
     let pillPosition = $derived.by(() => {
         if (rotation === 90) {
@@ -46,7 +51,8 @@
     });
     let topCorrection = $state(0)
     let topPosition = $derived(initialTop + (offset * currentRow) - topCorrection);
-    let left = $state(112);
+    const initialLeft = 112;
+    let left = $state(initialLeft);
     let currentColor = $state(getRandomColor());
     let derivedColor = $state(getRandomColor())
 
@@ -94,7 +100,33 @@
         {type: 'virus', color: colors.blue, id: 'virus-3', row: 9, column: 2}
     ])
 
-    const previousPills = $state([])
+    const previousPills: Pill[] = $state([])
+
+    const borderKind = {
+        left: 'border-stone-900 border-y-4 border-l-4 rounded-l-lg',
+        right: 'border-stone-900 border-y-4 border-r-4 rounded-r-lg',
+        top: 'border-stone-900 border-x-4 border-t-4 rounded-t-lg',
+        bottom: 'border-stone-900 border-x-4 border-b-4 rounded-b-lg',
+    }
+
+    const pillBorders = {
+        0: {
+            state: borderKind.left,
+            derived: borderKind.right,
+        },
+        180: {
+            state: borderKind.right,
+            derived: borderKind.left,
+        },
+        270: {
+            state: borderKind.bottom,
+            derived: borderKind.top,
+        },
+        90: {
+            state: borderKind.top,
+            derived: borderKind.bottom,
+        }
+    }
 
 
     function getRandomColor() {
@@ -149,11 +181,23 @@
         }
     }
 
+    const pillEnded = () => {
+        const currentPill: Pill = {type: 'pill-double', id: 'pill-1', color: currentColor, row: currentRow, column: currentColumn, border: pillBorders[rotation].state };
+        const derivedPill: Pill = {type: 'pill-double', id: 'pill-derived', color: derivedColor, row: derivedRow, column: derivedColumn, border: pillBorders[rotation].derived};
+        previousPills.push(currentPill, derivedPill);
 
+        currentRow = 0;
+        currentColumn = initialColumn;
+        currentColor = getRandomColor();
+        derivedColor = getRandomColor();
+        rotation = 0;
+        topCorrection = 0;
+        left = initialLeft;
+    }
 
     const movePillDown = () => {
         if (!canMoveDown) {
-
+            console.log('Cannot move down')
             return;
         }
 
@@ -191,6 +235,7 @@
 
     const handleKeyDown = (ev: KeyboardEvent) => {
         if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
+            pillEnded();
             return;
         }
 
@@ -218,7 +263,7 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <div class="container">
-    <div class="w-fit bg-lime-100 flex flex-nowrap flex-col gap-1 p-1 relative">
+    <div class="w-fit bg-stone-900 flex flex-nowrap flex-col gap-1 p-1 relative">
         {#each matrix as row, rowIndex}
             <div class="w-fit flex flex-row flex-nowrap gap-1">
                 {#each row as cell, cellIndex}
@@ -232,7 +277,7 @@
                 style:transform="{`rotate(${rotation}deg`}"
                 class="pill">
             <div class="pill-part-med" style:background-color={currentColor}></div>
-            <div class="pill-part-break"></div>
+            <div class="pill-part-break bg-stone-900"></div>
             <div class="pill-part-med" style:background-color={derivedColor}></div>
         </div>
         <div class="absolute">
@@ -243,6 +288,16 @@
                         style:top={`${virus.row * offset}px`}
                         style:left={`${virus.column * offset}px`}
                 ></div>
+            {/each}
+        </div>
+        <div class="absolute">
+            {#each previousPills as pill}
+                <div
+                        style:background-color={pill.color}
+                        style:top={`${pill.row * offset}px`}
+                        style:left={`${pill.column * offset}px`}
+                        class={`pill-previous ${pill.border}`}>
+                </div>
             {/each}
         </div>
     </div>
@@ -258,7 +313,7 @@
     .cell {
         width: 32px;
         height: 32px;
-        border: 2px rebeccapurple solid;
+        /*border: 2px rebeccapurple solid;*/
         box-sizing: border-box;
     }
 
@@ -278,13 +333,20 @@
             width: 32px;
         }
         .pill-part-break {
-            background-color: black;
             width: 4px;
         }
     }
 
     .virus {
         border: 4px black solid;
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        z-index: 10;
+        box-sizing: border-box;
+    }
+
+    .pill-previous {
         width: 32px;
         height: 32px;
         position: absolute;
