@@ -3,19 +3,27 @@
 
     interface MatrixItem {
         type: 'pill-single' | 'pill-double' | 'virus',
-        color: string
+        color: string,
+        id: string
     }
 
     type Rotation = 0 | 90 | 180 | 270;
 
-    type PillPosition = 'hDefault' | 'vUp' | 'hFlipped' | 'vDown'
-
     const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
     let currentRow = $state(0);
-    let currentCell = $state(3);
+    let currentColumn = $state(3);
     let initialTop = 40;
     let offset = 36;
     let rotation: Rotation = $state(0);
+    let pillPosition = $derived.by(() => {
+        if (rotation === 90) {
+            return 'vertical-top';
+        }
+        if (rotation === 270) {
+            return 'vertical-bottom';
+        }
+        return 'horizontal';
+    });
     let topCorrection = $state(0)
     let topPosition = $derived(initialTop + (offset * currentRow) - topCorrection);
     let left = $state(108);
@@ -27,20 +35,37 @@
         270: () => (currentRow + 1),
     }
 
-    const deriveCellHelper = {
-        0: () => (currentCell + 1),
-        90: () => (currentCell),
-        180: () => (currentCell - 1),
-        270: () => (currentCell),
+    const deriveColumnHelper = {
+        0: () => (currentColumn + 1),
+        90: () => (currentColumn),
+        180: () => (currentColumn - 1),
+        270: () => (currentColumn),
     }
 
     let derivedRow = $derived.by(() => {
         return derivedRowHelper[rotation]();
     });
 
-    let derivedCell = $derived.by(() => {
-        return deriveCellHelper[rotation]();
+    let derivedColumn = $derived.by(() => {
+        return deriveColumnHelper[rotation]();
     });
+
+    let canMoveDown = $derived.by(() => {
+        console.log(pillPosition)
+        if (pillPosition === 'horizontal' && (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1)) {
+            return false;
+        }
+
+        if (pillPosition === 'vertical-top' && currentRow === matrix.length - 1) {
+            return false;
+        }
+
+        if (pillPosition === 'vertical-bottom' && derivedRow === matrix.length - 1) {
+            return false;
+        }
+
+        return true;
+    })
 
 
     const colors = {
@@ -49,9 +74,9 @@
         yellow: 'bg-amber-500',
     }
 
-    matrix[13][4] = {type: 'virus', color: colors.yellow};
-    matrix[7][6] = {type: 'virus', color: colors.pink};
-    matrix[9][2] = {type: 'virus', color: colors.blue};
+    matrix[13][4] = {type: 'virus', color: colors.yellow, id: 'virus-1'};
+    matrix[7][6] = {type: 'virus', color: colors.pink, id: 'virus-2'};
+    matrix[9][2] = {type: 'virus', color: colors.blue, id: 'virus-3'};
 
 
     function getRandomColor() {
@@ -59,16 +84,20 @@
     }
 
     $effect(() => {
-        const interval = setInterval(() => {
-
-            movePillDown();
-            console.log(currentRow)
-            console.log(currentCell)
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-        };
+        console.log('Effect')
+        // const interval = setInterval(() => {
+        //     console.log('Current row:', currentRow);
+        //     console.log('Current column', currentColumn);
+        //     movePillDown();
+        //
+        //     if (currentRow === matrix.length - 1) {
+        //         clearInterval(interval)
+        //     }
+        // }, 1000);
+        //
+        // return () => {
+        //     clearInterval(interval);
+        // };
     });
 
     const rotationHandler: Record<number, () => void> = {
@@ -79,13 +108,13 @@
         },
         270: () => {
             rotation = 180;
-            left -= ( offset / 2 );
+            left += ( offset / 2 );
             topCorrection = 0;
         },
         180: () => {
             rotation = 90;
-            left += (offset / 2 );
-            topCorrection = -(offset / 2);
+            left -= (offset / 2 );
+            topCorrection = (offset / 2);
         },
         90: () => {
             rotation = 0;
@@ -95,7 +124,8 @@
     }
 
     const movePillDown = () => {
-        if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
+        console.log(canMoveDown)
+        if (!canMoveDown) {
             return;
         }
 
@@ -107,21 +137,21 @@
 
 
         if (ev.key === 'ArrowLeft') {
-            if (currentCell === 0 || derivedCell === 0) {
+            if (currentColumn === 0 || derivedColumn === 0) {
                 return;
             }
 
             left -= offset;
-            currentCell -= 1;
+            currentColumn -= 1;
         }
 
         if (ev.key === 'ArrowRight') {
-            if (currentCell === 7 || derivedCell === 7) {
+            if (currentColumn === 7 || derivedColumn === 7) {
                 return;
             }
 
             left += offset;
-            currentCell += 1;
+            currentColumn += 1;
         }
 
         if (ev.key === 'ArrowDown') {
@@ -129,22 +159,12 @@
         }
 
         if (ev.key === 'ArrowUp') {
-            if (currentRow === matrix.length - 1) {
+            if (currentRow === matrix.length - 1 || currentRow === 0) {
                 return;
             }
             rotationHandler[rotation]();
 
         }
-    }
-
-    const getCellClasses = (row: number, cell: number) => {
-        const classes: MatrixItem | null = matrix[row][cell];
-        if (!classes) {
-            return '';
-        }
-        return Object.values(classes).reduce((acc, current) => {
-            return acc + ' ' + current;
-        }, '')
     }
 </script>
 
