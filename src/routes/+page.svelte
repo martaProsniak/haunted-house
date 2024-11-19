@@ -1,13 +1,33 @@
 <script lang="ts">
     import "../app.css";
 
+    type Rotation = 0 | 90 | 180 | 270;
+
+    type Color = 'hotpink' | 'yellow' | 'dodgerblue';
+
     interface MatrixItem {
         type: 'pill-single' | 'pill-double' | 'virus',
-        color: string,
-        id: string
+        color: Color,
+        id: string,
     }
 
-    type Rotation = 0 | 90 | 180 | 270;
+    interface Virus extends MatrixItem {
+        type: 'virus',
+        row: number,
+        column: number
+    }
+
+    interface Pill extends MatrixItem {
+        type: 'pill-single' | 'pill-double',
+        row: number,
+        column: number
+    }
+
+    const colors: Record<string, Color> = {
+        pink: 'hotpink',
+        blue: 'dodgerblue',
+        yellow: 'yellow',
+    }
 
     const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
     let currentRow = $state(0);
@@ -27,6 +47,8 @@
     let topCorrection = $state(0)
     let topPosition = $derived(initialTop + (offset * currentRow) - topCorrection);
     let left = $state(112);
+    let currentColor = $state(getRandomColor());
+    let derivedColor = $state(getRandomColor())
 
     const derivedRowHelper = {
         0: () => (currentRow),
@@ -66,22 +88,13 @@
         return true;
     })
 
-
-    const colors = {
-        pink: 'bg-pink-500',
-        blue: 'bg-sky-500',
-        yellow: 'bg-amber-500',
-    }
-
-    matrix[13][4] = {type: 'virus', color: colors.yellow, id: 'virus-1'};
-    matrix[7][6] = {type: 'virus', color: colors.pink, id: 'virus-2'};
-    matrix[9][2] = {type: 'virus', color: colors.blue, id: 'virus-3'};
-
-    const viruses = $state([
+    const viruses: Virus[] = $state([
         {type: 'virus', color: colors.yellow, id: 'virus-1', row: 13, column: 4},
         {type: 'virus', color: colors.pink, id: 'virus-2', row: 7, column: 6},
         {type: 'virus', color: colors.blue, id: 'virus-3', row: 9, column: 2}
     ])
+
+    const previousPills = $state([])
 
 
     function getRandomColor() {
@@ -136,8 +149,11 @@
         }
     }
 
+
+
     const movePillDown = () => {
         if (!canMoveDown) {
+
             return;
         }
 
@@ -202,10 +218,6 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <div class="container">
-
-    <div>
-
-    </div>
     <div class="w-fit bg-lime-100 flex flex-nowrap flex-col gap-1 p-1 relative">
         {#each matrix as row, rowIndex}
             <div class="w-fit flex flex-row flex-nowrap gap-1">
@@ -219,9 +231,19 @@
                 style:left={`${left}px`}
                 style:transform="{`rotate(${rotation}deg`}"
                 class="pill">
-            <div class="pill-part-pink"></div>
+            <div class="pill-part-med" style:background-color={currentColor}></div>
             <div class="pill-part-break"></div>
-            <div class="pill-part-yellow"></div>
+            <div class="pill-part-med" style:background-color={derivedColor}></div>
+        </div>
+        <div class="absolute">
+            {#each viruses as virus}
+                <div
+                        class="virus"
+                        style:background-color={virus.color}
+                        style:top={`${virus.row * offset}px`}
+                        style:left={`${virus.column * offset}px`}
+                ></div>
+            {/each}
         </div>
     </div>
 
@@ -252,25 +274,20 @@
         z-index: 10;
         box-sizing: border-box;
 
-        .pill-part-pink {
-            background-color: hotpink;
+        .pill-part-med {
             width: 32px;
         }
         .pill-part-break {
             background-color: black;
             width: 4px;
         }
-        .pill-part-yellow {
-            background-color: yellow;
-            width: 32px;
-        }
     }
 
     .virus {
         border: 4px black solid;
-        width: 38px;
-        height: 40px;
-        position: relative;
+        width: 32px;
+        height: 32px;
+        position: absolute;
         z-index: 10;
         box-sizing: border-box;
     }
