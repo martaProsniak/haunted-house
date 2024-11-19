@@ -17,10 +17,10 @@
     let rotation: Rotation = $state(0);
     let pillPosition = $derived.by(() => {
         if (rotation === 90) {
-            return 'vertical-top';
+            return 'vertical-bottom';
         }
         if (rotation === 270) {
-            return 'vertical-bottom';
+            return 'vertical-top';
         }
         return 'horizontal';
     });
@@ -30,9 +30,9 @@
 
     const derivedRowHelper = {
         0: () => (currentRow),
-        90: () => (currentRow - 1),
+        90: () => (currentRow + 1),
         180: () => (currentRow),
-        270: () => (currentRow + 1),
+        270: () => (currentRow - 1),
     }
 
     const deriveColumnHelper = {
@@ -51,8 +51,7 @@
     });
 
     let canMoveDown = $derived.by(() => {
-        console.log(pillPosition)
-        if (pillPosition === 'horizontal' && (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1)) {
+        if (pillPosition === 'horizontal' && currentRow === matrix.length - 1) {
             return false;
         }
 
@@ -85,19 +84,17 @@
 
     $effect(() => {
         console.log('Effect')
-        // const interval = setInterval(() => {
-        //     console.log('Current row:', currentRow);
-        //     console.log('Current column', currentColumn);
-        //     movePillDown();
-        //
-        //     if (currentRow === matrix.length - 1) {
-        //         clearInterval(interval)
-        //     }
-        // }, 1000);
-        //
-        // return () => {
-        //     clearInterval(interval);
-        // };
+        const interval = setInterval(() => {
+            movePillDown();
+
+            if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
+                clearInterval(interval)
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
     });
 
     const rotationHandler: Record<number, () => void> = {
@@ -110,21 +107,24 @@
             rotation = 180;
             left += ( offset / 2 );
             topCorrection = 0;
+            currentColumn += 1;
         },
         180: () => {
             rotation = 90;
             left -= (offset / 2 );
-            topCorrection = (offset / 2);
+            topCorrection = -(offset / 2);
+            currentRow -= 1;
+            currentColumn -= 1;
         },
         90: () => {
             rotation = 0;
             left += ( offset / 2 );
             topCorrection = 0;
+            currentRow += 1;
         }
     }
 
     const movePillDown = () => {
-        console.log(canMoveDown)
         if (!canMoveDown) {
             return;
         }
@@ -132,26 +132,46 @@
         currentRow += 1;
     }
 
+    const moveLeft = () => {
+        if (currentColumn === 0 || derivedColumn === 0) {
+            return;
+        }
+
+        left -= offset;
+        currentColumn -= 1;
+    }
+
+    const moveRight = () => {
+        if (currentColumn === 7 || derivedColumn === 7) {
+            return;
+        }
+
+        left += offset;
+        currentColumn += 1;
+    }
+
+    const rotate = () => {
+        if ((currentRow === 0 && pillPosition !== 'vertical-bottom')) {
+            return;
+        }
+        if (currentColumn === 7 && (rotation === 270 || rotation === 90)) {
+            return;
+        }
+        rotationHandler[rotation]();
+    }
+
 
     const handleKeyDown = (ev: KeyboardEvent) => {
-
+        if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
+            return;
+        }
 
         if (ev.key === 'ArrowLeft') {
-            if (currentColumn === 0 || derivedColumn === 0) {
-                return;
-            }
-
-            left -= offset;
-            currentColumn -= 1;
+            moveLeft();
         }
 
         if (ev.key === 'ArrowRight') {
-            if (currentColumn === 7 || derivedColumn === 7) {
-                return;
-            }
-
-            left += offset;
-            currentColumn += 1;
+            moveRight();
         }
 
         if (ev.key === 'ArrowDown') {
@@ -159,11 +179,7 @@
         }
 
         if (ev.key === 'ArrowUp') {
-            if (currentRow === matrix.length - 1 || currentRow === 0) {
-                return;
-            }
-            rotationHandler[rotation]();
-
+            rotate();
         }
     }
 </script>
