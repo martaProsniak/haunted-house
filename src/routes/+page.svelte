@@ -2,75 +2,46 @@
     import "../app.css";
 
     interface MatrixItem {
-        pillBorder?: string,
-        color: string,
-        virus?: string,
+        type: 'pill-single' | 'pill-double' | 'virus',
+        color: string
     }
+
+    type Rotation = 0 | 90 | 180 | 270;
 
     type PillPosition = 'hDefault' | 'vUp' | 'hFlipped' | 'vDown'
 
     const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
-    let pillPosition: PillPosition = $state('hDefault');
     let currentRow = $state(0);
-    let currentCell = $state(4);
-    let flippedRow: number | 'none' = $state('none');
-    let flippedCell: number | 'none' = $state('none');
+    let currentCell = $state(3);
+    let initialTop = 40;
+    let offset = 36;
+    let rotation: Rotation = $state(0);
+    let topCorrection = $state(0)
+    let topPosition = $derived(initialTop + (offset * currentRow) - topCorrection);
+    let left = $state(108);
 
     const derivedRowHelper = {
-        hDefault: () => (currentRow),
-        vUp: () => (currentRow - 1),
-        hFlipped: () => (currentRow),
-        vDown: () => (currentRow + 1),
+        0: () => (currentRow),
+        90: () => (currentRow - 1),
+        180: () => (currentRow),
+        270: () => (currentRow + 1),
     }
 
     const deriveCellHelper = {
-        hDefault: () => (currentCell + 1),
-        vUp: () => (currentCell),
-        hFlipped: () => (currentCell - 1),
-        vDown: () => (currentCell),
+        0: () => (currentCell + 1),
+        90: () => (currentCell),
+        180: () => (currentCell - 1),
+        270: () => (currentCell),
     }
 
     let derivedRow = $derived.by(() => {
-        if (flippedRow === 'none') {
-            return derivedRowHelper[pillPosition]();
-        }
-        return flippedRow;
+        return derivedRowHelper[rotation]();
     });
 
     let derivedCell = $derived.by(() => {
-        if (flippedCell === 'none') {
-            return deriveCellHelper[pillPosition]();
-        }
-
-        return flippedCell;
+        return deriveCellHelper[rotation]();
     });
 
-
-    const borderKind = {
-        left: 'border-none border-stone-950 border-y-2 border-l-2 rounded-l-lg',
-        right: 'border-none border-stone-950 border-y-2 border-r-2 rounded-r-lg',
-        top: 'border-none border-stone-950 border-x-2 border-t-2 rounded-t-lg',
-        bottom: 'border-none border-stone-950 border-x-2 border-b-2 rounded-b-lg',
-    }
-
-    const pillBorders = {
-        hDefault: {
-            state: borderKind.left,
-            derived: borderKind.right,
-        },
-        hFlipped: {
-            state: borderKind.right,
-            derived: borderKind.left,
-        },
-        vUp: {
-            state: borderKind.bottom,
-            derived: borderKind.top,
-        },
-        vDown: {
-            state: borderKind.top,
-            derived: borderKind.bottom,
-        }
-    };
 
     const colors = {
         pink: 'bg-pink-500',
@@ -78,37 +49,21 @@
         yellow: 'bg-amber-500',
     }
 
-    matrix[13][4] = {virus: 'virus rounded-full', color: colors.yellow};
-    matrix[7][6] = {virus: 'virus rounded-full', color: colors.pink};
-    matrix[9][2] = {virus: 'virus rounded-full', color: colors.blue};
+    matrix[13][4] = {type: 'virus', color: colors.yellow};
+    matrix[7][6] = {type: 'virus', color: colors.pink};
+    matrix[9][2] = {type: 'virus', color: colors.blue};
 
-    function resetFlippedRow () {
-        flippedRow = 'none';
-    }
-
-    function resetFlippedCell () {
-        flippedCell = 'none';
-    }
 
     function getRandomColor() {
         return Object.values(colors)[Math.floor(Math.random() * 3)];
     }
 
-    function createPill() {
-        return {state: {pillBorder: pillBorders[pillPosition].state, color: getRandomColor()}, derived: {pillBorder: pillBorders[pillPosition].derived, color: getRandomColor()}}
-    }
-
-    const clearCell = (row: number, cell: number) => {
-        matrix[row][cell] = null
-    }
-
     $effect(() => {
-        matrix[currentRow][currentCell] = {pillBorder: pillBorders[pillPosition].state, color: colors.pink};
-        matrix[derivedRow][derivedCell] = {pillBorder: pillBorders[pillPosition].derived, color: colors.blue}
-
         const interval = setInterval(() => {
 
             movePillDown();
+            console.log(currentRow)
+            console.log(currentCell)
         }, 1000);
 
         return () => {
@@ -116,52 +71,48 @@
         };
     });
 
+    const rotationHandler: Record<number, () => void> = {
+        0: () => {
+            rotation = 270;
+            left -= (offset / 2 );
+            topCorrection = offset / 2;
+        },
+        270: () => {
+            rotation = 180;
+            left -= ( offset / 2 );
+            topCorrection = 0;
+        },
+        180: () => {
+            rotation = 90;
+            left += (offset / 2 );
+            topCorrection = -(offset / 2);
+        },
+        90: () => {
+            rotation = 0;
+            left += ( offset / 2 );
+            topCorrection = 0;
+        }
+    }
+
     const movePillDown = () => {
         if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
             return;
         }
 
-        resetFlippedRow();
-        resetFlippedCell();
-
-        if (pillPosition.startsWith('h')) {
-            currentRow += 1;
-            clearCell(currentRow - 1, currentCell);
-            clearCell(derivedRow - 1, derivedCell);
-        }
-        if (pillPosition === 'vUp') {
-            currentRow += 1;
-            clearCell(derivedRow - 1, derivedCell);
-        }
-        if (pillPosition === 'vDown') {
-            currentRow += 1;
-            clearCell(currentRow - 1, currentCell);
-        }
+        currentRow += 1;
     }
 
 
     const handleKeyDown = (ev: KeyboardEvent) => {
+
+
         if (ev.key === 'ArrowLeft') {
             if (currentCell === 0 || derivedCell === 0) {
                 return;
             }
 
-            resetFlippedRow();
-            resetFlippedCell();
-
-            if (pillPosition === 'hDefault') {
-                currentCell -= 1;
-                clearCell(currentRow, derivedCell + 1);
-            }
-            if (pillPosition.startsWith('v')) {
-                currentCell -= 1;
-                clearCell(currentRow, currentCell + 1);
-                clearCell(derivedRow, currentCell + 1);
-            }
-            if (pillPosition === 'hFlipped') {
-                currentCell -= 1;
-                clearCell(currentRow, currentCell + 1);
-            }
+            left -= offset;
+            currentCell -= 1;
         }
 
         if (ev.key === 'ArrowRight') {
@@ -169,23 +120,8 @@
                 return;
             }
 
-            resetFlippedRow();
-            resetFlippedCell();
-
-            if (pillPosition === 'hDefault') {
-                currentCell += 1;
-                clearCell(currentRow, currentCell - 1);
-            }
-            if (pillPosition.startsWith('v')) {
-                currentCell += 1;
-                clearCell(currentRow, currentCell - 1);
-                clearCell(derivedRow, derivedCell - 1);
-            }
-            if (pillPosition === 'hFlipped') {
-                currentCell += 1;
-                clearCell(derivedRow, derivedCell - 1);
-            }
-
+            left += offset;
+            currentCell += 1;
         }
 
         if (ev.key === 'ArrowDown') {
@@ -196,35 +132,7 @@
             if (currentRow === matrix.length - 1) {
                 return;
             }
-
-            if (pillPosition === 'hDefault') {
-                flippedRow = currentRow - 1;
-                flippedCell = currentCell;
-                clearCell(currentRow, currentCell + 1);
-                pillPosition = 'vUp'
-                return;
-            }
-            if (pillPosition === 'vUp') {
-                flippedRow = currentRow;
-                flippedCell = currentCell - 1;
-                clearCell(currentRow - 1, currentCell);
-                pillPosition = 'hFlipped';
-                return;
-            }
-            if (pillPosition === 'hFlipped') {
-                flippedRow = currentRow + 1;
-                flippedCell = currentCell;
-                clearCell(currentRow, currentCell - 1);
-                pillPosition = 'vDown';
-                return;
-            }
-            if (pillPosition === 'vDown') {
-                flippedRow = currentRow;
-                flippedCell = currentCell + 1;
-                clearCell(currentRow + 1, currentCell);
-                pillPosition = 'hDefault';
-                return;
-            }
+            rotationHandler[rotation]();
 
         }
     }
@@ -246,11 +154,23 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <div class="container">
-    <div class="w-fit flex flex-nowrap flex-col gap-1 p-1 relative bg-stone-950">
+    <div
+            style:top={`${topPosition}px`}
+            style:left={`${left}px`}
+            style:transform="{`rotate(${rotation}deg`}"
+            class="pill">
+        <div class="pill-part-pink"></div>
+        <div class="pill-part-break"></div>
+        <div class="pill-part-yellow"></div>
+    </div>
+    <div>
+
+    </div>
+    <div class="w-fit bg-orange-300 flex flex-nowrap flex-col gap-1 p-1 relative">
         {#each matrix as row, rowIndex}
             <div class="w-fit flex flex-row flex-nowrap gap-1">
                 {#each row as cell, cellIndex}
-                    <div class={`cell ${getCellClasses(rowIndex, cellIndex)}`}></div>
+                    <div class="cell"></div>
                 {/each}
             </div>
         {/each}
@@ -269,6 +189,33 @@
         height: 32px;
         border: none;
         box-sizing: border-box;
+        background-color: salmon;
+    }
+
+    .pill {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        border-radius: 10px;
+        border: 4px black solid;
+        width: 76px;
+        height: 40px;
+        position: relative;
+        z-index: 10;
+        box-sizing: border-box;
+
+        .pill-part-pink {
+            background-color: hotpink;
+            width: 32px;
+        }
+        .pill-part-break {
+            background-color: black;
+            width: 4px;
+        }
+        .pill-part-yellow {
+            background-color: yellow;
+            width: 32px;
+        }
     }
 
 </style>
