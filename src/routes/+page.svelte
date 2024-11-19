@@ -12,8 +12,8 @@
     const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
     let currentRow = $state(0);
     let currentColumn = $state(3);
-    let initialTop = 40;
-    let offset = 36;
+    const initialTop = 4;
+    const offset = 36;
     let rotation: Rotation = $state(0);
     let pillPosition = $derived.by(() => {
         if (rotation === 90) {
@@ -26,7 +26,7 @@
     });
     let topCorrection = $state(0)
     let topPosition = $derived(initialTop + (offset * currentRow) - topCorrection);
-    let left = $state(108);
+    let left = $state(112);
 
     const derivedRowHelper = {
         0: () => (currentRow),
@@ -77,6 +77,12 @@
     matrix[7][6] = {type: 'virus', color: colors.pink, id: 'virus-2'};
     matrix[9][2] = {type: 'virus', color: colors.blue, id: 'virus-3'};
 
+    const viruses = $state([
+        {type: 'virus', color: colors.yellow, id: 'virus-1', row: 13, column: 4},
+        {type: 'virus', color: colors.pink, id: 'virus-2', row: 7, column: 6},
+        {type: 'virus', color: colors.blue, id: 'virus-3', row: 9, column: 2}
+    ])
+
 
     function getRandomColor() {
         return Object.values(colors)[Math.floor(Math.random() * 3)];
@@ -84,18 +90,24 @@
 
     $effect(() => {
         console.log('Effect')
-        const interval = setInterval(() => {
-            movePillDown();
-
-            if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
-                clearInterval(interval)
-            }
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-        };
+        // const interval = setInterval(() => {
+        //     movePillDown();
+        //
+        //     if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
+        //         clearInterval(interval)
+        //     }
+        // }, 1000);
+        //
+        // return () => {
+        //     clearInterval(interval);
+        // };
     });
+
+    $effect(() => {
+        viruses.forEach(({row, column, id, color}) => {
+            matrix[row][column] = {type: 'virus', id: id, color: color};
+        })
+    })
 
     const rotationHandler: Record<number, () => void> = {
         0: () => {
@@ -190,19 +202,11 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <div class="container">
-    <div
-            style:top={`${topPosition}px`}
-            style:left={`${left}px`}
-            style:transform="{`rotate(${rotation}deg`}"
-            class="pill">
-        <div class="pill-part-pink"></div>
-        <div class="pill-part-break"></div>
-        <div class="pill-part-yellow"></div>
-    </div>
+
     <div>
 
     </div>
-    <div class="w-fit bg-orange-300 flex flex-nowrap flex-col gap-1 p-1 relative">
+    <div class="w-fit bg-lime-100 flex flex-nowrap flex-col gap-1 p-1 relative">
         {#each matrix as row, rowIndex}
             <div class="w-fit flex flex-row flex-nowrap gap-1">
                 {#each row as cell, cellIndex}
@@ -210,6 +214,15 @@
                 {/each}
             </div>
         {/each}
+        <div
+                style:top={`${topPosition}px`}
+                style:left={`${left}px`}
+                style:transform="{`rotate(${rotation}deg`}"
+                class="pill">
+            <div class="pill-part-pink"></div>
+            <div class="pill-part-break"></div>
+            <div class="pill-part-yellow"></div>
+        </div>
     </div>
 
 </div>
@@ -223,9 +236,8 @@
     .cell {
         width: 32px;
         height: 32px;
-        border: none;
+        border: 2px rebeccapurple solid;
         box-sizing: border-box;
-        background-color: salmon;
     }
 
     .pill {
@@ -234,9 +246,9 @@
         flex-wrap: nowrap;
         border-radius: 10px;
         border: 4px black solid;
-        width: 76px;
-        height: 40px;
-        position: relative;
+        width: 68px;
+        height: 32px;
+        position: absolute;
         z-index: 10;
         box-sizing: border-box;
 
@@ -252,6 +264,15 @@
             background-color: yellow;
             width: 32px;
         }
+    }
+
+    .virus {
+        border: 4px black solid;
+        width: 38px;
+        height: 40px;
+        position: relative;
+        z-index: 10;
+        box-sizing: border-box;
     }
 
 </style>
