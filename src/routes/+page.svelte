@@ -32,7 +32,7 @@
 
     const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
     const initialTop = 4;
-    const offset = 36;
+    const offset = 44;
     const initialRow = 0;
     const initialColumn = 3;
 
@@ -51,7 +51,7 @@
     });
     let topCorrection = $state(0)
     let topPosition = $derived(initialTop + (offset * currentRow) - topCorrection);
-    const initialLeft = 112;
+    const initialLeft = 136;
     let left = $state(initialLeft);
     let currentColor = $state(getRandomColor());
     let derivedColor = $state(getRandomColor())
@@ -103,10 +103,10 @@
     const previousPills: Pill[] = $state([])
 
     const borderKind = {
-        left: 'border-stone-900 border-y-4 border-l-4 rounded-l-lg',
-        right: 'border-stone-900 border-y-4 border-r-4 rounded-r-lg',
-        top: 'border-stone-900 border-x-4 border-t-4 rounded-t-lg',
-        bottom: 'border-stone-900 border-x-4 border-b-4 rounded-b-lg',
+        left: 'border-stone-800 border-y-2 border-l-2 rounded-l-2xl',
+        right: 'border-stone-800 border-y-2 border-r-2 rounded-r-2xl',
+        top: 'border-stone-800 border-x-2 border-t-2 rounded-t-2xl',
+        bottom: 'border-stone-800 border-x-2 border-b-2 rounded-b-2xl',
     }
 
     const pillBorders = {
@@ -263,7 +263,7 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <div class="container">
-    <div class="w-fit bg-stone-900 flex flex-nowrap flex-col gap-1 p-1 relative">
+    <div class="w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative">
         {#each matrix as row, rowIndex}
             <div class="w-fit flex flex-row flex-nowrap gap-1">
                 {#each row as cell, cellIndex}
@@ -276,9 +276,9 @@
                 style:left={`${left}px`}
                 style:transform="{`rotate(${rotation}deg`}"
                 class="pill">
-            <div class="pill-part-med" style:background-color={currentColor}></div>
-            <div class="pill-part-break bg-stone-900"></div>
-            <div class="pill-part-med" style:background-color={derivedColor}></div>
+            <div class={`pill-part-med ${borderKind.left}`} style:background-color={currentColor}></div>
+            <div class="pill-part-break"></div>
+            <div class={`pill-part-med ${borderKind.right}`} style:background-color={derivedColor}></div>
         </div>
         <div class="absolute">
             {#each viruses as virus}
@@ -311,9 +311,9 @@
     }
 
     .cell {
-        width: 32px;
-        height: 32px;
-        /*border: 2px rebeccapurple solid;*/
+        width: 40px;
+        height: 40px;
+        border: 2px #371d53 solid;
         box-sizing: border-box;
     }
 
@@ -321,16 +321,14 @@
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        border-radius: 10px;
-        border: 4px black solid;
-        width: 68px;
-        height: 32px;
+        width: 84px;
+        height: 40px;
         position: absolute;
         z-index: 10;
         box-sizing: border-box;
 
         .pill-part-med {
-            width: 32px;
+            width: 40px;
         }
         .pill-part-break {
             width: 4px;
@@ -339,16 +337,16 @@
 
     .virus {
         border: 4px black solid;
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
         position: absolute;
         z-index: 10;
         box-sizing: border-box;
     }
 
     .pill-previous {
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
         position: absolute;
         z-index: 10;
         box-sizing: border-box;
