@@ -11,7 +11,7 @@
         style:left={`${left}px`}
         style:transform="{`rotate(${rotation}deg`}"
         class="pill">
-    <div class={`pill-part-med ${borderKind.left}`} style:background-color={pillColors.current}></div>
+    <div class={`pill-part-med ${borderKind.left}`} style:background-color={pillColors.current}>M</div>
     <div class="pill-part-break"></div>
     <div class={`pill-part-med ${borderKind.right}`} style:background-color={pillColors.derived}></div>
 </div>

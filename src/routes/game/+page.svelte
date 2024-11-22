@@ -18,10 +18,10 @@
     let rotation: Rotation = $state(0);
     let pillPosition = $derived.by(() => {
         if (rotation === 90) {
-            return 'vertical-bottom';
+            return 'vertical-flipped';
         }
         if (rotation === 270) {
-            return 'vertical-top';
+            return 'vertical';
         }
         return 'horizontal';
     });
@@ -29,8 +29,6 @@
     let topPosition = $derived(initialTop + (offset * currentRow) - topCorrection);
     const initialLeft = 136;
     let left = $state(initialLeft);
-
-    $inspect(matrix)
 
     const derivedRowHelper = {
         0: () => (currentRow),
@@ -59,15 +57,27 @@
             return false;
         }
 
-        if (pillPosition === 'horizontal' && currentRow === matrix.length - 1) {
+        if (pillPosition === 'horizontal' && (currentRow === matrix.length - 1)) {
             return false;
         }
 
-        if (pillPosition === 'vertical-top' && currentRow === matrix.length - 1) {
+        if (pillPosition === 'horizontal' && (matrix[currentRow+1][currentColumn] || matrix[derivedRow+1][derivedColumn])) {
             return false;
         }
 
-        if (pillPosition === 'vertical-bottom' && derivedRow === matrix.length - 1) {
+        if (pillPosition === 'vertical' && currentRow === matrix.length - 1) {
+            return false;
+        }
+
+        if (pillPosition === 'vertical' && matrix[currentRow+1][currentColumn]) {
+            return false;
+        }
+
+        if (pillPosition === 'vertical-flipped' && derivedRow === matrix.length - 1) {
+            return false;
+        }
+
+        if (pillPosition === 'vertical-flipped' && matrix[derivedRow+1][derivedColumn]) {
             return false;
         }
 
@@ -77,8 +87,6 @@
     $effect(() => {
         console.log('Effect')
         const interval = setInterval(() => {
-            movePillDown();
-
             if (matrix[initialRow + 1][initialColumn]) {
                 clearInterval(interval);
                 console.log('End')
@@ -87,6 +95,9 @@
             if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
                 pillEnded();
             }
+
+            movePillDown();
+
         }, 1000);
 
         return () => {
@@ -149,13 +160,11 @@
 
     const movePillDown = () => {
         if (!canMoveDown) {
-            console.log('Cannot move down')
-            return;
+            pillEnded();
         }
 
         currentRow += 1;
 
-        console.log(currentRow);
         if (pillPosition === 'horizontal') {
             if (matrix[currentRow + 1][currentColumn] || matrix[derivedRow + 1][derivedColumn]) {
                 pillEnded();
@@ -173,8 +182,19 @@
         }
     }
 
+    const isLeftCollision = {
+        0: () => matrix[currentRow][currentColumn -1],
+        90: () => matrix[currentRow][currentColumn -1] || matrix[derivedRow][derivedColumn -1],
+        180: () => matrix[derivedRow][derivedColumn -1],
+        270: () => matrix[currentRow][currentColumn -1] || matrix[derivedRow][derivedColumn -1],
+    }
+
     const moveLeft = () => {
         if (currentColumn === 0 || derivedColumn === 0) {
+            return;
+        }
+
+        if (isLeftCollision[rotation]()) {
             return;
         }
 
@@ -182,8 +202,19 @@
         currentColumn -= 1;
     }
 
+    const isRightCollision = {
+        0: () => matrix[currentRow][derivedColumn +1],
+        90: () => matrix[currentRow][currentColumn +1] || matrix[derivedRow][derivedColumn +1],
+        180: () => matrix[derivedRow][currentColumn +1],
+        270: () => matrix[currentRow][currentColumn +1] || matrix[derivedRow][derivedColumn +1],
+    }
+
     const moveRight = () => {
         if (currentColumn === 7 || derivedColumn === 7) {
+            return;
+        }
+
+        if (isRightCollision[rotation]()) {
             return;
         }
 
@@ -191,13 +222,25 @@
         currentColumn += 1;
     }
 
+    const isRotateCollision = {
+        0: () => false,
+        90: () => matrix[derivedRow][derivedColumn +1] ,
+        180: () => false,
+        270: () => matrix[currentRow][currentColumn +1],
+    }
+
     const rotate = () => {
-        if ((currentRow === 0 && pillPosition !== 'vertical-bottom')) {
+        if ((currentRow === 0 && pillPosition !== 'vertical-flipped')) {
             return;
         }
         if (currentColumn === 7 && (rotation === 270 || rotation === 90)) {
             return;
         }
+
+        if (isRotateCollision[rotation]()) {
+            return;
+        }
+
         rotationHandler[rotation]();
     }
 
