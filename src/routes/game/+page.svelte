@@ -1,8 +1,10 @@
 <script lang="ts">
-    import type { MatrixItem, Pill, Rotation, Virus} from './types'
-    import {colors, previousPills} from './game.state.svelte'
+    import type {MatrixItem, Pill, Rotation} from './types'
+    import {pillColors, previousPills, viruses} from './game.state.svelte'
     import Pills from './pills.svelte';
     import Viruses from './viruses.svelte';
+    import CurrentPill from './currentPill.svelte';
+    import {getRandomColor, pillBorders} from "./utils";
 
     const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
     const initialTop = 4;
@@ -27,8 +29,6 @@
     let topPosition = $derived(initialTop + (offset * currentRow) - topCorrection);
     const initialLeft = 136;
     let left = $state(initialLeft);
-    let currentColor = $state(getRandomColor());
-    let derivedColor = $state(getRandomColor())
 
     const derivedRowHelper = {
         0: () => (currentRow),
@@ -66,43 +66,7 @@
         }
 
         return true;
-    })
-
-    const viruses: Virus[] = $state([
-        {type: 'virus', color: colors.yellow, id: 'virus-1', row: 13, column: 4},
-        {type: 'virus', color: colors.pink, id: 'virus-2', row: 7, column: 6},
-        {type: 'virus', color: colors.blue, id: 'virus-3', row: 9, column: 2}
-    ])
-
-    const borderKind = {
-        left: 'border-stone-800 border-y-2 border-l-2 rounded-l-2xl',
-        right: 'border-stone-800 border-y-2 border-r-2 rounded-r-2xl',
-        top: 'border-stone-800 border-x-2 border-t-2 rounded-t-2xl',
-        bottom: 'border-stone-800 border-x-2 border-b-2 rounded-b-2xl',
-    }
-
-    const pillBorders = {
-        0: {
-            state: borderKind.left,
-            derived: borderKind.right,
-        },
-        180: {
-            state: borderKind.right,
-            derived: borderKind.left,
-        },
-        270: {
-            state: borderKind.bottom,
-            derived: borderKind.top,
-        },
-        90: {
-            state: borderKind.top,
-            derived: borderKind.bottom,
-        }
-    }
-
-    function getRandomColor() {
-        return Object.values(colors)[Math.floor(Math.random() * 3)];
-    }
+    });
 
     $effect(() => {
         console.log('Effect')
@@ -153,14 +117,14 @@
     }
 
     const pillEnded = () => {
-        const currentPill: Pill = {type: 'pill-double', id: 'pill-1', color: currentColor, row: currentRow, column: currentColumn, border: pillBorders[rotation].state };
-        const derivedPill: Pill = {type: 'pill-double', id: 'pill-derived', color: derivedColor, row: derivedRow, column: derivedColumn, border: pillBorders[rotation].derived};
+        const currentPill: Pill = {type: 'pill-double', id: 'pill-1', color: pillColors.current, row: currentRow, column: currentColumn, border: pillBorders[rotation].state };
+        const derivedPill: Pill = {type: 'pill-double', id: 'pill-derived', color: pillColors.derived, row: derivedRow, column: derivedColumn, border: pillBorders[rotation].derived};
         previousPills.push(currentPill, derivedPill);
 
         currentRow = 0;
         currentColumn = initialColumn;
-        currentColor = getRandomColor();
-        derivedColor = getRandomColor();
+        pillColors.current = getRandomColor();
+        pillColors.derived = getRandomColor();
         rotation = 0;
         topCorrection = 0;
         left = initialLeft;
@@ -239,15 +203,7 @@
                 {/each}
             </div>
         {/each}
-        <div
-                style:top={`${topPosition}px`}
-                style:left={`${left}px`}
-                style:transform="{`rotate(${rotation}deg`}"
-                class="pill">
-            <div class={`pill-part-med ${borderKind.left}`} style:background-color={currentColor}></div>
-            <div class="pill-part-break"></div>
-            <div class={`pill-part-med ${borderKind.right}`} style:background-color={derivedColor}></div>
-        </div>
+        <CurrentPill {topPosition} {left} {rotation}/>
         <Viruses {offset} />
         <Pills {offset} />
     </div>
@@ -266,23 +222,5 @@
         height: 40px;
         border: 2px #371d53 solid;
         box-sizing: border-box;
-    }
-
-    .pill {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        width: 84px;
-        height: 40px;
-        position: absolute;
-        z-index: 10;
-        box-sizing: border-box;
-
-        .pill-part-med {
-            width: 40px;
-        }
-        .pill-part-break {
-            width: 4px;
-        }
     }
 </style>
