@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {MatrixItem, Pill, Rotation} from './types'
+    import type {MatrixItem, Pill, PillPosition, Rotation} from './types'
     import {pillColors, previousPills, viruses} from './game.state.svelte'
     import Pills from './pills.svelte';
     import Viruses from './viruses.svelte';
@@ -7,81 +7,81 @@
     import {getRandomColor, pillBorders} from "./utils";
 
     const matrix: Array<Array<MatrixItem | null>> = $state(Array.from(Array(16).keys()).map(() => Array.from(Array(8).keys()).map(() => null)));
+
     const initialTop = 4;
+    const initialLeft = 136;
     const offset = 44;
     const initialRow = 0;
     const initialColumn = 3;
 
     let currentRow = $state(initialRow);
     let currentColumn = $state(initialColumn);
-
     let rotation: Rotation = $state(0);
-    let pillPosition = $derived.by(() => {
+    let left = $state(initialLeft);
+    let topCorrection = $state(0);
+
+    let pillPosition: PillPosition = $derived.by(() => {
         if (rotation === 90) {
-            return 'vertical-flipped';
+            return 'verticalFlipped';
         }
         if (rotation === 270) {
             return 'vertical';
         }
         return 'horizontal';
     });
-    let topCorrection = $state(0)
+
+
     let topPosition = $derived(initialTop + (offset * currentRow) - topCorrection);
-    const initialLeft = 136;
-    let left = $state(initialLeft);
-
-    const derivedRowHelper = {
-        0: () => (currentRow),
-        90: () => (currentRow + 1),
-        180: () => (currentRow),
-        270: () => (currentRow - 1),
-    }
-
-    const deriveColumnHelper = {
-        0: () => (currentColumn + 1),
-        90: () => (currentColumn),
-        180: () => (currentColumn - 1),
-        270: () => (currentColumn),
-    }
 
     let derivedRow = $derived.by(() => {
-        return derivedRowHelper[rotation]();
+        if (pillPosition === 'verticalFlipped') {
+            return currentRow + 1;
+        }
+        if (pillPosition === 'vertical') {
+            return currentRow - 1;
+        }
+        return currentRow;
     });
 
     let derivedColumn = $derived.by(() => {
-        return deriveColumnHelper[rotation]();
+        if (rotation === 0) {
+            return currentColumn + 1;
+        }
+
+        if (rotation === 180) {
+            return currentColumn - 1
+        }
+
+        return currentColumn;
     });
+
+    let isLastRow = $derived.by(() => {
+        if (rotation === 90) {
+            return (derivedRow === matrix.length - 1)
+        }
+        return currentRow === matrix.length - 1;
+    });
+
+    const itemBelowHelper = {
+        horizontal: () => matrix[currentRow+1][currentColumn] || matrix[derivedRow+1][derivedColumn],
+        vertical: () => matrix[currentRow+1][currentColumn],
+        verticalFlipped: () => matrix[derivedRow+1][derivedColumn],
+    }
+
+    let isItemBelow = $derived.by(() => {
+        return itemBelowHelper[pillPosition]();
+    })
 
     let canMoveDown = $derived.by(() => {
         if (matrix[initialRow+1][initialColumn]) {
             return false;
         }
 
-        if (pillPosition === 'horizontal' && (currentRow === matrix.length - 1)) {
+        if (isItemBelow) {
             return false;
         }
 
-        if (pillPosition === 'horizontal' && (matrix[currentRow+1][currentColumn] || matrix[derivedRow+1][derivedColumn])) {
-            return false;
-        }
-
-        if (pillPosition === 'vertical' && currentRow === matrix.length - 1) {
-            return false;
-        }
-
-        if (pillPosition === 'vertical' && matrix[currentRow+1][currentColumn]) {
-            return false;
-        }
-
-        if (pillPosition === 'vertical-flipped' && derivedRow === matrix.length - 1) {
-            return false;
-        }
-
-        if (pillPosition === 'vertical-flipped' && matrix[derivedRow+1][derivedColumn]) {
-            return false;
-        }
-
-        return true;
+        return !isLastRow;
     });
 
     $effect(() => {
@@ -96,7 +96,7 @@
                 pillEnded();
             }
 
-            movePillDown();
+            moveDown();
 
         }, 1000);
 
@@ -149,7 +149,7 @@
         const derivedPill: Pill = {type: 'pill-double', id: 'pill-derived', color: pillColors.derived, row: derivedRow, column: derivedColumn, border: pillBorders[rotation].derived};
         previousPills.push(currentPill, derivedPill);
 
-        currentRow = 0;
+        currentRow = initialRow;
         currentColumn = initialColumn;
         pillColors.current = getRandomColor();
         pillColors.derived = getRandomColor();
@@ -158,28 +158,13 @@
         left = initialLeft;
     }
 
-    const movePillDown = () => {
+    const moveDown = () => {
         if (!canMoveDown) {
             pillEnded();
+            return;
         }
 
         currentRow += 1;
-
-        if (pillPosition === 'horizontal') {
-            if (matrix[currentRow + 1][currentColumn] || matrix[derivedRow + 1][derivedColumn]) {
-                pillEnded();
-            }
-        }
-        if (rotation === 270) {
-            if (matrix[currentRow + 1][currentColumn]) {
-                pillEnded();
-            }
-        }
-        if (rotation === 90) {
-            if (matrix[derivedRow + 1][derivedColumn]) {
-                pillEnded();
-            }
-        }
     }
 
     const isLeftCollision = {
@@ -209,6 +194,8 @@
         270: () => matrix[currentRow][currentColumn +1] || matrix[derivedRow][derivedColumn +1],
     }
 
+    $inspect(matrix[currentRow + 1])
+
     const moveRight = () => {
         if (currentColumn === 7 || derivedColumn === 7) {
             return;
@@ -230,7 +217,7 @@
     }
 
     const rotate = () => {
-        if ((currentRow === 0 && pillPosition !== 'vertical-flipped')) {
+        if ((currentRow === 0 && pillPosition !== 'verticalFlipped')) {
             return;
         }
         if (currentColumn === 7 && (rotation === 270 || rotation === 90)) {
@@ -246,11 +233,6 @@
 
 
     const handleKeyDown = (ev: KeyboardEvent) => {
-        if (currentRow === matrix.length - 1 || derivedRow === matrix.length - 1) {
-            pillEnded();
-            return;
-        }
-
         if (ev.key === 'ArrowLeft') {
             moveLeft();
         }
@@ -260,7 +242,7 @@
         }
 
         if (ev.key === 'ArrowDown') {
-            movePillDown();
+            moveDown();
         }
 
         if (ev.key === 'ArrowUp') {
