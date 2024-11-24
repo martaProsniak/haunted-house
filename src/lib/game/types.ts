@@ -8,17 +8,15 @@ export interface MatrixItem {
     type: 'pill-single' | 'pill-double' | 'virus',
     color: Color,
     id: string,
-}
-
-export interface Virus extends MatrixItem {
-    type: 'virus',
     row: number,
     column: number
 }
 
+export interface Virus extends MatrixItem {
+    type: 'virus',
+}
+
 export interface Pill extends MatrixItem {
     type: 'pill-single' | 'pill-double',
-    row: number,
-    column: number,
     border: string
 }

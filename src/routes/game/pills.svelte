@@ -1,16 +1,15 @@
 <script lang="ts">
-    import {previousPills} from './game.state.svelte';
-
-    const {offset} = $props();
+    const {offset, pills} = $props();
 </script>
 
 <div class="absolute">
-    {#each previousPills as pill}
+    {#each pills as pill}
         <div
                 style:background-color={pill.color}
                 style:top={`${pill.row * offset}px`}
                 style:left={`${pill.column * offset}px`}
                 class={`pill-previous ${pill.border}`}>
+            {pill.row}, {pill.column}
         </div>
     {/each}
 </div>
@@ -22,5 +21,6 @@
         position: absolute;
         z-index: 10;
         box-sizing: border-box;
+        font-size: 12px;
     }
 </style>

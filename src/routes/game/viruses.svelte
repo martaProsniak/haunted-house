@@ -1,7 +1,5 @@
 <script lang="ts">
-    import {viruses} from './game.state.svelte';
-
-    const {offset} = $props();
+    const {offset, viruses} = $props();
 </script>
 
 <div class="absolute">
