@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {Matrix, MatrixItem, Pill, Rotation, Virus} from './types'
+    import type {Color, Matrix, MatrixItem, Pill, Rotation, Virus} from './types'
     import {pillColors} from './game.state.svelte.js'
     import Pills from './pills.svelte';
     import Viruses from './viruses.svelte';
@@ -108,53 +108,140 @@
         })
     }
 
-    const checkNextItemDown = (rowIndex: number, neighbours: []) => {
-        if (rowIndex > lastRow) {
-
+    const findNextMatchingItemDown = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+        if (row > lastRow) {
+            return matchingItems;
         }
+        const item = matrix[row][col];
+        if (item?.color !== color) {
+            return matchingItems;
+        }
+        matchingItems.push(item);
+        return findNextMatchingItemDown(row + 1, col, color, matchingItems);
+    }
+
+    const findNextMatchingItemUp = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+        if (row === 1) {
+            return matchingItems;
+        }
+        const item = matrix[row][col];
+        if (item?.color !== color) {
+            return matchingItems;
+        }
+        matchingItems.push(item);
+        return findNextMatchingItemUp(row - 1, col, color, matchingItems);
+    }
+
+    const findNextMatchingItemLeft = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+        if (col === 0) {
+            return matchingItems;
+        }
+        const item = matrix[row][col];
+        if (item?.color !== color) {
+            return matchingItems;
+        }
+        matchingItems.push(item);
+        return findNextMatchingItemLeft(row, col - 1, color, matchingItems);
+    }
+
+    const findNextMatchingItemRight = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+        if (col === lastCol) {
+            return matchingItems;
+        }
+        const item = matrix[row][col];
+        if (item?.color !== color) {
+            return matchingItems;
+        }
+        matchingItems.push(item);
+        return findNextMatchingItemRight(row, col + 1, color, matchingItems);
+    }
+
+    const matchCurrentColorVertical = () => {
+        const itemInMatrix = matrix[currentRow][currentCol];
+        if (!itemInMatrix) {
+            return [];
+        }
+        const {color} = itemInMatrix;
+        const matchingItems: MatrixItem[] = [itemInMatrix];
+        findNextMatchingItemDown(currentRow + 1, currentCol, color, matchingItems);
+        findNextMatchingItemUp(currentRow - 1, currentCol, color, matchingItems);
+
+        return matchingItems;
+    }
+
+    const matchCurrentColorHorizontal = () => {
+        const itemInMatrix = matrix[currentRow][currentCol];
+        if (!itemInMatrix) {
+            return [];
+        }
+        const {color} = itemInMatrix;
+        const matchingItems: MatrixItem[] = [itemInMatrix];
+        findNextMatchingItemLeft(currentRow, currentCol - 1, color, matchingItems);
+        findNextMatchingItemRight(currentRow, currentCol + 1, color, matchingItems);
+
+        return matchingItems;
+    }
+
+    const matchDerivedColorHorizontal = () => {
+        const itemInMatrix = matrix[derivedRow][derivedCol];
+        if (!itemInMatrix) {
+            return [];
+        }
+        const {color} = itemInMatrix;
+        const matchingItems: MatrixItem[] = [itemInMatrix];
+        findNextMatchingItemLeft(derivedRow, derivedCol - 1, color, matchingItems);
+        findNextMatchingItemRight(derivedRow, derivedCol + 1, color, matchingItems);
+
+        return matchingItems;
+    }
+
+    const matchDerivedColorVertical = () => {
+        const itemInMatrix = matrix[derivedRow][derivedCol];
+        if (!itemInMatrix) {
+            return [];
+        }
+        const {color} = itemInMatrix;
+        const matchingItems: MatrixItem[] = [itemInMatrix];
+        findNextMatchingItemDown(derivedRow + 1, derivedCol, color, matchingItems);
+        findNextMatchingItemUp(derivedRow - 1, derivedCol, color, matchingItems);
+
+        return matchingItems;
+    }
+
+    const clearItems = (matchingItems: MatrixItem[]) => {
+        if (matchingItems.length < 4) {
+            return;
+        }
+
+        const pillsToRemove: Record<string, MatrixItem> = {};
+        const virusesToRemove: Record<string, MatrixItem> = {};
+
+        matchingItems.forEach((item => {
+            matrix[item.row][item.column] = null;
+            if (item.type === 'virus') {
+                virusesToRemove[item.id] = item;
+            }
+            if (item.type === 'pill') {
+                pillsToRemove[item.id] = item
+            }
+        }))
+
+        previousPills = previousPills.filter((pill) => !pillsToRemove[pill.id]);
+        viruses = viruses.filter((virus) => !virusesToRemove[virus.id])
     }
 
     const checkHorizontal = () => {
-        const itemInMatrix = matrix[currentRow][currentCol];
-        if (!itemInMatrix) return;
-        const currentColor = itemInMatrix.color;
+        // TODO: debug horizontal matcher
+        const matchingCurrentColorVertical = matchCurrentColorVertical()
+        const matchingDerivedColorVertical = matchDerivedColorVertical();
 
-        const surroundingItems: MatrixItem[] = [itemInMatrix];
+        const matchingCurrentColorHorizontal = matchCurrentColorHorizontal();
+        const matchingDerivedColorHorizontal = matchDerivedColorHorizontal();
 
-        const rowsToEnd = matrix.length - 1 - currentRow;
-        const previousRows = matrix.length - rowsToEnd - 1;
-
-        for (let i = 1; i < rowsToEnd; i++) {
-            if (matrix[currentRow + i][currentCol]?.color === currentColor) {
-                surroundingItems.push(matrix[currentRow + i][currentCol]!);
-            } else break;
-        }
-
-        // for (let i = 1; i < previousRows; i--) {
-        //     console.log(matrix[currentRow - i][currentColumn])
-        //     if (matrix[currentRow - i][currentColumn]?.color === currentColor) {
-        //         surroundingItems.push(matrix[currentRow - i][currentColumn]!);
-        //         console.log(surroundingItems);
-        //     } else break;
-        // }
-
-        let pillsToRemove: Record<string, MatrixItem> = {};
-        let virusesToRemove: Record<string, MatrixItem> = {};
-
-        if (surroundingItems.length >= 4) {
-            surroundingItems.forEach((item => {
-                matrix[item.row][item.column] = null;
-                if (item.type === 'virus') {
-                    virusesToRemove[item.id] = item;
-                }
-                if (item.type === 'pill') {
-                    pillsToRemove[item.id] = item
-                }
-            }))
-
-            previousPills = previousPills.filter((pill) => !pillsToRemove[pill.id]);
-            viruses = viruses.filter((virus) => !virusesToRemove[virus.id])
-        }
+        clearItems(matchingCurrentColorVertical);
+        clearItems(matchingDerivedColorVertical);
+        clearItems(matchingCurrentColorHorizontal);
+        clearItems(matchingDerivedColorHorizontal);
     }
 
     const pillEnded = () => {
