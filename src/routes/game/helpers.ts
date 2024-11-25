@@ -1,4 +1,4 @@
-import type {PillPosition, Rotation} from "$lib/game/types";
+import type {PillPosition, Rotation} from "./types";
 
 export const derivePillPosition = (rotation: Rotation) => {
     if (rotation === 90) {
