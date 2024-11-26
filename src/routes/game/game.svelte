@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type {Color, Matrix, MatrixItem, Pill, Rotation, Virus} from './types'
+    import type {Color, Matrix, MatrixItem, Pill, Rotation, Ghost} from './types'
     import {pillColors} from './game.state.svelte.js'
     import Pills from './pills.svelte';
-    import Viruses from './viruses.svelte';
+    import Ghosts from './ghosts.svelte';
     import CurrentPill from './currentPill.svelte';
     import Board from './board.svelte';
     import {colors, pillBorders} from "./utils";
@@ -48,10 +48,10 @@
         return currentCol;
     });
 
-    let viruses: Virus[] = $state([
-        {type: 'virus', color: colors.yellow, id: 'virus-1', row: 13, column: 4},
-        {type: 'virus', color: colors.pink, id: 'virus-2', row: 7, column: 6},
-        {type: 'virus', color: colors.blue, id: 'virus-3', row: 9, column: 2}
+    let ghosts: Ghost[] = $state([
+        {type: 'ghost', color: colors.yellow, id: 'ghost-1', row: 13, column: 4},
+        {type: 'ghost', color: colors.pink, id: 'ghost-2', row: 7, column: 6},
+        {type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 2}
     ]);
 
     let previousPills: Pill[] = $state([]);
@@ -73,7 +73,7 @@
     });
 
     $effect(() => {
-        viruses.forEach(({row, column, id, color}) => {
+        ghosts.forEach(({row, column, id, color}) => {
             matrix[row][column] = {type: 'virus', id, color, row, column};
         })
     });
@@ -214,12 +214,12 @@
         }
 
         const pillsToRemove: Record<string, MatrixItem> = {};
-        const virusesToRemove: Record<string, MatrixItem> = {};
+        const ghostsToRemove: Record<string, MatrixItem> = {};
 
         matchingItems.forEach((item => {
             matrix[item.row][item.column] = null;
-            if (item.type === 'virus') {
-                virusesToRemove[item.id] = item;
+            if (item.type === 'ghost') {
+                ghostsToRemove[item.id] = item;
             }
             if (item.type === 'pill') {
                 pillsToRemove[item.id] = item
@@ -227,7 +227,7 @@
         }))
 
         previousPills = previousPills.filter((pill) => !pillsToRemove[pill.id]);
-        viruses = viruses.filter((virus) => !virusesToRemove[virus.id])
+        ghosts = ghosts.filter((virus) => !ghostsToRemove[virus.id])
     }
 
     const checkHorizontal = () => {
@@ -285,7 +285,7 @@
         <Board {matrix} />
         <CurrentPill bind:this={currentPill} {initialTop} {initialLeft} bind:rotation bind:currentRow bind:currentCol
                      {derivedRow} {derivedCol} {matrix} {lastRow} {lastCol} />
-        <Viruses {offset} {viruses}/>
+        <Ghosts {offset} {ghosts}/>
         <Pills {offset} pills={previousPills}/>
     </div>
 </div>

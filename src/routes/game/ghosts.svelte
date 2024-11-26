@@ -1,20 +1,20 @@
 <script lang="ts">
-    const {offset, viruses} = $props();
+    const {offset, ghosts} = $props();
 </script>
 
 <div class="absolute">
-    {#each viruses as virus}
+    {#each ghosts as ghost}
         <div
-                class="virus"
-                style:background-color={virus.color}
-                style:top={`${virus.row * offset}px`}
-                style:left={`${virus.column * offset}px`}
+                class="ghost"
+                style:background-color={ghost.color}
+                style:top={`${ghost.row * offset}px`}
+                style:left={`${ghost.column * offset}px`}
         ></div>
     {/each}
 </div>
 
 <style>
-    .virus {
+    .ghost {
         border: 4px black solid;
         width: 40px;
         height: 40px;

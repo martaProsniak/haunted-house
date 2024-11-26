@@ -5,15 +5,15 @@ export type PillPosition = 'horizontal' | 'vertical' | 'verticalFlipped';
 export type Color = 'hotpink' | 'yellow' | 'dodgerblue';
 
 export interface MatrixItem {
-    type: 'pill' | 'virus',
+    type: 'pill' | 'ghost',
     color: Color,
     id: string,
     row: number,
     column: number
 }
 
-export interface Virus extends MatrixItem {
-    type: 'virus',
+export interface Ghost extends MatrixItem {
+    type: 'ghost',
 }
 
 export interface Pill extends MatrixItem {
