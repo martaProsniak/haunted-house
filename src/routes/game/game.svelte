@@ -133,7 +133,7 @@
     }
 
     const findNextMatchingItemLeft = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
-        if (col === 0) {
+        if (col < 0) {
             return matchingItems;
         }
         const item = matrix[row][col];
