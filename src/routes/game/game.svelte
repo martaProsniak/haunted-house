@@ -7,13 +7,14 @@
     import Board from './board.svelte';
     import {colors, pillBorders} from "./utils";
 
-    const initialTop = 4;
-    const initialLeft = 136;
     const offset = 44;
     const initialRow = 0;
-    const initialCol = 3;
+    const initialCol = 7;
+    const gap = 4;
+    const initialTop = gap;
+    const initialLeft = gap + (initialCol * offset);
     const rowsCount = 16;
-    const colsCount = 8;
+    const colsCount = 16;
     const lastRow = rowsCount - 1;
     const lastCol = colsCount - 1;
     let currentPill: CurrentPill;
@@ -49,32 +50,32 @@
     });
 
     let ghosts: Ghost[] = $state([
-        {type: 'ghost', color: colors.yellow, id: 'ghost-1', row: 13, column: 4},
+        {type: 'ghost', color: colors.yellow, id: 'ghost-1', row: 13, column: 10},
         {type: 'ghost', color: colors.pink, id: 'ghost-2', row: 7, column: 6},
-        {type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 2}
+        {type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 12}
     ]);
 
     let previousPills: Pill[] = $state([]);
 
     $effect(() => {
         console.log('Effect')
-        const interval = setInterval(() => {
-            if (matrix[initialRow + 1][initialCol]) {
-                clearInterval(interval);
-            }
-
-            moveDown();
-
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-        };
+        // const interval = setInterval(() => {
+        //     if (matrix[initialRow + 1][initialCol]) {
+        //         clearInterval(interval);
+        //     }
+        //
+        //     moveDown();
+        //
+        // }, 1000);
+        //
+        // return () => {
+        //     clearInterval(interval);
+        // };
     });
 
     $effect(() => {
         ghosts.forEach(({row, column, id, color}) => {
-            matrix[row][column] = {type: 'virus', id, color, row, column};
+            matrix[row][column] = {type: 'ghost', id, color, row, column};
         })
     });
 
@@ -231,7 +232,6 @@
     }
 
     const checkHorizontal = () => {
-        // TODO: debug horizontal matcher
         const matchingCurrentColorVertical = matchCurrentColorVertical()
         const matchingDerivedColorVertical = matchDerivedColorVertical();
 
