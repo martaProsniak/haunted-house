@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type {Color, Matrix, MatrixItem, Pill, Rotation, Ghost} from './types'
-    import {pillColors} from './game.state.svelte.js'
+    import type {Color, MatrixItem, Pill, Rotation, Ghost} from './types'
+    import {pillColors, matrix, rowsCount, colsCount, layers} from './game.state.svelte.js'
     import Pills from './pills.svelte';
     import Ghosts from './ghosts.svelte';
     import CurrentPill from './currentPill.svelte';
@@ -13,15 +13,10 @@
     const gap = 4;
     const initialTop = gap;
     const initialLeft = gap + (initialCol * offset);
-    const rowsCount = 16;
-    const colsCount = 16;
+
     const lastRow = rowsCount - 1;
     const lastCol = colsCount - 1;
     let currentPill: CurrentPill;
-
-    const matrix: Matrix = $state(
-        Array.from(Array(rowsCount).keys()).map(() => Array.from(Array(colsCount).keys()).map(() => null))
-    );
 
     let currentRow = $state(initialRow);
     let currentCol = $state(initialCol);
@@ -49,32 +44,32 @@
         return currentCol;
     });
 
-    let ghosts: Ghost[] = $state([
-        {type: 'ghost', color: colors.yellow, id: 'ghost-1', row: 13, column: 10},
-        {type: 'ghost', color: colors.pink, id: 'ghost-2', row: 7, column: 6},
-        {type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 12}
-    ]);
-
-    let previousPills: Pill[] = $state([]);
+    // let ghosts: Ghost[] = $state([
+    //     {type: 'ghost', color: colors.yellow, id: 'ghost-1', row: 13, column: 10},
+    //     {type: 'ghost', color: colors.pink, id: 'ghost-2', row: 7, column: 6},
+    //     {type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 12}
+    // ]);
+    //
+    // let previousPills: Pill[] = $state([]);
 
     $effect(() => {
         console.log('Effect')
-        // const interval = setInterval(() => {
-        //     if (matrix[initialRow + 1][initialCol]) {
-        //         clearInterval(interval);
-        //     }
-        //
-        //     moveDown();
-        //
-        // }, 1000);
-        //
-        // return () => {
-        //     clearInterval(interval);
-        // };
+        const interval = setInterval(() => {
+            if (matrix[initialRow + 1][initialCol]) {
+                clearInterval(interval);
+            }
+
+            moveDown();
+
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
     });
 
     $effect(() => {
-        ghosts.forEach(({row, column, id, color}) => {
+        layers.ghosts.forEach(({row, column, id, color}) => {
             matrix[row][column] = {type: 'ghost', id, color, row, column};
         })
     });
@@ -102,9 +97,9 @@
             column: derivedCol,
             border: pillBorders[rotation].derived
         };
-        previousPills.push(currentPill, derivedPill);
+        layers.previousPills.push(currentPill, derivedPill);
 
-        previousPills.forEach(({row, column, id, color}) => {
+        layers.previousPills.forEach(({row, column, id, color}) => {
             matrix[row][column] = {type: 'pill', id, color, row, column};
         })
     }
@@ -227,8 +222,8 @@
             }
         }))
 
-        previousPills = previousPills.filter((pill) => !pillsToRemove[pill.id]);
-        ghosts = ghosts.filter((virus) => !ghostsToRemove[virus.id])
+        layers.previousPills = layers.previousPills.filter((pill) => !pillsToRemove[pill.id]);
+        layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id])
     }
 
     const checkHorizontal = () => {
@@ -282,11 +277,11 @@
 
 <div class="container">
     <div class="w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative">
-        <Board {matrix} />
+        <Board />
         <CurrentPill bind:this={currentPill} {initialTop} {initialLeft} bind:rotation bind:currentRow bind:currentCol
-                     {derivedRow} {derivedCol} {matrix} {lastRow} {lastCol} />
-        <Ghosts {offset} {ghosts}/>
-        <Pills {offset} pills={previousPills}/>
+                     {derivedRow} {derivedCol} {lastRow} {lastCol} />
+        <Ghosts {offset}/>
+        <Pills {offset}/>
     </div>
 </div>
 

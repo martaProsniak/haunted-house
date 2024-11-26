@@ -1,6 +1,6 @@
 <script lang="ts">
     import {borderKind, getRandomColor} from "./utils";
-    import {pillColors} from "./game.state.svelte.js";
+    import {pillColors, matrix} from "./game.state.svelte.js";
     import type {Matrix, Rotation} from "./types";
 
     interface Props {
@@ -11,7 +11,6 @@
         currentCol: number,
         derivedRow: number,
         derivedCol: number,
-        matrix: Matrix,
         lastRow: number,
         lastCol: number
     }
@@ -25,7 +24,6 @@
         currentCol = $bindable(),
         derivedRow,
         derivedCol,
-        matrix,
         lastRow,
         lastCol
     }: Props = $props();

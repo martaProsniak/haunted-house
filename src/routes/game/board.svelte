@@ -1,5 +1,5 @@
 <script lang="ts">
-    const {matrix} = $props();
+    import {matrix} from "./game.state.svelte";
 </script>
 
 {#each matrix as row, rowIndex}
