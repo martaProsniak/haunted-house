@@ -52,19 +52,63 @@
     //
     // let previousPills: Pill[] = $state([]);
 
+    const moveGhosts = () => {
+        const ghostsToRemove: Record<string, Ghost> = {};
+        layers.ghosts.forEach(ghost => {
+            console.log(ghost);
+            const {row, column, id} = ghost;
+
+            // console.log(currentRow, currentCol);
+
+            // debugger;
+
+            if (row === initialRow) {
+                ghostsToRemove[id] = ghost;
+                return;
+            }
+
+            if (row - 1 === currentRow || (rotation === 90 && row -1 === derivedRow)) {
+                return;
+            }
+
+            if (!matrix[row - 1][column]) {
+                // matrix[row - 1][column] = ghost;
+                ghost.row = row - 1;
+                matrix[row][column] = null
+            } else if (!matrix[row][column + 1]) {
+                ghost.column = column + 1;
+                matrix[row][column + 1] = null
+            } else if (!matrix[row][column - 1]) {
+                ghost.column = column - 1;
+                matrix[row][column - 1] = null
+            } else {
+                console.log('Cannot move', ghost.color)
+            }
+
+        })
+    }
+
     $effect(() => {
         console.log('Effect')
-        const interval = setInterval(() => {
+        const currentPillInterval = setInterval(() => {
             if (matrix[initialRow + 1][initialCol]) {
-                clearInterval(interval);
+                clearInterval(currentPillInterval);
+                clearInterval(ghostsInterval);
             }
 
             moveDown();
 
+
         }, 1000);
 
+        const ghostsInterval = setInterval(() => {
+            moveGhosts()
+
+        }, 5000);
+
         return () => {
-            clearInterval(interval);
+            clearInterval(currentPillInterval);
+            clearInterval(ghostsInterval);
         };
     });
 
