@@ -1,16 +1,14 @@
 <script lang="ts">
-    import {matrix, initialRow, initialCol, lastCol, currentRow, currentCol, rotation} from "./game.state.svelte";
+    import {matrix, initialRow, initialCol, lastCol, currentRow, currentCol, rotation, derivedRow, derivedCol} from "./game.state.svelte";
     import {onMount} from "svelte";
     import type {Ghost} from "./types";
 
     interface Props {
         ghost: Ghost,
         offset: number,
-        derivedRow: number,
-        derivedCol: number
     }
 
-    const {ghost, offset, derivedRow, derivedCol}: Props = $props();
+    const {ghost, offset}: Props = $props();
     let interval: ReturnType<typeof setInterval>;
     let speed = $derived.by(() => {
         const {color} = ghost;
@@ -19,7 +17,7 @@
             return 3000;
         }
         if (color === 'blue') {
-            return 2000;
+            return 6000;
         }
         if (color === 'green') {
             return 5000;
@@ -28,24 +26,33 @@
     })
 
     const moveUp = () => {
+        console.log('Move up!', $state.snapshot(ghost));
         const {row, column} = ghost;
 
         ghost.row = row - 1;
         matrix[row][column] = null
+        $state.snapshot(matrix);
+        // debugger;
     }
 
     const moveLeft = () => {
+        console.log('Move left!', $state.snapshot(ghost));
         const {row, column} = ghost;
 
         ghost.column = column - 1;
         matrix[row][column] = null
+        $state.snapshot(matrix);
+        // debugger;
     }
 
     const moveRight = () => {
+        console.log('Move right!', $state.snapshot(ghost));
         const {row, column} = ghost;
 
         ghost.column = column + 1;
         matrix[row][column] = null
+        $state.snapshot(matrix);
+        // debugger;
 
     }
 
@@ -64,10 +71,11 @@
         const {row, column} = ghost;
 
         if (ghost.row === initialRow) {
+            console.log('reached top', ghost.id)
             clearInterval(interval);
         }
 
-        if (row - 1 === $currentRow || ($rotation === 90 && row - 1 === derivedRow)) {
+        if (row - 1 === $currentRow || ($rotation === 90 && row - 1 === $derivedRow)) {
             return;
         }
 

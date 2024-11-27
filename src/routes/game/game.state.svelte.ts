@@ -1,5 +1,5 @@
 
-import {type Writable, writable} from "svelte/store";
+import {type Writable, writable, derived, type Readable} from "svelte/store";
 import {colors, getRandomColor} from './utils';
 import type {Ghost, Matrix, Plasma, Rotation} from "./types";
 
@@ -23,9 +23,32 @@ export const matrix: Matrix = $state(
     Array.from(Array(rowsCount).keys()).map(() => Array.from(Array(colsCount).keys()).map(() => null))
 );
 
-export const currentRow = writable(initialRow);
-export const currentCol = writable(initialCol);
+export const currentRow: Writable<number> = writable(initialRow);
+export const currentCol: Writable<number> = writable(initialCol);
 export const rotation: Writable<Rotation> = writable(0);
+
+export const derivedRow: Readable<number> = derived([rotation, currentRow], ([$rotation, $currentRow]) => {
+    if ($rotation === 90) {
+        return $currentRow + 1;
+    }
+    if ($rotation === 270) {
+        return $currentRow - 1;
+    }
+    return $currentRow;
+});
+
+export const derivedCol: Readable<number> = derived([rotation, currentCol], ([$rotation, $currentCol]) => {
+    if ($rotation === 0) {
+        return $currentCol + 1;
+    }
+
+    if ($rotation === 180) {
+        return $currentCol - 1
+    }
+
+    return $currentCol;
+});
+
 
 const initialGhosts: Ghost[] = [
     {type: 'ghost', color: colors.green, id: 'ghost-1', row: 13, column: 10, imageUrl: greenGhost},

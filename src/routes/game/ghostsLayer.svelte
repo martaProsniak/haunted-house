@@ -1,11 +1,11 @@
 <script lang="ts">
     import {layers} from "./game.state.svelte";
     import Ghost from './ghost.svelte'
-    const {offset, derivedRow, derivedCol} = $props();
+    const {offset} = $props();
 </script>
 
 <div class="absolute">
     {#each layers.ghosts as ghost}
-        <Ghost {ghost} {offset} {derivedCol} {derivedRow} />
+        <Ghost {ghost} {offset} />
     {/each}
 </div>

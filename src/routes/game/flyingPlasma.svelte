@@ -1,12 +1,10 @@
 <script lang="ts">
     import {getRandomColor, plasmaImages} from "./utils";
-    import {flyingPlasmaColors, matrix, currentRow, currentCol, rotation} from "./game.state.svelte.js";
+    import {flyingPlasmaColors, matrix, currentRow, currentCol, rotation, derivedRow, derivedCol} from "./game.state.svelte.js";
 
     interface Props {
         initialTop: number,
         initialLeft: number,
-        derivedRow: number,
-        derivedCol: number,
         lastRow: number,
         lastCol: number
     }
@@ -15,8 +13,6 @@
     let {
         initialTop,
         initialLeft,
-        derivedRow,
-        derivedCol,
         lastRow,
         lastCol
     }: Props = $props();
@@ -25,15 +21,15 @@
     let top = $derived(initialTop + (offset * $currentRow) - topCorrection);
 
     const itemBelowHelper = {
-        0: () => matrix[$currentRow + 1][$currentCol] || matrix[derivedRow + 1][derivedCol],
-        90: () => matrix[derivedRow + 1][derivedCol],
-        180: () => matrix[$currentRow + 1][$currentCol] || matrix[derivedRow + 1][derivedCol],
+        0: () => matrix[$currentRow + 1][$currentCol] || matrix[$derivedRow + 1][$derivedCol],
+        90: () => matrix[$derivedRow + 1][$derivedCol],
+        180: () => matrix[$currentRow + 1][$currentCol] || matrix[$derivedRow + 1][$derivedCol],
         270: () => matrix[$currentRow + 1][$currentCol]
     }
 
     const isLastRow = () => {
         if ($rotation === 90) {
-            return (derivedRow === lastRow)
+            return ($derivedRow === lastRow)
         }
         return $currentRow === lastRow;
     };
@@ -83,21 +79,21 @@
 
     const isLeftCollision = {
         0: () => matrix[$currentRow][$currentCol - 1],
-        90: () => matrix[$currentRow][$currentCol - 1] || matrix[derivedRow][derivedCol - 1],
-        180: () => matrix[derivedRow][derivedCol - 1],
-        270: () => matrix[$currentRow][$currentCol - 1] || matrix[derivedRow][derivedCol - 1],
+        90: () => matrix[$currentRow][$currentCol - 1] || matrix[$derivedRow][$derivedCol - 1],
+        180: () => matrix[$derivedRow][$derivedCol - 1],
+        270: () => matrix[$currentRow][$currentCol - 1] || matrix[$derivedRow][$derivedCol - 1],
     }
 
     const isRightCollision = {
-        0: () => matrix[$currentRow][derivedCol + 1],
-        90: () => matrix[$currentRow][$currentCol + 1] || matrix[derivedRow][derivedCol + 1],
-        180: () => matrix[derivedRow][$currentCol + 1],
-        270: () => matrix[$currentRow][$currentCol + 1] || matrix[derivedRow][derivedCol + 1],
+        0: () => matrix[$currentRow][$derivedCol + 1],
+        90: () => matrix[$currentRow][$currentCol + 1] || matrix[$derivedRow][$derivedCol + 1],
+        180: () => matrix[$derivedRow][$currentCol + 1],
+        270: () => matrix[$currentRow][$currentCol + 1] || matrix[$derivedRow][$derivedCol + 1],
     }
 
     const isRotateCollision = {
         0: () => false,
-        90: () => matrix[derivedRow][derivedCol + 1],
+        90: () => matrix[$derivedRow][$derivedCol + 1],
         180: () => false,
         270: () => matrix[$currentRow][$currentCol + 1],
     }
@@ -107,7 +103,7 @@
     }
 
     export const moveLeft = () => {
-        if ($currentCol === 0 || derivedCol === 0) {
+        if ($currentCol === 0 || $derivedCol === 0) {
             return;
         }
         if (isLeftCollision[$rotation]()) {
@@ -119,7 +115,7 @@
     }
 
     export const moveRight = () => {
-        if ($currentCol === lastCol || derivedCol === lastCol) {
+        if ($currentCol === lastCol || $derivedCol === lastCol) {
             return;
         }
         if (isRightCollision[$rotation]()) {
@@ -163,7 +159,7 @@
         M {$currentRow} {$currentCol}</div>
     <div class="pill-part-break"></div>
     <div class="pill-part-med" style:background-image={`url("${plasmaImages[flyingPlasmaColors.derived]}")`}>
-        D {derivedRow} {derivedCol}</div>
+        D {$derivedRow} {$derivedCol}</div>
 </div>
 
 <style>

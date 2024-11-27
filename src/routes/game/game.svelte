@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {Color, MatrixItem, Plasma} from './types'
-    import {flyingPlasmaColors, matrix, layers, initialCol, initialRow, lastCol, lastRow, currentCol, currentRow, rotation} from './game.state.svelte.js'
+    import { v4 as uuidv4 } from "uuid";
+    import {flyingPlasmaColors, matrix, layers, initialCol, initialRow, lastCol, lastRow, currentCol, currentRow, derivedRow, derivedCol} from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
     import FlyingPlasma from './flyingPlasma.svelte';
@@ -14,28 +15,6 @@
 
     let currentPlasma: FlyingPlasma;
 
-    let derivedRow = $derived.by(() => {
-        if ($rotation === 90) {
-            return $currentRow + 1;
-        }
-        if ($rotation === 270) {
-            return $currentRow - 1;
-        }
-        return $currentRow;
-    });
-
-    let derivedCol = $derived.by(() => {
-        if ($rotation === 0) {
-            return $currentCol + 1;
-        }
-
-        if ($rotation === 180) {
-            return $currentCol - 1
-        }
-
-        return $currentCol;
-    });
-
     $effect(() => {
         console.log('Effect')
         const currentPlasmaInterval = setInterval(() => {
@@ -45,18 +24,7 @@
 
             moveDown();
 
-
         }, 1000);
-        //
-        // const ghostsInterval = setInterval(() => {
-        //     moveGhosts()
-        //
-        // }, 5000);
-        //
-        // return () => {
-        //     clearInterval(currentPlasmaInterval);
-        //     clearInterval(ghostsInterval);
-        // };
     });
 
     $effect(() => {
@@ -74,7 +42,7 @@
     const updatePreviousPlasma = () => {
         const currentPlasma: Plasma = {
             type: 'plasma',
-            id: `plasma-${$currentRow}-${$currentCol}`,
+            id: uuidv4(),
             color: flyingPlasmaColors.current,
             row: $currentRow,
             column: $currentCol,
@@ -82,10 +50,10 @@
         };
         const derivedPlasma: Plasma = {
             type: 'plasma',
-            id: `plasma-${derivedRow}-${derivedCol}`,
+            id: uuidv4(),
             color: flyingPlasmaColors.derived,
-            row: derivedRow,
-            column: derivedCol,
+            row: $derivedRow,
+            column: $derivedCol,
             imageUrl: plasmaImages[flyingPlasmaColors.derived]
         };
         layers.previousPlasma.push(currentPlasma, derivedPlasma);
@@ -170,27 +138,27 @@
     }
 
     const matchDerivedColorHorizontal = () => {
-        const itemInMatrix = matrix[derivedRow][derivedCol];
+        const itemInMatrix = matrix[$derivedRow][$derivedCol];
         if (!itemInMatrix) {
             return [];
         }
         const {color} = itemInMatrix;
         const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemLeft(derivedRow, derivedCol - 1, color, matchingItems);
-        findNextMatchingItemRight(derivedRow, derivedCol + 1, color, matchingItems);
+        findNextMatchingItemLeft($derivedRow, $derivedCol - 1, color, matchingItems);
+        findNextMatchingItemRight($derivedRow, $derivedCol + 1, color, matchingItems);
 
         return matchingItems;
     }
 
     const matchDerivedColorVertical = () => {
-        const itemInMatrix = matrix[derivedRow][derivedCol];
+        const itemInMatrix = matrix[$derivedRow][$derivedCol];
         if (!itemInMatrix) {
             return [];
         }
         const {color} = itemInMatrix;
         const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemDown(derivedRow + 1, derivedCol, color, matchingItems);
-        findNextMatchingItemUp(derivedRow - 1, derivedCol, color, matchingItems);
+        findNextMatchingItemDown($derivedRow + 1, $derivedCol, color, matchingItems);
+        findNextMatchingItemUp($derivedRow - 1, $derivedCol, color, matchingItems);
 
         return matchingItems;
     }
@@ -269,9 +237,8 @@
 <div class="container">
     <div class="w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative">
         <Board />
-        <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft}
-                     {derivedRow} {derivedCol} {lastRow} {lastCol} />
-        <GhostsLayer {offset} {derivedCol} {derivedRow} />
+        <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
+        <GhostsLayer {offset} />
         <PlasmaLayer {offset}/>
     </div>
 </div>
