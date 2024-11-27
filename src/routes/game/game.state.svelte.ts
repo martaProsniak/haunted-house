@@ -2,6 +2,10 @@
 import {colors, getRandomColor} from './utils';
 import type {Ghost, Matrix, Pill} from "./types";
 
+import blueGhost from '$lib/assets/ghost-blue.png'
+import pinkGhost from '$lib/assets/ghost-pink.png'
+import greenGhost from '$lib/assets/ghost-green.png'
+
 export const pillColors = $state({
     current: getRandomColor(),
     derived: getRandomColor(),
@@ -15,9 +19,9 @@ export const matrix: Matrix = $state(
 );
 
 const initialGhosts: Ghost[] = [
-    {type: 'ghost', color: colors.yellow, id: 'ghost-1', row: 13, column: 10},
-    {type: 'ghost', color: colors.pink, id: 'ghost-2', row: 7, column: 6},
-    {type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 12}
+    {type: 'ghost', color: colors.green, id: 'ghost-1', row: 13, column: 10, imageUrl: greenGhost},
+    {type: 'ghost', color: colors.pink, id: 'ghost-2', row: 7, column: 6, imageUrl: pinkGhost},
+    {type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 12, imageUrl: blueGhost}
 ]
 
 interface GameLayers {

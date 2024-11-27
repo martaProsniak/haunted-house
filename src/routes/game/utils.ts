@@ -1,9 +1,9 @@
 import type { Color } from './types';
 
 export const colors: Record<string, Color> = {
-	pink: 'hotpink',
-	blue: 'dodgerblue',
-	yellow: 'yellow'
+	pink: 'pink',
+	blue: 'blue',
+	green: 'green'
 };
 
 export const borderKind = {

@@ -5,7 +5,7 @@
 {#each matrix as row, rowIndex}
     <div class="w-fit flex flex-row flex-nowrap gap-1">
         {#each row as cell, cellIndex}
-            <div class="cell">{rowIndex}, {cellIndex}</div>
+            <div class="cell"></div>
         {/each}
     </div>
 {/each}

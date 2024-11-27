@@ -72,7 +72,6 @@
             }
 
             if (!matrix[row - 1][column]) {
-                // matrix[row - 1][column] = ghost;
                 ghost.row = row - 1;
                 matrix[row][column] = null
             } else if (!matrix[row][column + 1]) {
