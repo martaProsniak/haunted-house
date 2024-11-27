@@ -1,6 +1,7 @@
 
+import {type Writable, writable} from "svelte/store";
 import {colors, getRandomColor} from './utils';
-import type {Ghost, Matrix, Pill} from "./types";
+import type {Ghost, Matrix, Pill, Rotation} from "./types";
 
 import blueGhost from '$lib/assets/ghost-blue.png'
 import pinkGhost from '$lib/assets/ghost-pink.png'
@@ -21,6 +22,10 @@ export const lastCol = colsCount - 1;
 export const matrix: Matrix = $state(
     Array.from(Array(rowsCount).keys()).map(() => Array.from(Array(colsCount).keys()).map(() => null))
 );
+
+export const currentRow = writable(initialRow);
+export const currentCol = writable(initialCol);
+export const rotation: Writable<Rotation> = writable(0);
 
 const initialGhosts: Ghost[] = [
     {type: 'ghost', color: colors.green, id: 'ghost-1', row: 13, column: 10, imageUrl: greenGhost},

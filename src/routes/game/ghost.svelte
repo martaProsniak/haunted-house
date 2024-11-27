@@ -1,9 +1,11 @@
 <script lang="ts">
-    import {matrix, initialRow, initialCol, lastCol} from "./game.state.svelte";
-    import {onMount, unmount} from "svelte";
+    import {matrix, initialRow, initialCol, lastCol, currentRow, currentCol, rotation} from "./game.state.svelte";
+    import {onMount} from "svelte";
     import type {Ghost} from "./types";
 
-    const {ghost, offset}: {ghost: Ghost, offset: number} = $props();
+    interface Props {ghost: Ghost, offset: number, derivedRow: number, derivedCol: number}
+
+    const {ghost, offset, derivedRow, derivedCol}: Props = $props();
     let interval: ReturnType<typeof setInterval>;
     let speed = $derived.by(() => {
         const {color} = ghost;
@@ -41,11 +43,26 @@
         matrix[row][column + 1] = null
     }
 
+    const canMove = () => {
+        const {row, column, color} = ghost;
+
+        const topItem = matrix[row - 1][column];
+        const bottom = matrix[row + 1][column];
+        const leftItem = matrix[row][column - 1];
+        const rightItem = matrix[row - 1][column + 1];
+
+
+    }
+
     export const move = () => {
         const {row, column} = ghost;
 
         if (ghost.row === initialRow) {
             clearInterval(interval);
+        }
+
+        if (row - 1 === $currentRow || ($rotation === 90 && row - 1 === derivedRow)) {
+            return;
         }
 
         if (!matrix[row - 1][column]) {

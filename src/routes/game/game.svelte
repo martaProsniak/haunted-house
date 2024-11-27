@@ -1,6 +1,6 @@
 <script lang="ts">
     import type {Color, MatrixItem, Pill, Rotation, Ghost} from './types'
-    import {pillColors, matrix, layers, initialCol, initialRow, lastCol, lastRow} from './game.state.svelte.js'
+    import {pillColors, matrix, layers, initialCol, initialRow, lastCol, lastRow, currentCol, currentRow, rotation} from './game.state.svelte.js'
     import Pills from './pills.svelte';
     import Ghosts from './ghosts.svelte';
     import CurrentPill from './currentPill.svelte';
@@ -14,87 +14,39 @@
 
     let currentPill: CurrentPill;
 
-    let currentRow = $state(initialRow);
-    let currentCol = $state(initialCol);
-    let rotation: Rotation = $state(0);
-
     let derivedRow = $derived.by(() => {
-        if (rotation === 90) {
-            return currentRow + 1;
+        if ($rotation === 90) {
+            return $currentRow + 1;
         }
-        if (rotation === 270) {
-            return currentRow - 1;
+        if ($rotation === 270) {
+            return $currentRow - 1;
         }
-        return currentRow;
+        return $currentRow;
     });
 
     let derivedCol = $derived.by(() => {
-        if (rotation === 0) {
-            return currentCol + 1;
+        if ($rotation === 0) {
+            return $currentCol + 1;
         }
 
-        if (rotation === 180) {
-            return currentCol - 1
+        if ($rotation === 180) {
+            return $currentCol - 1
         }
 
-        return currentCol;
+        return $currentCol;
     });
-
-    // let ghosts: Ghost[] = $state([
-    //     {type: 'ghost', color: colors.yellow, id: 'ghost-1', row: 13, column: 10},
-    //     {type: 'ghost', color: colors.pink, id: 'ghost-2', row: 7, column: 6},
-    //     {type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 12}
-    // ]);
-    //
-    // let previousPills: Pill[] = $state([]);
-
-    const moveGhosts = () => {
-        const ghostsToRemove: Record<string, Ghost> = {};
-        layers.ghosts.forEach(ghost => {
-            console.log(ghost);
-            const {row, column, id} = ghost;
-
-            // console.log(currentRow, currentCol);
-
-            // debugger;
-
-            if (row === initialRow) {
-                ghostsToRemove[id] = ghost;
-                return;
-            }
-
-            if (row - 1 === currentRow || (rotation === 90 && row -1 === derivedRow)) {
-                return;
-            }
-
-            if (!matrix[row - 1][column]) {
-                ghost.row = row - 1;
-                matrix[row][column] = null
-            } else if (!matrix[row][column + 1]) {
-                ghost.column = column + 1;
-                matrix[row][column + 1] = null
-            } else if (!matrix[row][column - 1]) {
-                ghost.column = column - 1;
-                matrix[row][column - 1] = null
-            } else {
-                console.log('Cannot move', ghost.color)
-            }
-
-        })
-    }
 
     $effect(() => {
         console.log('Effect')
-        // const currentPillInterval = setInterval(() => {
-        //     if (matrix[initialRow + 1][initialCol]) {
-        //         clearInterval(currentPillInterval);
-        //         clearInterval(ghostsInterval);
-        //     }
-        //
-        //     moveDown();
-        //
-        //
-        // }, 1000);
+        const currentPillInterval = setInterval(() => {
+            if (matrix[initialRow + 1][initialCol]) {
+                clearInterval(currentPillInterval);
+            }
+
+            moveDown();
+
+
+        }, 1000);
         //
         // const ghostsInterval = setInterval(() => {
         //     moveGhosts()
@@ -114,19 +66,19 @@
     });
 
     const resetPill = () => {
-        currentRow = initialRow;
-        currentCol = initialCol;
+        $currentRow = initialRow;
+        $currentCol = initialCol;
         currentPill.reset();
     }
 
     const updatePreviousPills = () => {
         const currentPill: Pill = {
             type: 'pill',
-            id: `pill-${currentRow}-${currentCol}`,
+            id: `pill-${$currentRow}-${$currentCol}`,
             color: pillColors.current,
-            row: currentRow,
-            column: currentCol,
-            border: pillBorders[rotation].state
+            row: $currentRow,
+            column: $currentCol,
+            border: pillBorders[$rotation].state
         };
         const derivedPill: Pill = {
             type: 'pill',
@@ -134,7 +86,7 @@
             color: pillColors.derived,
             row: derivedRow,
             column: derivedCol,
-            border: pillBorders[rotation].derived
+            border: pillBorders[$rotation].derived
         };
         layers.previousPills.push(currentPill, derivedPill);
 
@@ -212,27 +164,27 @@
     }
 
     const matchCurrentColorVertical = () => {
-        const itemInMatrix = matrix[currentRow][currentCol];
+        const itemInMatrix = matrix[$currentRow][$currentCol];
         if (!itemInMatrix) {
             return [];
         }
         const {color} = itemInMatrix;
         const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemDown(currentRow + 1, currentCol, color, matchingItems);
-        findNextMatchingItemUp(currentRow - 1, currentCol, color, matchingItems);
+        findNextMatchingItemDown($currentRow + 1, $currentCol, color, matchingItems);
+        findNextMatchingItemUp($currentRow - 1, $currentCol, color, matchingItems);
 
         return matchingItems;
     }
 
     const matchCurrentColorHorizontal = () => {
-        const itemInMatrix = matrix[currentRow][currentCol];
+        const itemInMatrix = matrix[$currentRow][$currentCol];
         if (!itemInMatrix) {
             return [];
         }
         const {color} = itemInMatrix;
         const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemLeft(currentRow, currentCol - 1, color, matchingItems);
-        findNextMatchingItemRight(currentRow, currentCol + 1, color, matchingItems);
+        findNextMatchingItemLeft($currentRow, $currentCol - 1, color, matchingItems);
+        findNextMatchingItemRight($currentRow, $currentCol + 1, color, matchingItems);
 
         return matchingItems;
     }
@@ -337,9 +289,9 @@
 <div class="container">
     <div class="w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative">
         <Board />
-        <CurrentPill bind:this={currentPill} {initialTop} {initialLeft} bind:rotation bind:currentRow bind:currentCol
+        <CurrentPill bind:this={currentPill} {initialTop} {initialLeft}
                      {derivedRow} {derivedCol} {lastRow} {lastCol} />
-        <Ghosts {offset}/>
+        <Ghosts {offset} {derivedCol} {derivedRow} />
         <Pills {offset}/>
     </div>
 </div>
