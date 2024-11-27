@@ -13,6 +13,10 @@ export const pillColors = $state({
 
 export const rowsCount = 16;
 export const colsCount = 16;
+export const initialRow = 0;
+export const initialCol = 7;
+export const lastRow = rowsCount - 1;
+export const lastCol = colsCount - 1;
 
 export const matrix: Matrix = $state(
     Array.from(Array(rowsCount).keys()).map(() => Array.from(Array(colsCount).keys()).map(() => null))

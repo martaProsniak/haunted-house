@@ -6,6 +6,6 @@
 
 <div class="absolute">
     {#each layers.ghosts as ghost}
-        <Ghost {...ghost} {offset} />
+        <Ghost {ghost} {offset} />
     {/each}
 </div>

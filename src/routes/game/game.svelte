@@ -1,21 +1,17 @@
 <script lang="ts">
     import type {Color, MatrixItem, Pill, Rotation, Ghost} from './types'
-    import {pillColors, matrix, rowsCount, colsCount, layers} from './game.state.svelte.js'
+    import {pillColors, matrix, layers, initialCol, initialRow, lastCol, lastRow} from './game.state.svelte.js'
     import Pills from './pills.svelte';
     import Ghosts from './ghosts.svelte';
     import CurrentPill from './currentPill.svelte';
     import Board from './board.svelte';
-    import {colors, pillBorders} from "./utils";
+    import {pillBorders} from "./utils";
 
     const offset = 44;
-    const initialRow = 0;
-    const initialCol = 7;
     const gap = 4;
     const initialTop = gap;
     const initialLeft = gap + (initialCol * offset);
 
-    const lastRow = rowsCount - 1;
-    const lastCol = colsCount - 1;
     let currentPill: CurrentPill;
 
     let currentRow = $state(initialRow);
@@ -89,26 +85,26 @@
 
     $effect(() => {
         console.log('Effect')
-        const currentPillInterval = setInterval(() => {
-            if (matrix[initialRow + 1][initialCol]) {
-                clearInterval(currentPillInterval);
-                clearInterval(ghostsInterval);
-            }
-
-            moveDown();
-
-
-        }, 1000);
-
-        const ghostsInterval = setInterval(() => {
-            moveGhosts()
-
-        }, 5000);
-
-        return () => {
-            clearInterval(currentPillInterval);
-            clearInterval(ghostsInterval);
-        };
+        // const currentPillInterval = setInterval(() => {
+        //     if (matrix[initialRow + 1][initialCol]) {
+        //         clearInterval(currentPillInterval);
+        //         clearInterval(ghostsInterval);
+        //     }
+        //
+        //     moveDown();
+        //
+        //
+        // }, 1000);
+        //
+        // const ghostsInterval = setInterval(() => {
+        //     moveGhosts()
+        //
+        // }, 5000);
+        //
+        // return () => {
+        //     clearInterval(currentPillInterval);
+        //     clearInterval(ghostsInterval);
+        // };
     });
 
     $effect(() => {
@@ -147,7 +143,7 @@
         })
     }
 
-    const findNextMatchingItemDown = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+    const findNextMatchingItemDown = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
         if (row > lastRow) {
             return matchingItems;
         }
@@ -155,11 +151,16 @@
         if (item?.color !== color) {
             return matchingItems;
         }
+        if (item?.type === 'ghost') {
+            if (!hasGhost) {
+                hasGhost = true;
+            } else return matchingItems;
+        }
         matchingItems.push(item);
-        return findNextMatchingItemDown(row + 1, col, color, matchingItems);
+        return findNextMatchingItemDown(row + 1, col, color, matchingItems, hasGhost);
     }
 
-    const findNextMatchingItemUp = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+    const findNextMatchingItemUp = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
         if (row === 1) {
             return matchingItems;
         }
@@ -167,11 +168,16 @@
         if (item?.color !== color) {
             return matchingItems;
         }
+        if (item?.type === 'ghost') {
+            if (!hasGhost) {
+                hasGhost = true;
+            } else return matchingItems;
+        }
         matchingItems.push(item);
-        return findNextMatchingItemUp(row - 1, col, color, matchingItems);
+        return findNextMatchingItemUp(row - 1, col, color, matchingItems, hasGhost);
     }
 
-    const findNextMatchingItemLeft = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+    const findNextMatchingItemLeft = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
         if (col < 0) {
             return matchingItems;
         }
@@ -179,11 +185,16 @@
         if (item?.color !== color) {
             return matchingItems;
         }
+        if (item?.type === 'ghost') {
+            if (!hasGhost) {
+                hasGhost = true;
+            } else return matchingItems;
+        }
         matchingItems.push(item);
-        return findNextMatchingItemLeft(row, col - 1, color, matchingItems);
+        return findNextMatchingItemLeft(row, col - 1, color, matchingItems, hasGhost);
     }
 
-    const findNextMatchingItemRight = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+    const findNextMatchingItemRight = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
         if (col === lastCol) {
             return matchingItems;
         }
@@ -191,8 +202,13 @@
         if (item?.color !== color) {
             return matchingItems;
         }
+        if (item?.type === 'ghost') {
+            if (!hasGhost) {
+                hasGhost = true;
+            } else return matchingItems;
+        }
         matchingItems.push(item);
-        return findNextMatchingItemRight(row, col + 1, color, matchingItems);
+        return findNextMatchingItemRight(row, col + 1, color, matchingItems, hasGhost);
     }
 
     const matchCurrentColorVertical = () => {
