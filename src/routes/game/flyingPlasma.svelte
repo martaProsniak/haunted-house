@@ -1,7 +1,6 @@
 <script lang="ts">
-    import {borderKind, getRandomColor} from "./utils";
-    import {pillColors, matrix, currentRow, currentCol, rotation} from "./game.state.svelte.js";
-    import type {Matrix, Rotation} from "./types";
+    import {getRandomColor, plasmaImages} from "./utils";
+    import {flyingPlasmaColors, matrix, currentRow, currentCol, rotation} from "./game.state.svelte.js";
 
     interface Props {
         initialTop: number,
@@ -146,8 +145,8 @@
     }
 
     export const reset = () => {
-        pillColors.current = getRandomColor();
-        pillColors.derived = getRandomColor();
+        flyingPlasmaColors.current = getRandomColor();
+        flyingPlasmaColors.derived = getRandomColor();
         $rotation = 0;
         topCorrection = 0;
         left = initialLeft;
@@ -160,10 +159,10 @@
         style:left={`${left}px`}
         style:transform="{`rotate(${$rotation}deg`}"
         class="pill">
-    <div class={`pill-part-med ${borderKind.left}`} style:background-color={pillColors.current}>
+    <div class="pill-part-med" style:background-image={`url("${plasmaImages[flyingPlasmaColors.current]}")`}>
         M {$currentRow} {$currentCol}</div>
     <div class="pill-part-break"></div>
-    <div class={`pill-part-med ${borderKind.right}`} style:background-color={pillColors.derived}>
+    <div class="pill-part-med" style:background-image={`url("${plasmaImages[flyingPlasmaColors.derived]}")`}>
         D {derivedRow} {derivedCol}</div>
 </div>
 

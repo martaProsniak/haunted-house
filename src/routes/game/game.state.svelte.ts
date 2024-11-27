@@ -1,13 +1,13 @@
 
 import {type Writable, writable} from "svelte/store";
 import {colors, getRandomColor} from './utils';
-import type {Ghost, Matrix, Pill, Rotation} from "./types";
+import type {Ghost, Matrix, Plasma, Rotation} from "./types";
 
 import blueGhost from '$lib/assets/ghost-blue.png'
 import pinkGhost from '$lib/assets/ghost-pink.png'
 import greenGhost from '$lib/assets/ghost-green.png'
 
-export const pillColors = $state({
+export const flyingPlasmaColors = $state({
     current: getRandomColor(),
     derived: getRandomColor(),
 })
@@ -35,10 +35,10 @@ const initialGhosts: Ghost[] = [
 
 interface GameLayers {
     ghosts: Ghost[],
-    previousPills: Pill[]
+    previousPlasma: Plasma[]
 }
 
 export const layers: GameLayers = $state({
     ghosts: initialGhosts,
-    previousPills: []
+    previousPlasma: []
 })

@@ -5,21 +5,20 @@ export type PillPosition = 'horizontal' | 'vertical' | 'verticalFlipped';
 export type Color = 'pink' | 'green' | 'blue';
 
 export interface MatrixItem {
-    type: 'pill' | 'ghost',
+    type: 'plasma' | 'ghost',
     color: Color,
     id: string,
     row: number,
-    column: number
+    column: number,
+    imageUrl: string
 }
 
 export interface Ghost extends MatrixItem {
     type: 'ghost',
-    imageUrl: string
 }
 
-export interface Pill extends MatrixItem {
-    type: 'pill',
-    border: string
+export interface Plasma extends MatrixItem {
+    type: 'plasma',
 }
 
 export type Matrix = Array<Array<MatrixItem | null>>;

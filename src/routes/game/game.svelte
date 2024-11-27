@@ -1,18 +1,18 @@
 <script lang="ts">
-    import type {Color, MatrixItem, Pill, Rotation, Ghost} from './types'
-    import {pillColors, matrix, layers, initialCol, initialRow, lastCol, lastRow, currentCol, currentRow, rotation} from './game.state.svelte.js'
-    import Pills from './pills.svelte';
-    import Ghosts from './ghosts.svelte';
-    import CurrentPill from './currentPill.svelte';
+    import type {Color, MatrixItem, Plasma} from './types'
+    import {flyingPlasmaColors, matrix, layers, initialCol, initialRow, lastCol, lastRow, currentCol, currentRow, rotation} from './game.state.svelte.js'
+    import PlasmaLayer from './plasmaLayer.svelte';
+    import GhostsLayer from './ghostsLayer.svelte';
+    import FlyingPlasma from './flyingPlasma.svelte';
     import Board from './board.svelte';
-    import {pillBorders} from "./utils";
+    import {plasmaImages} from "./utils";
 
     const offset = 44;
     const gap = 4;
     const initialTop = gap;
     const initialLeft = gap + (initialCol * offset);
 
-    let currentPill: CurrentPill;
+    let currentPlasma: FlyingPlasma;
 
     let derivedRow = $derived.by(() => {
         if ($rotation === 90) {
@@ -38,9 +38,9 @@
 
     $effect(() => {
         console.log('Effect')
-        const currentPillInterval = setInterval(() => {
+        const currentPlasmaInterval = setInterval(() => {
             if (matrix[initialRow + 1][initialCol]) {
-                clearInterval(currentPillInterval);
+                clearInterval(currentPlasmaInterval);
             }
 
             moveDown();
@@ -54,48 +54,48 @@
         // }, 5000);
         //
         // return () => {
-        //     clearInterval(currentPillInterval);
+        //     clearInterval(currentPlasmaInterval);
         //     clearInterval(ghostsInterval);
         // };
     });
 
     $effect(() => {
-        layers.ghosts.forEach(({row, column, id, color}) => {
-            matrix[row][column] = {type: 'ghost', id, color, row, column};
+        layers.ghosts.forEach(({row, column, id, color, imageUrl}) => {
+            matrix[row][column] = {type: 'ghost', id, color, row, column, imageUrl};
         })
     });
 
-    const resetPill = () => {
+    const resetPlasma = () => {
         $currentRow = initialRow;
         $currentCol = initialCol;
-        currentPill.reset();
+        currentPlasma.reset();
     }
 
-    const updatePreviousPills = () => {
-        const currentPill: Pill = {
-            type: 'pill',
-            id: `pill-${$currentRow}-${$currentCol}`,
-            color: pillColors.current,
+    const updatePreviousPlasma = () => {
+        const currentPlasma: Plasma = {
+            type: 'plasma',
+            id: `plasma-${$currentRow}-${$currentCol}`,
+            color: flyingPlasmaColors.current,
             row: $currentRow,
             column: $currentCol,
-            border: pillBorders[$rotation].state
+            imageUrl: plasmaImages[flyingPlasmaColors.current]
         };
-        const derivedPill: Pill = {
-            type: 'pill',
-            id: `pill-${derivedRow}-${derivedCol}`,
-            color: pillColors.derived,
+        const derivedPlasma: Plasma = {
+            type: 'plasma',
+            id: `plasma-${derivedRow}-${derivedCol}`,
+            color: flyingPlasmaColors.derived,
             row: derivedRow,
             column: derivedCol,
-            border: pillBorders[$rotation].derived
+            imageUrl: plasmaImages[flyingPlasmaColors.derived]
         };
-        layers.previousPills.push(currentPill, derivedPill);
+        layers.previousPlasma.push(currentPlasma, derivedPlasma);
 
-        layers.previousPills.forEach(({row, column, id, color}) => {
-            matrix[row][column] = {type: 'pill', id, color, row, column};
+        layers.previousPlasma.forEach(({row, column, id, color, imageUrl}) => {
+            matrix[row][column] = {type: 'plasma', id, color, row, column, imageUrl};
         })
     }
 
-    const findNextMatchingItemDown = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
+    const findNextMatchingItemDown = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
         if (row > lastRow) {
             return matchingItems;
         }
@@ -103,16 +103,11 @@
         if (item?.color !== color) {
             return matchingItems;
         }
-        if (item?.type === 'ghost') {
-            if (!hasGhost) {
-                hasGhost = true;
-            } else return matchingItems;
-        }
         matchingItems.push(item);
-        return findNextMatchingItemDown(row + 1, col, color, matchingItems, hasGhost);
+        return findNextMatchingItemDown(row + 1, col, color, matchingItems);
     }
 
-    const findNextMatchingItemUp = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
+    const findNextMatchingItemUp = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
         if (row === 1) {
             return matchingItems;
         }
@@ -120,16 +115,11 @@
         if (item?.color !== color) {
             return matchingItems;
         }
-        if (item?.type === 'ghost') {
-            if (!hasGhost) {
-                hasGhost = true;
-            } else return matchingItems;
-        }
         matchingItems.push(item);
-        return findNextMatchingItemUp(row - 1, col, color, matchingItems, hasGhost);
+        return findNextMatchingItemUp(row - 1, col, color, matchingItems);
     }
 
-    const findNextMatchingItemLeft = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
+    const findNextMatchingItemLeft = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
         if (col < 0) {
             return matchingItems;
         }
@@ -137,16 +127,11 @@
         if (item?.color !== color) {
             return matchingItems;
         }
-        if (item?.type === 'ghost') {
-            if (!hasGhost) {
-                hasGhost = true;
-            } else return matchingItems;
-        }
         matchingItems.push(item);
-        return findNextMatchingItemLeft(row, col - 1, color, matchingItems, hasGhost);
+        return findNextMatchingItemLeft(row, col - 1, color, matchingItems);
     }
 
-    const findNextMatchingItemRight = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
+    const findNextMatchingItemRight = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
         if (col === lastCol) {
             return matchingItems;
         }
@@ -154,13 +139,8 @@
         if (item?.color !== color) {
             return matchingItems;
         }
-        if (item?.type === 'ghost') {
-            if (!hasGhost) {
-                hasGhost = true;
-            } else return matchingItems;
-        }
         matchingItems.push(item);
-        return findNextMatchingItemRight(row, col + 1, color, matchingItems, hasGhost);
+        return findNextMatchingItemRight(row, col + 1, color, matchingItems);
     }
 
     const matchCurrentColorVertical = () => {
@@ -220,7 +200,7 @@
             return;
         }
 
-        const pillsToRemove: Record<string, MatrixItem> = {};
+        const plasmaToRemove: Record<string, MatrixItem> = {};
         const ghostsToRemove: Record<string, MatrixItem> = {};
 
         matchingItems.forEach((item => {
@@ -228,12 +208,12 @@
             if (item.type === 'ghost') {
                 ghostsToRemove[item.id] = item;
             }
-            if (item.type === 'pill') {
-                pillsToRemove[item.id] = item
+            if (item.type === 'plasma') {
+                plasmaToRemove[item.id] = item
             }
         }))
 
-        layers.previousPills = layers.previousPills.filter((pill) => !pillsToRemove[pill.id]);
+        layers.previousPlasma = layers.previousPlasma.filter((plasma) => !plasmaToRemove[plasma.id]);
         layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id])
     }
 
@@ -250,28 +230,28 @@
         clearItems(matchingDerivedColorHorizontal);
     }
 
-    const pillEnded = () => {
-        updatePreviousPills();
+    const plasmaEnded = () => {
+        updatePreviousPlasma();
         checkHorizontal();
-        resetPill();
+        resetPlasma();
     }
 
     const moveDown = () => {
-        if (!currentPill.canMoveDown()) {
-            pillEnded();
+        if (!currentPlasma.canMoveDown()) {
+            plasmaEnded();
             return;
         }
 
-        currentPill.moveDown();
+        currentPlasma.moveDown();
     }
 
     const handleKeyDown = (ev: KeyboardEvent) => {
         if (ev.key === 'ArrowLeft') {
-            currentPill.moveLeft();
+            currentPlasma.moveLeft();
         }
 
         if (ev.key === 'ArrowRight') {
-            currentPill.moveRight();
+            currentPlasma.moveRight();
         }
 
         if (ev.key === 'ArrowDown') {
@@ -279,7 +259,7 @@
         }
 
         if (ev.key === 'ArrowUp') {
-            currentPill.rotate();
+            currentPlasma.rotate();
         }
     }
 </script>
@@ -289,10 +269,10 @@
 <div class="container">
     <div class="w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative">
         <Board />
-        <CurrentPill bind:this={currentPill} {initialTop} {initialLeft}
+        <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft}
                      {derivedRow} {derivedCol} {lastRow} {lastCol} />
-        <Ghosts {offset} {derivedCol} {derivedRow} />
-        <Pills {offset}/>
+        <GhostsLayer {offset} {derivedCol} {derivedRow} />
+        <PlasmaLayer {offset}/>
     </div>
 </div>
 

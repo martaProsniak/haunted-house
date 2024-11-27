@@ -3,7 +3,12 @@
     import {onMount} from "svelte";
     import type {Ghost} from "./types";
 
-    interface Props {ghost: Ghost, offset: number, derivedRow: number, derivedCol: number}
+    interface Props {
+        ghost: Ghost,
+        offset: number,
+        derivedRow: number,
+        derivedCol: number
+    }
 
     const {ghost, offset, derivedRow, derivedCol}: Props = $props();
     let interval: ReturnType<typeof setInterval>;
@@ -33,14 +38,15 @@
         const {row, column} = ghost;
 
         ghost.column = column - 1;
-        matrix[row][column - 1] = null
+        matrix[row][column] = null
     }
 
     const moveRight = () => {
         const {row, column} = ghost;
 
         ghost.column = column + 1;
-        matrix[row][column + 1] = null
+        matrix[row][column] = null
+
     }
 
     const canMove = () => {

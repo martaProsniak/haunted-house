@@ -1,12 +1,12 @@
 <script lang="ts">
     import {layers} from "./game.state.svelte";
-    import Pill from './pill.svelte'
+    import Plasma from './plasma.svelte'
 
     const {offset} = $props();
 </script>
 
 <div class="absolute">
-    {#each layers.previousPills as pill}
-        <Pill {...pill} {offset} />
+    {#each layers.previousPlasma as plasma}
+        <Plasma {...plasma} {offset} />
     {/each}
 </div>
