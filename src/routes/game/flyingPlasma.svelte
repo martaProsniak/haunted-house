@@ -1,7 +1,6 @@
 <script lang="ts">
-    import {getRandomColor, plasmaImages} from "./utils";
+    import {getRandomColor, getRandomPill} from "./utils";
     import {flyingPlasmaColors, matrix, currentRow, currentCol, rotation, derivedRow, derivedCol} from "./game.state.svelte.js";
-    import flyingPlasma from '$lib/assets/flying-blue-blue.png'
     import plasmaBlueBlue from '$lib/assets/flying-blue-blue.png';
     import plasmaPinkPink from '$lib/assets/flying-pink-pink.png';
     import plasmaGreenGreen from '$lib/assets/flying-green-green.png';
@@ -169,8 +168,9 @@
     }
 
     export const reset = () => {
-        flyingPlasmaColors.current = getRandomColor();
-        flyingPlasmaColors.derived = getRandomColor();
+        const pillColors = getRandomPill();
+        flyingPlasmaColors.current = pillColors.current;
+        flyingPlasmaColors.derived = pillColors.derived;
         $rotation = 0;
         topCorrection = 0;
         left = initialLeft;
