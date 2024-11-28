@@ -1,6 +1,34 @@
 <script lang="ts">
     import {getRandomColor, plasmaImages} from "./utils";
     import {flyingPlasmaColors, matrix, currentRow, currentCol, rotation, derivedRow, derivedCol} from "./game.state.svelte.js";
+    import flyingPlasma from '$lib/assets/flying-blue-blue.png'
+    import plasmaBlueBlue from '$lib/assets/flying-blue-blue.png';
+    import plasmaPinkPink from '$lib/assets/flying-pink-pink.png';
+    import plasmaGreenGreen from '$lib/assets/flying-green-green.png';
+    import plasmaGreenBlue from '$lib/assets/flying-green-blue.png';
+    import plasmaGreenPink from '$lib/assets/flying-green-pink.png';
+    import plasmaBluePink from '$lib/assets/flying-blue-pink.png';
+    import plasmaPinkBlue from '$lib/assets/flying-pink-blue.png';
+    import plasmaPinkGreen from '$lib/assets/flying-pink-green.png';
+    import plasmaBlueGreen from '$lib/assets/flying-blue-green.png';
+
+    const flyingPlasmaImages = {
+        pink: {
+            pink: plasmaPinkPink,
+            blue: plasmaPinkBlue,
+            green: plasmaPinkGreen
+        },
+        blue: {
+            pink: plasmaBluePink,
+            blue: plasmaBlueBlue,
+            green: plasmaBlueGreen
+        },
+        green: {
+            pink: plasmaGreenPink,
+            blue: plasmaGreenBlue,
+            green: plasmaGreenGreen
+        }
+    };
 
     interface Props {
         initialTop: number,
@@ -154,12 +182,13 @@
         style:top={`${top}px`}
         style:left={`${left}px`}
         style:transform="{`rotate(${$rotation}deg`}"
-        class="pill">
-    <div class="pill-part-med" style:background-image={`url("${plasmaImages[flyingPlasmaColors.current]}")`}>
-        M {$currentRow} {$currentCol}</div>
-    <div class="pill-part-break"></div>
-    <div class="pill-part-med" style:background-image={`url("${plasmaImages[flyingPlasmaColors.derived]}")`}>
-        D {$derivedRow} {$derivedCol}</div>
+        class="pill"
+        style:background-image={`url("${flyingPlasmaImages[flyingPlasmaColors.current][flyingPlasmaColors.derived]}")`}>
+<!--    <div class="pill-part-med" style:background-image={`url("${plasmaImages[flyingPlasmaColors.current]}")`}>-->
+<!--        M {$currentRow} {$currentCol}</div>-->
+<!--    <div class="pill-part-break"></div>-->
+<!--    <div class="pill-part-med" style:background-image={`url("${plasmaImages[flyingPlasmaColors.derived]}")`}>-->
+<!--        D {$derivedRow} {$derivedCol}</div>-->
 </div>
 
 <style>
@@ -174,12 +203,12 @@
         box-sizing: border-box;
         font-size: 12px;
 
-        .pill-part-med {
-            width: 40px;
-        }
+        /*.pill-part-med {*/
+        /*    width: 40px;*/
+        /*}*/
 
-        .pill-part-break {
-            width: 4px;
-        }
+        /*.pill-part-break {*/
+        /*    width: 4px;*/
+        /*}*/
     }
 </style>
