@@ -1,5 +1,16 @@
 <script lang="ts">
-    import {matrix, initialRow, initialCol, lastCol, currentRow, currentCol, rotation, derivedRow, derivedCol} from "./game.state.svelte";
+    import {
+        matrix,
+        initialRow,
+        initialCol,
+        lastCol,
+        currentRow,
+        currentCol,
+        rotation,
+        derivedRow,
+        derivedCol,
+        lastRow
+    } from "./game.state.svelte";
     import {onMount} from "svelte";
     import type {Ghost} from "./types";
 
@@ -17,7 +28,7 @@
             return 3000;
         }
         if (color === 'blue') {
-            return 6000;
+            return 8000;
         }
         if (color === 'green') {
             return 5000;
@@ -25,9 +36,38 @@
         return 10 * 60;
     })
 
+    let neighbors = $derived.by(() => {
+        return {
+            top: matrix[ghost.row - 1][ghost.column],
+            right: matrix[ghost.row][ghost.column + 1],
+            bottom: ghost.row === lastRow ? null : matrix[ghost.row + 1][ghost.column],
+            left: matrix[ghost.row][ghost.column - 1],
+        }
+    })
+
+    let isGlued = $derived.by(() => {
+        return Object.values(neighbors).some((neighbour) => neighbour?.color === ghost.color)
+    })
+
+    let hasPillAbove = $derived.by(() => {
+        if ($rotation === 0 || $rotation === 180) {
+            return ghost.row - 1 === $currentRow && (ghost.column === $currentCol || ghost.column === $derivedCol);
+        }
+        if ($rotation === 270) {
+            return ghost.row - 1 === $currentRow && (ghost.column === $currentCol);
+        }
+        if ($rotation === 90) {
+            return ghost.row - 1 === $derivedRow && (ghost.column === $derivedCol);
+        }
+    })
+
     const moveUp = () => {
         console.log('Move up!', $state.snapshot(ghost));
         const {row, column} = ghost;
+
+        if (row === 0) {
+            console.log('Ghost ended!', ghost.color);
+        }
 
         ghost.row = row - 1;
         matrix[row][column] = null
@@ -42,7 +82,6 @@
         ghost.column = column - 1;
         matrix[row][column] = null
         $state.snapshot(matrix);
-        // debugger;
     }
 
     const moveRight = () => {
@@ -52,42 +91,16 @@
         ghost.column = column + 1;
         matrix[row][column] = null
         $state.snapshot(matrix);
-        // debugger;
 
-    }
-
-    const canMove = () => {
-        const {row, column, color} = ghost;
-
-        const topItem = matrix[row - 1][column];
-
-        if (topItem?.color === color) {
-            return false;
-        }
-
-        const bottomItem = matrix[row + 1][column];
-
-        if (bottomItem?.color === color) {
-            return false;
-        }
-
-        const leftItem = matrix[row][column - 1];
-
-        if (leftItem?.color === color) {
-            return false;
-        }
-
-        const rightItem = matrix[row - 1][column + 1];
-
-        return !(rightItem?.color === color);
     }
 
     export const move = () => {
-        const {row, column} = ghost;
-
-        if (!canMove()) {
+        console.log($state.snapshot(neighbors));
+        if (isGlued) {
             return;
         }
+
+        const {row, column, color} = ghost;
 
         if (ghost.row === initialRow) {
             console.log('reached top', ghost.id)
@@ -98,15 +111,13 @@
             return;
         }
 
-        if (!matrix[row - 1][column]) {
+        if (!neighbors.top) {
             moveUp();
-        } else if (!matrix[row][column + 1] && column < lastCol) {
-            moveLeft();
-        } else if (!matrix[row][column - 1] && column > initialCol) {
+        } else if (!neighbors.right && column !== lastCol) {
             moveRight();
-        } else {
-            console.log('Cannot move', ghost.color)
-        }
+        } else if (!neighbors.left && column > 0) {
+            moveLeft();
+        } else console.log('Cannot move', color);
     }
 
     onMount(() => {
