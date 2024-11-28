@@ -184,11 +184,6 @@
         style:transform="{`rotate(${$rotation}deg`}"
         class="pill"
         style:background-image={`url("${flyingPlasmaImages[flyingPlasmaColors.current][flyingPlasmaColors.derived]}")`}>
-<!--    <div class="pill-part-med" style:background-image={`url("${plasmaImages[flyingPlasmaColors.current]}")`}>-->
-<!--        M {$currentRow} {$currentCol}</div>-->
-<!--    <div class="pill-part-break"></div>-->
-<!--    <div class="pill-part-med" style:background-image={`url("${plasmaImages[flyingPlasmaColors.derived]}")`}>-->
-<!--        D {$derivedRow} {$derivedCol}</div>-->
 </div>
 
 <style>
@@ -202,13 +197,5 @@
         z-index: 10;
         box-sizing: border-box;
         font-size: 12px;
-
-        /*.pill-part-med {*/
-        /*    width: 40px;*/
-        /*}*/
-
-        /*.pill-part-break {*/
-        /*    width: 4px;*/
-        /*}*/
     }
 </style>

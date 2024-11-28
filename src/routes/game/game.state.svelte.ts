@@ -56,8 +56,11 @@ export const derivedCol: Readable<number> = derived(
 
 const initialGhosts: Ghost[] = [
 	{ type: 'ghost', color: colors.green, id: 'ghost-1', row: 13, column: 10, imageUrl: greenGhost },
-	{ type: 'ghost', color: colors.pink, id: 'ghost-2', row: 7, column: 6, imageUrl: pinkGhost },
-	{ type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 12, imageUrl: blueGhost }
+	{ type: 'ghost', color: colors.pink, id: 'ghost-2', row: 12, column: 6, imageUrl: pinkGhost },
+	{ type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 12, imageUrl: blueGhost },
+	{ type: 'ghost', color: colors.green, id: 'ghost-4', row: 14, column: 2, imageUrl: greenGhost },
+	{ type: 'ghost', color: colors.pink, id: 'ghost-5', row: 11, column: 4, imageUrl: pinkGhost },
+	{ type: 'ghost', color: colors.blue, id: 'ghost-6', row: 10, column: 5, imageUrl: blueGhost }
 ];
 
 interface GameLayers {

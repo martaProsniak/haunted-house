@@ -18,7 +18,7 @@
     $effect(() => {
         console.log('Effect')
         const currentPlasmaInterval = setInterval(() => {
-            if (matrix[initialRow + 1][initialCol]) {
+            if (matrix[initialRow][initialCol]) {
                 clearInterval(currentPlasmaInterval);
             }
 

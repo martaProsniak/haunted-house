@@ -60,15 +60,34 @@
         const {row, column, color} = ghost;
 
         const topItem = matrix[row - 1][column];
-        const bottom = matrix[row + 1][column];
+
+        if (topItem?.color === color) {
+            return false;
+        }
+
+        const bottomItem = matrix[row + 1][column];
+
+        if (bottomItem?.color === color) {
+            return false;
+        }
+
         const leftItem = matrix[row][column - 1];
+
+        if (leftItem?.color === color) {
+            return false;
+        }
+
         const rightItem = matrix[row - 1][column + 1];
 
-
+        return !(rightItem?.color === color);
     }
 
     export const move = () => {
         const {row, column} = ghost;
+
+        if (!canMove()) {
+            return;
+        }
 
         if (ghost.row === initialRow) {
             console.log('reached top', ghost.id)
