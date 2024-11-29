@@ -19,6 +19,8 @@
     import GhostsLayer from './ghostsLayer.svelte';
     import FlyingPlasma from './flyingPlasma.svelte';
     import Board from './board.svelte';
+    import GhostsInfo from './ghostsInfo.svelte';
+    import Score from './score.svelte';
     import {plasmaImages} from "./utils";
 
     const offset = 44;
@@ -248,9 +250,38 @@
 
 <svelte:window on:keydown={handleKeyDown}></svelte:window>
 
-<div class=" w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative">
-    <Board />
-    <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
-    <GhostsLayer {offset} />
-    <PlasmaLayer {offset}/>
+<div class="container">
+    <div class="ghosts">
+        <GhostsInfo />
+    </div>
+    <div class=" w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative board">
+        <Board />
+        <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
+        <GhostsLayer {offset} />
+        <PlasmaLayer {offset}/>
+    </div>
+    <div class="score">
+        <Score />
+    </div>
 </div>
+
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: minmax(300px, 1fr) 708px minmax(300px, 1fr);
+        grid-template-rows: min(708px, 1fr);
+        grid-template-areas: 'ghosts board score';
+
+        .ghosts {
+            grid-area: ghosts;
+        }
+
+        .board {
+            grid-area: board;
+        }
+
+        .score {
+            grid-area: score;
+        }
+    }
+</style>
