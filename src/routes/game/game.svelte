@@ -1,7 +1,20 @@
 <script lang="ts">
     import type {Color, MatrixItem, Plasma} from './types'
     import { v4 as uuidv4 } from "uuid";
-    import {flyingPlasmaColors, matrix, layers, initialCol, initialRow, lastCol, lastRow, currentCol, currentRow, derivedRow, derivedCol} from './game.state.svelte.js'
+    import {
+        flyingPlasmaColors,
+        matrix,
+        layers,
+        initialCol,
+        initialRow,
+        lastCol,
+        lastRow,
+        currentCol,
+        currentRow,
+        derivedRow,
+        derivedCol,
+        gameStatus,
+    } from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
     import FlyingPlasma from './flyingPlasma.svelte';
@@ -20,6 +33,7 @@
         const currentPlasmaInterval = setInterval(() => {
             if (matrix[initialRow][initialCol]) {
                 clearInterval(currentPlasmaInterval);
+                $gameStatus = 'failure';
             }
 
             moveDown();
@@ -234,19 +248,9 @@
 
 <svelte:window on:keydown={handleKeyDown}></svelte:window>
 
-<div class="container">
-    <div class="w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative">
-        <Board />
-        <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
-        <GhostsLayer {offset} />
-        <PlasmaLayer {offset}/>
-    </div>
+<div class=" w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative">
+    <Board />
+    <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
+    <GhostsLayer {offset} />
+    <PlasmaLayer {offset}/>
 </div>
-
-
-<style>
-    .container {
-        margin-top: 50px;
-        margin-left: 50px;
-    }
-</style>

@@ -1,6 +1,6 @@
 import { type Writable, writable, derived, type Readable } from 'svelte/store';
 import { colors, getRandomColor } from './utils';
-import type { Ghost, Matrix, Plasma, Rotation } from './types';
+import type {GameResult, GameStatus, Ghost, Matrix, Plasma, Rotation} from './types';
 
 import blueGhost from '$lib/assets/ghost-blue.png';
 import pinkGhost from '$lib/assets/ghost-pink.png';
@@ -25,6 +25,7 @@ export const matrix: Matrix = $state(
 export const currentRow: Writable<number> = writable(initialRow);
 export const currentCol: Writable<number> = writable(initialCol);
 export const rotation: Writable<Rotation> = writable(0);
+export const gameStatus: Writable<GameStatus> = writable('not-started');
 
 export const derivedRow: Readable<number> = derived(
 	[rotation, currentRow],

@@ -9,7 +9,8 @@
         rotation,
         derivedRow,
         derivedCol,
-        lastRow
+        lastRow,
+        gameStatus
     } from "./game.state.svelte";
     import {onMount} from "svelte";
     import type {Ghost} from "./types";
@@ -38,10 +39,10 @@
 
     let neighbors = $derived.by(() => {
         return {
-            top: matrix[ghost.row - 1][ghost.column],
-            right: matrix[ghost.row][ghost.column + 1],
+            top: ghost.row === 0 ? null : matrix[ghost.row - 1][ghost.column],
+            right: ghost.column === lastCol ? null : matrix[ghost.row][ghost.column + 1],
             bottom: ghost.row === lastRow ? null : matrix[ghost.row + 1][ghost.column],
-            left: matrix[ghost.row][ghost.column - 1],
+            left: ghost.row === 0 ? null : matrix[ghost.row][ghost.column - 1],
         }
     })
 
@@ -67,6 +68,10 @@
 
         if (row === 0) {
             console.log('Ghost ended!', ghost.color);
+        }
+
+        if (hasPillAbove) {
+            return;
         }
 
         ghost.row = row - 1;
@@ -95,6 +100,10 @@
     }
 
     export const move = () => {
+        if ($gameStatus === 'pause') {
+            return;
+        }
+
         console.log($state.snapshot(neighbors));
         if (isGlued) {
             return;
@@ -130,6 +139,12 @@
         }
     })
 
+    $effect(() => {
+        if ($gameStatus === 'success' || $gameStatus === 'failure') {
+            clearInterval(interval);
+        }
+    })
+
 </script>
 
 <div
@@ -141,11 +156,11 @@
 
 <style>
     .ghost {
-        /*border: 4px black solid;*/
         width: 40px;
         height: 40px;
         position: absolute;
         z-index: 10;
         box-sizing: border-box;
+        transition: all 0.2s ease-in-out;
     }
 </style>

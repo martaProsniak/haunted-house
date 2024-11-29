@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {getRandomColor, getRandomPill} from "./utils";
+    import {getRandomPill} from "./utils";
     import {flyingPlasmaColors, matrix, currentRow, currentCol, rotation, derivedRow, derivedCol} from "./game.state.svelte.js";
     import plasmaBlueBlue from '$lib/assets/flying-blue-blue.png';
     import plasmaPinkPink from '$lib/assets/flying-pink-pink.png';
@@ -197,5 +197,6 @@
         z-index: 10;
         box-sizing: border-box;
         font-size: 12px;
+        transition: transform 0.1s linear;
     }
 </style>

@@ -22,3 +22,6 @@ export interface Plasma extends MatrixItem {
 }
 
 export type Matrix = Array<Array<MatrixItem | null>>;
+
+export type GameStatus = 'not-started' | 'started' | 'success' | 'pause' | 'failure';
+export type GameResult = 'pending' | 'success' | 'failure';
