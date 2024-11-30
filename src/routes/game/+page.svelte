@@ -26,22 +26,18 @@
         grid-template-columns: 1fr;
         grid-template-rows: 200px minmax(708px, 1fr) 100px;
         grid-template-areas: 'header' 'game' 'footer';
-        background-color: antiquewhite;
         max-width: 1440px;
 
         .header {
             grid-area: header;
-            background-color: lightpink;
         }
 
         .game {
             grid-area: game;
-            background-color: rebeccapurple;
         }
 
         .footer {
             grid-area: footer;
-            background-color: blueviolet;
         }
     }
 </style>

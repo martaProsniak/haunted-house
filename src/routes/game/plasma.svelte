@@ -9,7 +9,7 @@
         imageUrl: string
     }
 
-    const {color, row, column, offset, imageUrl}: Props = $props()
+    const {row, column, offset, imageUrl}: Props = $props()
 </script>
 
 <div
@@ -17,7 +17,6 @@
         style:top={`${row * offset}px`}
         style:left={`${column * offset}px`}
         class="plasma-previous">
-    {row}, {column}
 </div>
 
 <style>

@@ -14,7 +14,7 @@
     }
 </script>
 
-<div class="p-2 space-y-2">
+<div class="p-2">
     <header class="text-2xl font-freckle">
         Hounted House
     </header>
