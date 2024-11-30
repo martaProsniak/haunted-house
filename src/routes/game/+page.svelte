@@ -24,10 +24,10 @@
         height: 100vh;
         width: 100vw;
         grid-template-columns: 1fr;
-        grid-template-rows: 200px 708px minmax(200px, 1fr);
+        grid-template-rows: 200px minmax(708px, 1fr) 100px;
         grid-template-areas: 'header' 'game' 'footer';
         background-color: antiquewhite;
-        max-width: 1280px;
+        max-width: 1440px;
 
         .header {
             grid-area: header;

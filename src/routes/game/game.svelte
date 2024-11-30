@@ -29,18 +29,19 @@
     const initialLeft = gap + (initialCol * offset);
 
     let currentPlasma: FlyingPlasma;
+    let plasmaInterval: ReturnType<typeof setInterval>;
 
     $effect(() => {
-        console.log('Effect')
-        const currentPlasmaInterval = setInterval(() => {
-            if (matrix[initialRow][initialCol]) {
-                clearInterval(currentPlasmaInterval);
-                $gameStatus = 'failure';
+        if ($gameStatus === 'started') {
+            startLevel();
+        }
+
+        return () => {
+            if (plasmaInterval) {
+                console.log('clear interval');
+                clearInterval(plasmaInterval);
             }
-
-            moveDown();
-
-        }, 1000);
+        }
     });
 
     $effect(() => {
@@ -54,6 +55,30 @@
         $currentCol = initialCol;
         currentPlasma.reset();
     }
+
+    const startLevel = () => {
+        plasmaInterval = setInterval(() => {
+            if (matrix[initialRow][initialCol]) {
+                console.log('Fail?')
+                clearInterval(plasmaInterval);
+                $gameStatus = 'failure';
+            }
+
+            moveDown();
+
+        }, 1000);
+    }
+
+
+    const endLevel = () => {
+
+    }
+
+    const endGame = () => {}
+
+    const startNextLevel = () => {}
+
+    const pauseGame = () => {}
 
     const updatePreviousPlasma = () => {
         const currentPlasma: Plasma = {
@@ -221,6 +246,7 @@
     }
 
     const moveDown = () => {
+        console.log('Move donw')
         if (!currentPlasma.canMoveDown()) {
             plasmaEnded();
             return;
@@ -250,11 +276,11 @@
 
 <svelte:window on:keydown={handleKeyDown}></svelte:window>
 
-<div class="container">
+<div class="container mx-auto h-full">
     <div class="ghosts">
         <GhostsInfo />
     </div>
-    <div class=" w-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative board">
+    <div class=" w-fit h-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative board">
         <Board />
         <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
         <GhostsLayer {offset} />
@@ -268,9 +294,10 @@
 <style>
     .container {
         display: grid;
-        grid-template-columns: minmax(300px, 1fr) 708px minmax(300px, 1fr);
-        grid-template-rows: min(708px, 1fr);
+        grid-template-columns: minmax(35px, 1fr) 708px minmax(350px, 1fr);
+        grid-template-rows: minmax(708px, 1fr);
         grid-template-areas: 'ghosts board score';
+        align-items: center;
 
         .ghosts {
             grid-area: ghosts;

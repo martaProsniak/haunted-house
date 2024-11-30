@@ -5,23 +5,30 @@ export type PillPosition = 'horizontal' | 'vertical' | 'verticalFlipped';
 export type Color = 'pink' | 'green' | 'blue';
 
 export interface MatrixItem {
-    type: 'plasma' | 'ghost',
-    color: Color,
-    id: string,
-    row: number,
-    column: number,
-    imageUrl: string
+	type: 'plasma' | 'ghost';
+	color: Color;
+	id: string;
+	row: number;
+	column: number;
+	imageUrl: string;
 }
 
 export interface Ghost extends MatrixItem {
-    type: 'ghost',
+	type: 'ghost';
 }
 
 export interface Plasma extends MatrixItem {
-    type: 'plasma',
+	type: 'plasma';
 }
 
 export type Matrix = Array<Array<MatrixItem | null>>;
 
 export type GameStatus = 'not-started' | 'started' | 'success' | 'pause' | 'failure';
-export type GameResult = 'pending' | 'success' | 'failure';
+
+export interface GameLayers {
+	ghosts: Ghost[];
+	previousPlasma: Plasma[];
+    escapedGhosts: Ghost[];
+    catchGhosts: Ghost[];
+    equipment: Plasma[];
+}

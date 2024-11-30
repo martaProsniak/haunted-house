@@ -1,6 +1,6 @@
 <script lang="ts">
     import {getRandomPill} from "./utils";
-    import {flyingPlasmaColors, matrix, currentRow, currentCol, rotation, derivedRow, derivedCol} from "./game.state.svelte.js";
+    import {flyingPlasmaColors, matrix, currentRow, currentCol, rotation, derivedRow, derivedCol, gameStatus} from "./game.state.svelte.js";
     import plasmaBlueBlue from '$lib/assets/flying-blue-blue.png';
     import plasmaPinkPink from '$lib/assets/flying-pink-pink.png';
     import plasmaGreenGreen from '$lib/assets/flying-green-green.png';
@@ -46,6 +46,10 @@
     let left = $state(initialLeft);
     let topCorrection = $state(0);
     let top = $derived(initialTop + (offset * $currentRow) - topCorrection);
+    let hidden = $derived($gameStatus !== 'started' && $gameStatus !== 'pause');
+
+    console.log($gameStatus);
+    console.log(hidden)
 
     const itemBelowHelper = {
         0: () => matrix[$currentRow + 1][$currentCol] || matrix[$derivedRow + 1][$derivedCol],
@@ -183,6 +187,7 @@
         style:left={`${left}px`}
         style:transform="{`rotate(${$rotation}deg`}"
         class="pill"
+        class:hidden
         style:background-image={`url("${flyingPlasmaImages[flyingPlasmaColors.current][flyingPlasmaColors.derived]}")`}>
 </div>
 
@@ -198,5 +203,9 @@
         box-sizing: border-box;
         font-size: 12px;
         transition: transform 0.1s linear;
+    }
+
+    .hidden {
+        display: none;
     }
 </style>
