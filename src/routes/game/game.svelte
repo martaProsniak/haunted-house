@@ -32,7 +32,7 @@
     let plasmaInterval: ReturnType<typeof setInterval>;
 
     $effect(() => {
-        if ($gameStatus === 'started') {
+        if ($gameStatus === 'playing') {
             startLevel();
         }
 
@@ -64,6 +64,10 @@
                 $gameStatus = 'failure';
             }
 
+            if ($gameStatus === 'paused') {
+                return;
+            }
+
             moveDown();
 
         }, 1000);
@@ -77,8 +81,6 @@
     const endGame = () => {}
 
     const startNextLevel = () => {}
-
-    const pauseGame = () => {}
 
     const updatePreviousPlasma = () => {
         const currentPlasma: Plasma = {
@@ -246,7 +248,7 @@
     }
 
     const moveDown = () => {
-        console.log('Move donw')
+        console.log('Move down')
         if (!currentPlasma.canMoveDown()) {
             plasmaEnded();
             return;

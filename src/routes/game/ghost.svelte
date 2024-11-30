@@ -100,7 +100,7 @@
     }
 
     export const move = () => {
-        if ($gameStatus === 'pause') {
+        if ($gameStatus === 'paused') {
             return;
         }
 

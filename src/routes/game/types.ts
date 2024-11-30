@@ -23,7 +23,7 @@ export interface Plasma extends MatrixItem {
 
 export type Matrix = Array<Array<MatrixItem | null>>;
 
-export type GameStatus = 'not-started' | 'started' | 'success' | 'pause' | 'failure';
+export type GameStatus = 'not-started' | 'playing' | 'success' | 'paused' | 'failure';
 
 export interface GameLayers {
 	ghosts: Ghost[];

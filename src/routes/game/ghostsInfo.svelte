@@ -1,0 +1,1 @@
+<div>Ghosts Info</div>

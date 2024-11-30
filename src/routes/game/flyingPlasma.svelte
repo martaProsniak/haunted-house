@@ -46,7 +46,7 @@
     let left = $state(initialLeft);
     let topCorrection = $state(0);
     let top = $derived(initialTop + (offset * $currentRow) - topCorrection);
-    let hidden = $derived($gameStatus !== 'started' && $gameStatus !== 'pause');
+    let hidden = $derived($gameStatus !== 'playing' && $gameStatus !== 'paused');
 
     console.log($gameStatus);
     console.log(hidden)
