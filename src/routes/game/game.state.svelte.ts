@@ -1,6 +1,7 @@
 import { derived, type Readable, type Writable, writable } from 'svelte/store';
 import { colors, getRandomColor, ghostsImages } from './utils';
 import type { GameLayers, GameStatus, Ghost, Matrix, Rotation } from './types';
+import { v4 as uuidv4 } from "uuid";
 
 // Constants
 export const flyingPlasmaColors = $state({
@@ -51,7 +52,7 @@ export const derivedCol: Readable<number> = derived(
 
 // State
 const initialGhosts: Ghost[] = [
-	{ type: 'ghost', color: colors.green, id: 'ghost-1', row: 13, column: 10, imageUrl: ghostsImages.green },
+	{ type: 'ghost', color: colors.green, id: uuidv4(), row: 13, column: 10, imageUrl: ghostsImages.green },
 	{ type: 'ghost', color: colors.pink, id: 'ghost-2', row: 12, column: 6, imageUrl: ghostsImages.pink },
 	{ type: 'ghost', color: colors.blue, id: 'ghost-3', row: 9, column: 12, imageUrl: ghostsImages.blue },
 	{ type: 'ghost', color: colors.green, id: 'ghost-4', row: 14, column: 2, imageUrl: ghostsImages.green },

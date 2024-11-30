@@ -161,6 +161,5 @@
         position: absolute;
         z-index: 10;
         box-sizing: border-box;
-        transition: all 0.2s ease-in-out;
     }
 </style>

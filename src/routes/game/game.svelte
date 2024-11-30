@@ -14,6 +14,7 @@
         derivedRow,
         derivedCol,
         gameStatus,
+        level
     } from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -21,7 +22,7 @@
     import Board from './board.svelte';
     import GhostsInfo from './ghostsInfo.svelte';
     import Score from './score.svelte';
-    import {plasmaImages} from "./utils";
+    import {generateGhosts, plasmaImages} from "./utils";
 
     const offset = 44;
     const gap = 4;
@@ -57,6 +58,8 @@
     }
 
     const startLevel = () => {
+        layers.ghosts = generateGhosts($level);
+
         plasmaInterval = setInterval(() => {
             if (matrix[initialRow][initialCol]) {
                 console.log('Fail?')

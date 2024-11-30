@@ -48,9 +48,6 @@
     let top = $derived(initialTop + (offset * $currentRow) - topCorrection);
     let hidden = $derived($gameStatus !== 'playing' && $gameStatus !== 'paused');
 
-    console.log($gameStatus);
-    console.log(hidden)
-
     const itemBelowHelper = {
         0: () => matrix[$currentRow + 1][$currentCol] || matrix[$derivedRow + 1][$derivedCol],
         90: () => matrix[$derivedRow + 1][$derivedCol],
