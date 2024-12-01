@@ -261,6 +261,9 @@
     }
 
     const handleKeyDown = (ev: KeyboardEvent) => {
+        ev.preventDefault();
+
+
         if (ev.key === 'ArrowLeft') {
             currentPlasma.moveLeft();
         }
@@ -299,7 +302,7 @@
 <style>
     .container {
         display: grid;
-        grid-template-columns: minmax(35px, 1fr) 708px minmax(350px, 1fr);
+        grid-template-columns: minmax(300px, 1fr) 708px minmax(300px, 1fr);
         grid-template-rows: minmax(708px, 1fr);
         grid-template-areas: 'ghosts board score';
         align-items: center;

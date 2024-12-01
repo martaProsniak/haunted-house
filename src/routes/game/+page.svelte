@@ -21,10 +21,8 @@
 <style>
     .container {
         display: grid;
-        height: 100vh;
-        width: 100vw;
         grid-template-columns: 1fr;
-        grid-template-rows: 200px minmax(708px, 1fr) 100px;
+        grid-template-rows: 150px minmax(708px, 1fr) 100px;
         grid-template-areas: 'header' 'game' 'footer';
         max-width: 1440px;
 
