@@ -10,7 +10,8 @@
         derivedRow,
         derivedCol,
         lastRow,
-        gameStatus
+        gameStatus,
+        isPaused
     } from "./game.state.svelte";
     import {onMount} from "svelte";
     import type {Ghost} from "./types";
@@ -47,7 +48,7 @@
     })
 
     let isGlued = $derived.by(() => {
-        return Object.values(neighbors).some((neighbour) => neighbour?.color === ghost.color)
+        return Object.values(neighbors).some((neighbour) => (neighbour?.color === ghost.color && neighbour.type === 'plasma'))
     })
 
     let hasPillAbove = $derived.by(() => {
@@ -100,7 +101,7 @@
     }
 
     export const move = () => {
-        if ($gameStatus === 'paused') {
+        if ($isPaused) {
             return;
         }
 

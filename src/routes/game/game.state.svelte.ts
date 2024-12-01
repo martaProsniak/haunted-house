@@ -20,7 +20,8 @@ export const currentRow: Writable<number> = writable(initialRow);
 export const currentCol: Writable<number> = writable(initialCol);
 export const rotation: Writable<Rotation> = writable(0);
 export const gameStatus: Writable<GameStatus> = writable('not-started');
-export const level: Writable<number> = writable(1);
+export const level: Writable<number> = writable(10);
+export const isPaused: Writable<boolean> = writable(false);
 
 export const derivedRow: Readable<number> = derived(
 	[rotation, currentRow],

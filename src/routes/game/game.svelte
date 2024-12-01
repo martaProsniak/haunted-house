@@ -14,7 +14,7 @@
         derivedRow,
         derivedCol,
         gameStatus,
-        level
+        level, isPaused
     } from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -33,6 +33,10 @@
     let plasmaInterval: ReturnType<typeof setInterval>;
 
     $effect(() => {
+        if ($gameStatus === 'started') {
+            prepareGame();
+        }
+
         if ($gameStatus === 'playing') {
             startLevel();
         }
@@ -57,17 +61,26 @@
         currentPlasma.reset();
     }
 
-    const startLevel = () => {
-        layers.ghosts = generateGhosts($level);
+    const prepareGame = () => {
+        prepareGhostsLayer();
+        $gameStatus = 'playing';
+    }
 
+    const prepareGhostsLayer = () => {
+        layers.ghosts = generateGhosts($level);
+    }
+
+    const startLevel = () => {
+        console.log('Starting level')
         plasmaInterval = setInterval(() => {
+            console.log('In interval');
             if (matrix[initialRow][initialCol]) {
                 console.log('Fail?')
                 clearInterval(plasmaInterval);
                 $gameStatus = 'failure';
             }
 
-            if ($gameStatus === 'paused') {
+            if ($isPaused) {
                 return;
             }
 

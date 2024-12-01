@@ -1,8 +1,8 @@
 <script lang="ts">
-    import {gameStatus} from "./game.state.svelte";
+    import {gameStatus, isPaused} from "./game.state.svelte";
 
     const startGame = () => {
-        $gameStatus = 'playing';
+        $gameStatus = 'started';
     }
 
     const togglePause = () => {
@@ -10,7 +10,7 @@
             return;
         }
 
-        $gameStatus = $gameStatus !== 'paused' ? 'paused' : 'playing';
+        $isPaused = !$isPaused;
     }
 </script>
 
@@ -19,5 +19,5 @@
         Hounted House
     </header>
     <button class="p-2 bg-pink-300 rounded-s" onclick={startGame}>Start game</button>
-    <button class="p-2 bg-pink-200 rounded-s" onclick={togglePause}>{$gameStatus !== 'paused' ? 'Pause' : 'Play'}</button>
+    <button class="p-2 bg-pink-200 rounded-s" onclick={togglePause}>{!$isPaused ? 'Pause' : 'Play'}</button>
 </div>
