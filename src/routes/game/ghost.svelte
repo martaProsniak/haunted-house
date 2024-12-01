@@ -64,11 +64,13 @@
     })
 
     const moveUp = () => {
-        console.log('Move up!', $state.snapshot(ghost));
         const {row, column} = ghost;
 
         if (row === 0) {
             console.log('Ghost ended!', ghost.color);
+            clearInterval(interval);
+            // layers.escapedGhosts.push(ghost);
+
         }
 
         if (hasPillAbove) {
@@ -82,7 +84,6 @@
     }
 
     const moveLeft = () => {
-        console.log('Move left!', $state.snapshot(ghost));
         const {row, column} = ghost;
 
         ghost.column = column - 1;
@@ -91,7 +92,6 @@
     }
 
     const moveRight = () => {
-        console.log('Move right!', $state.snapshot(ghost));
         const {row, column} = ghost;
 
         ghost.column = column + 1;
@@ -105,7 +105,6 @@
             return;
         }
 
-        console.log($state.snapshot(neighbors));
         if (isGlued) {
             return;
         }
@@ -130,18 +129,26 @@
         } else console.log('Cannot move', color);
     }
 
-    onMount(() => {
+    const scheduleMovement = () => {
         interval = setInterval(() => {
             move();
         }, speed);
-
-        return () => {
-            clearInterval(interval)
-        }
-    })
+    }
 
     $effect(() => {
+        console.log(interval);
+        if ($gameStatus === 'playing') {
+            scheduleMovement();
+        }
+
+        console.log($gameStatus)
+
         if ($gameStatus === 'success' || $gameStatus === 'failure') {
+            clearInterval(interval);
+        }
+
+        return () => {
+            console.log('In return')
             clearInterval(interval);
         }
     })

@@ -78,11 +78,8 @@
     }
 
     const startLevel = () => {
-        console.log('Starting level')
         plasmaInterval = setInterval(() => {
-            console.log('In interval');
             if (layers.matrix[initialRow][initialCol]) {
-                console.log('Fail?')
                 clearInterval(plasmaInterval);
                 $gameStatus = 'failure';
             }
@@ -133,7 +130,7 @@
         if (row > lastRow) {
             return matchingItems;
         }
-        const item = layers.matrix[row][col];
+        const item = layers.matrix[row]?.[col];
         if (item?.color !== color) {
             return matchingItems;
         }
@@ -145,7 +142,7 @@
         if (row === 1) {
             return matchingItems;
         }
-        const item = layers.matrix[row][col];
+        const item = layers.matrix[row]?.[col];
         if (item?.color !== color) {
             return matchingItems;
         }
@@ -157,7 +154,7 @@
         if (col < 0) {
             return matchingItems;
         }
-        const item = layers.matrix[row][col];
+        const item = layers.matrix[row]?.[col];
         if (item?.color !== color) {
             return matchingItems;
         }
@@ -169,7 +166,7 @@
         if (col === lastCol) {
             return matchingItems;
         }
-        const item = layers.matrix[row][col];
+        const item = layers.matrix[row]?.[col];
         if (item?.color !== color) {
             return matchingItems;
         }
