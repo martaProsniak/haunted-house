@@ -66,7 +66,6 @@
         const {row, column, id} = ghost;
 
         if (row === 0) {
-            console.log('Ghost ended!', ghost.color);
             clearInterval(interval);
             layers.escapedGhosts[ghost.color]++;
             layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
@@ -80,7 +79,6 @@
         ghost.row = row - 1;
         layers.matrix[row][column] = null
         $state.snapshot(layers.matrix);
-        // debugger;
     }
 
     const moveLeft = () => {
@@ -112,7 +110,6 @@
         const {row, column, color} = ghost;
 
         if (ghost.row === initialRow) {
-            console.log('reached top', ghost.id)
             clearInterval(interval);
         }
 
@@ -130,8 +127,6 @@
     }
 
     const scheduleMovement = () => {
-        console.log('schedule movement');
-        console.log(interval);
         interval = setInterval(() => {
             move();
         }, speed);
@@ -149,7 +144,6 @@
         }
 
         return () => {
-            console.log('In return')
             clearInterval(interval);
         }
     })

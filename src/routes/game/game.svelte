@@ -261,11 +261,10 @@
         }
         if (Object.values(layers.catchGhosts).some((value) => value > 0)) {
             $gameStatus === 'success';
-            console.log('Success, catched at least one ghost')
         } else {
             $gameStatus = 'failure';
-            console.log('All ghosts escaped :(')
         }
+        clearInterval(plasmaInterval);
     }
 
     const countCatchGhosts = (ghosts: Record<string, MatrixItem>) => {
