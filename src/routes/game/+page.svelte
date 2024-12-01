@@ -4,7 +4,7 @@
     import Footer from './footer.svelte';
 </script>
 
-<div class="container mx-auto">
+<div class="container mx-auto h-screen ">
     <div class="header">
         <Header />
     </div>
@@ -22,7 +22,7 @@
     .container {
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: 150px minmax(708px, 1fr) 100px;
+        grid-template-rows: minmax(150px, 1fr) minmax(708px, 1fr) minmax(100px, 1fr);
         grid-template-areas: 'header' 'game' 'footer';
         max-width: 1440px;
 
