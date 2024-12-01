@@ -43,6 +43,7 @@
 
         if ($gameStatus === 'success' || $gameStatus === 'failure') {
             clearInterval(plasmaInterval);
+            resetGameState();
         }
 
         return () => {
@@ -63,6 +64,14 @@
         $currentRow = initialRow;
         $currentCol = initialCol;
         currentPlasma.reset();
+    }
+
+    const resetGameState = () => {
+        layers.matrix = initialMatrix;
+        $currentRow = initialRow;
+        $currentCol = initialCol;
+        layers.catchGhosts = initialGhostsSummary;
+        layers.escapedGhosts = initialGhostsSummary;
     }
 
     const prepareGame = () => {
@@ -261,7 +270,7 @@
             return;
         }
         if (Object.values(layers.catchGhosts).some((value) => value > 0)) {
-            $gameStatus === 'success';
+            $gameStatus = 'success';
         } else {
             $gameStatus = 'failure';
         }
@@ -311,6 +320,10 @@
 
     const handleKeyDown = (ev: KeyboardEvent) => {
         ev.preventDefault();
+
+        if ($gameStatus !== 'playing') {
+            return;
+        }
 
         if (ev.key === 'ArrowLeft') {
             currentPlasma.moveLeft();

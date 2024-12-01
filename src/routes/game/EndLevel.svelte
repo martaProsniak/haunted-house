@@ -1,17 +1,32 @@
 <script lang="ts">
     import {gameStatus, level} from "./game.state.svelte";
 
-    let open = $derived($gameStatus === 'success' || $gameStatus === 'failure');
-
     const onclick = () => {
-        $level++;
+        if ($gameStatus === 'success') {
+            $level++;
+        }
         $gameStatus = 'started';
     }
 </script>
 
-<dialog {open}>
+{#snippet success()}
     <span>Level {$level} completed!</span>
     <button {onclick}>Start next level</button>
+{/snippet}
+
+{#snippet failure()}
+    <span>You lost!</span>
+    <button {onclick}>Restart level {$level}</button>
+{/snippet}
+
+
+<dialog open={$gameStatus === 'success' || $gameStatus === 'failure'}>
+    {#if $gameStatus === 'success'}
+        {@render success()}
+    {/if}
+    {#if $gameStatus === 'failure'}
+        {@render failure()}
+    {/if}
 </dialog>
 
 <style>
