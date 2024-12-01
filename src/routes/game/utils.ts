@@ -5,9 +5,9 @@ import greenPlasma from '$lib/assets/plasma-green.png';
 import pinkPlasma from '$lib/assets/plasma-pink.png';
 import bluePlasma from '$lib/assets/plasma-blue.png';
 
-import blueGhost from '$lib/assets/ghost-blue.png';
-import pinkGhost from '$lib/assets/ghost-pink.png';
-import greenGhost from '$lib/assets/ghost-green.png';
+import blueGhost from '$lib/assets/ghost-blue.gif';
+import pinkGhost from '$lib/assets/ghost-pink.gif';
+import greenGhost from '$lib/assets/ghost-green.gif';
 
 export const colors: Record<string, Color> = {
 	pink: 'pink',
