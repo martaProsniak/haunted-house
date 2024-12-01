@@ -13,7 +13,6 @@
         isPaused,
         layers
     } from "./game.state.svelte";
-    import {onMount} from "svelte";
     import type {Ghost} from "./types";
 
     interface Props {
@@ -64,13 +63,14 @@
     })
 
     const moveUp = () => {
-        const {row, column} = ghost;
+        const {row, column, id} = ghost;
 
         if (row === 0) {
             console.log('Ghost ended!', ghost.color);
             clearInterval(interval);
-            // layers.escapedGhosts.push(ghost);
-
+            layers.escapedGhosts[ghost.color]++;
+            layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
+            layers.matrix[row][column] = null;
         }
 
         if (hasPillAbove) {
@@ -130,13 +130,14 @@
     }
 
     const scheduleMovement = () => {
+        console.log('schedule movement');
+        console.log(interval);
         interval = setInterval(() => {
             move();
         }, speed);
     }
 
     $effect(() => {
-        console.log(interval);
         if ($gameStatus === 'playing') {
             scheduleMovement();
         }

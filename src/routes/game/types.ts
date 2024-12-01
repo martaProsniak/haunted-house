@@ -25,11 +25,13 @@ export type Matrix = Array<Array<MatrixItem | null>>;
 
 export type GameStatus = 'not-started' | 'started' | 'playing' | 'success' | 'failure';
 
+export type GhostSummary = Record<string, number>
+
 export interface GameLayers {
 	matrix: Matrix;
 	ghosts: Ghost[];
 	previousPlasma: Plasma[];
-    escapedGhosts: Ghost[];
-    catchGhosts: Ghost[];
+    escapedGhosts: GhostSummary;
+    catchGhosts: GhostSummary;
     equipment: Plasma[];
 }

@@ -1,6 +1,6 @@
 import { derived, type Readable, type Writable, writable } from 'svelte/store';
 import { colors, getRandomColor, ghostsImages } from './utils';
-import type { GameLayers, GameStatus, Ghost, Matrix, Rotation } from './types';
+import type {GameLayers, GameStatus, Ghost, GhostSummary, Matrix, Rotation} from './types';
 import { v4 as uuidv4 } from "uuid";
 
 // Constants
@@ -53,13 +53,19 @@ export const derivedCol: Readable<number> = derived(
 
 // State
 export const initialMatrix = Array.from(Array(rowsCount).keys()).map(() => Array.from(Array(colsCount).keys()).map(() => null));
+export const initialGhostsSummary: GhostSummary = {
+	pink: 0,
+	blue: 0,
+	green: 0,
+}
+
 
 export const layers: GameLayers = $state({
 	matrix: initialMatrix,
 	ghosts: [],
 	previousPlasma: [],
-	escapedGhosts: [],
-	catchGhosts: [],
+	escapedGhosts: initialGhostsSummary,
+	catchGhosts: initialGhostsSummary,
 	equipment: []
 });
 
