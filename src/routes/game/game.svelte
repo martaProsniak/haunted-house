@@ -13,7 +13,7 @@
         derivedRow,
         derivedCol,
         gameStatus,
-        level, isPaused, initialMatrix
+        level, isPaused, initialMatrix, initialGhostsSummary
     } from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -38,6 +38,10 @@
 
         if ($gameStatus === 'playing') {
             startLevel();
+        }
+
+        if ($gameStatus === 'success' || $gameStatus === 'failure') {
+            clearInterval(plasmaInterval);
         }
 
         return () => {
@@ -67,6 +71,8 @@
         $currentRow = initialRow;
         $currentCol = initialCol;
         $gameStatus = 'playing';
+        layers.catchGhosts = initialGhostsSummary;
+        layers.escapedGhosts = initialGhostsSummary;
     }
 
     const prepareGhostsLayer = () => {
@@ -80,7 +86,6 @@
     const startLevel = () => {
         plasmaInterval = setInterval(() => {
             if (layers.matrix[initialRow][initialCol]) {
-                clearInterval(plasmaInterval);
                 $gameStatus = 'failure';
             }
 
@@ -245,7 +250,29 @@
         }))
 
         layers.previousPlasma = layers.previousPlasma.filter((plasma) => !plasmaToRemove[plasma.id]);
-        layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id])
+        layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id]);
+        countCatchGhosts(ghostsToRemove);
+        checkResult();
+    }
+
+    const checkResult = () => {
+        if (layers.ghosts.length) {
+            return;
+        }
+        if (Object.values(layers.catchGhosts).some((value) => value > 0)) {
+            $gameStatus === 'success';
+            console.log('Success, catched at least one ghost')
+        } else {
+            $gameStatus = 'failure';
+            console.log('All ghosts escaped :(')
+        }
+    }
+
+    const countCatchGhosts = (ghosts: Record<string, MatrixItem>) => {
+        console.log(ghosts);
+        Object.values(ghosts).forEach((ghost) => {
+            layers.catchGhosts[ghost.color]++
+        })
     }
 
     const checkHorizontal = () => {
