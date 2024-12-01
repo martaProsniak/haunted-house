@@ -21,6 +21,7 @@
     import Board from './board.svelte';
     import GhostsInfo from './ghostsInfo.svelte';
     import Score from './score.svelte';
+    import EndLevel from "./EndLevel.svelte";
     import {generateGhosts, plasmaImages} from "./utils";
 
     const offset = 44;
@@ -344,6 +345,7 @@
     <div class="score">
         <Score />
     </div>
+    <EndLevel />
 </div>
 
 <style>
