@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {lastCol, lastRow, matrix} from "./game.state.svelte";
+    import {lastCol, lastRow, layers} from "./game.state.svelte";
     import floorImage from '$lib/assets/floor.png';
     import candleImage from '$lib/assets/candle.png'
 
@@ -11,7 +11,7 @@
     }
 </script>
 
-{#each matrix as row, rowIndex}
+{#each layers.matrix as row, rowIndex}
     <div class="w-fit flex flex-row flex-nowrap gap-1">
         {#each row as cell, cellIndex}
             <div class="cell" style:background-image={`url("${getCellBgImg(rowIndex, cellIndex)}")`}></div>

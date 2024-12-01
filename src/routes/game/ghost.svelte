@@ -1,6 +1,5 @@
 <script lang="ts">
     import {
-        matrix,
         initialRow,
         initialCol,
         lastCol,
@@ -11,7 +10,8 @@
         derivedCol,
         lastRow,
         gameStatus,
-        isPaused
+        isPaused,
+        layers
     } from "./game.state.svelte";
     import {onMount} from "svelte";
     import type {Ghost} from "./types";
@@ -40,10 +40,10 @@
 
     let neighbors = $derived.by(() => {
         return {
-            top: ghost.row === 0 ? null : matrix[ghost.row - 1][ghost.column],
-            right: ghost.column === lastCol ? null : matrix[ghost.row][ghost.column + 1],
-            bottom: ghost.row === lastRow ? null : matrix[ghost.row + 1][ghost.column],
-            left: ghost.row === 0 ? null : matrix[ghost.row][ghost.column - 1],
+            top: ghost.row === 0 ? null : layers.matrix[ghost.row - 1][ghost.column],
+            right: ghost.column === lastCol ? null : layers.matrix[ghost.row][ghost.column + 1],
+            bottom: ghost.row === lastRow ? null : layers.matrix[ghost.row + 1][ghost.column],
+            left: ghost.row === 0 ? null : layers.matrix[ghost.row][ghost.column - 1],
         }
     })
 
@@ -76,8 +76,8 @@
         }
 
         ghost.row = row - 1;
-        matrix[row][column] = null
-        $state.snapshot(matrix);
+        layers.matrix[row][column] = null
+        $state.snapshot(layers.matrix);
         // debugger;
     }
 
@@ -86,8 +86,8 @@
         const {row, column} = ghost;
 
         ghost.column = column - 1;
-        matrix[row][column] = null
-        $state.snapshot(matrix);
+        layers.matrix[row][column] = null
+        $state.snapshot(layers.matrix);
     }
 
     const moveRight = () => {
@@ -95,8 +95,8 @@
         const {row, column} = ghost;
 
         ghost.column = column + 1;
-        matrix[row][column] = null
-        $state.snapshot(matrix);
+        layers.matrix[row][column] = null
+        $state.snapshot(layers.matrix);
 
     }
 

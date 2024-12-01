@@ -3,7 +3,6 @@
     import { v4 as uuidv4 } from "uuid";
     import {
         flyingPlasmaColors,
-        matrix,
         layers,
         initialCol,
         initialRow,
@@ -14,7 +13,7 @@
         derivedRow,
         derivedCol,
         gameStatus,
-        level, isPaused
+        level, isPaused, initialMatrix
     } from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -51,7 +50,7 @@
 
     $effect(() => {
         layers.ghosts.forEach(({row, column, id, color, imageUrl}) => {
-            matrix[row][column] = {type: 'ghost', id, color, row, column, imageUrl};
+            layers.matrix[row][column] = {type: 'ghost', id, color, row, column, imageUrl};
         })
     });
 
@@ -63,6 +62,10 @@
 
     const prepareGame = () => {
         prepareGhostsLayer();
+        preparePlasmaLayer();
+        layers.matrix = initialMatrix;
+        $currentRow = initialRow;
+        $currentCol = initialCol;
         $gameStatus = 'playing';
     }
 
@@ -70,11 +73,15 @@
         layers.ghosts = generateGhosts($level);
     }
 
+    const preparePlasmaLayer = () => {
+        layers.previousPlasma = [];
+    }
+
     const startLevel = () => {
         console.log('Starting level')
         plasmaInterval = setInterval(() => {
             console.log('In interval');
-            if (matrix[initialRow][initialCol]) {
+            if (layers.matrix[initialRow][initialCol]) {
                 console.log('Fail?')
                 clearInterval(plasmaInterval);
                 $gameStatus = 'failure';
@@ -118,7 +125,7 @@
         layers.previousPlasma.push(currentPlasma, derivedPlasma);
 
         layers.previousPlasma.forEach(({row, column, id, color, imageUrl}) => {
-            matrix[row][column] = {type: 'plasma', id, color, row, column, imageUrl};
+            layers.matrix[row][column] = {type: 'plasma', id, color, row, column, imageUrl};
         })
     }
 
@@ -126,7 +133,7 @@
         if (row > lastRow) {
             return matchingItems;
         }
-        const item = matrix[row][col];
+        const item = layers.matrix[row][col];
         if (item?.color !== color) {
             return matchingItems;
         }
@@ -138,7 +145,7 @@
         if (row === 1) {
             return matchingItems;
         }
-        const item = matrix[row][col];
+        const item = layers.matrix[row][col];
         if (item?.color !== color) {
             return matchingItems;
         }
@@ -150,7 +157,7 @@
         if (col < 0) {
             return matchingItems;
         }
-        const item = matrix[row][col];
+        const item = layers.matrix[row][col];
         if (item?.color !== color) {
             return matchingItems;
         }
@@ -162,7 +169,7 @@
         if (col === lastCol) {
             return matchingItems;
         }
-        const item = matrix[row][col];
+        const item = layers.matrix[row][col];
         if (item?.color !== color) {
             return matchingItems;
         }
@@ -171,7 +178,7 @@
     }
 
     const matchCurrentColorVertical = () => {
-        const itemInMatrix = matrix[$currentRow][$currentCol];
+        const itemInMatrix = layers.matrix[$currentRow][$currentCol];
         if (!itemInMatrix) {
             return [];
         }
@@ -184,7 +191,7 @@
     }
 
     const matchCurrentColorHorizontal = () => {
-        const itemInMatrix = matrix[$currentRow][$currentCol];
+        const itemInMatrix = layers.matrix[$currentRow][$currentCol];
         if (!itemInMatrix) {
             return [];
         }
@@ -197,7 +204,7 @@
     }
 
     const matchDerivedColorHorizontal = () => {
-        const itemInMatrix = matrix[$derivedRow][$derivedCol];
+        const itemInMatrix = layers.matrix[$derivedRow][$derivedCol];
         if (!itemInMatrix) {
             return [];
         }
@@ -210,7 +217,7 @@
     }
 
     const matchDerivedColorVertical = () => {
-        const itemInMatrix = matrix[$derivedRow][$derivedCol];
+        const itemInMatrix = layers.matrix[$derivedRow][$derivedCol];
         if (!itemInMatrix) {
             return [];
         }
@@ -231,7 +238,7 @@
         const ghostsToRemove: Record<string, MatrixItem> = {};
 
         matchingItems.forEach((item => {
-            matrix[item.row][item.column] = null;
+            layers.matrix[item.row][item.column] = null;
             if (item.type === 'ghost') {
                 ghostsToRemove[item.id] = item;
             }
@@ -264,18 +271,22 @@
     }
 
     const moveDown = () => {
-        console.log('Move down')
+
         if (!currentPlasma.canMoveDown()) {
             plasmaEnded();
             return;
         }
 
         currentPlasma.moveDown();
+
+        if (!currentPlasma.canMoveDown()) {
+            plasmaEnded();
+            return;
+        }
     }
 
     const handleKeyDown = (ev: KeyboardEvent) => {
         ev.preventDefault();
-
 
         if (ev.key === 'ArrowLeft') {
             currentPlasma.moveLeft();
