@@ -14,7 +14,7 @@
         derivedCol,
         gameStatus,
         rotation,
-        level, isPaused, initialMatrix, initialGhostsSummary
+        level, isPaused, initialMatrix, initialGhostsSummary, totalGhosts
     } from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -73,6 +73,7 @@
         layers.matrix = initialMatrix;
         $currentRow = initialRow;
         $currentCol = initialCol;
+        $totalGhosts = layers.ghosts.length;
         $gameStatus = 'playing';
         layers.catchGhosts = initialGhostsSummary;
         layers.escapedGhosts = initialGhostsSummary;

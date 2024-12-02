@@ -1,5 +1,6 @@
 <script lang="ts">
     import type {Color} from "./types";
+    import {fade, scale} from 'svelte/transition'
 
     interface Props {
         offset: number,
@@ -16,7 +17,8 @@
         style:background-image={`url("${imageUrl}")`}
         style:top={`${row * offset}px`}
         style:left={`${column * offset}px`}
-        class="plasma-previous">
+        class="plasma-previous"
+        out:fade={{ duration: 200 }} in:scale={{duration: 200}}>
 </div>
 
 <style>

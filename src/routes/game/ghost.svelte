@@ -1,7 +1,5 @@
 <script lang="ts">
     import {
-        initialRow,
-        initialCol,
         lastCol,
         currentRow,
         currentCol,
@@ -9,10 +7,9 @@
         derivedRow,
         derivedCol,
         lastRow,
-        gameStatus,
-        isPaused,
         layers
     } from "./game.state.svelte";
+    import {fade} from 'svelte/transition'
     import type {Ghost} from "./types";
     import {ghostsImagesGlued} from "./utils";
     interface Props {
@@ -58,6 +55,7 @@
         style:background-image={`url("${ghost.imageUrl}")`}
         style:top={`${ghost.row * offset}px`}
         style:left={`${ghost.column * offset}px`}
+        transition:fade={{duration: 200}}
 ></div>
 
 <style>
