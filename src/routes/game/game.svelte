@@ -13,6 +13,7 @@
         derivedRow,
         derivedCol,
         gameStatus,
+        rotation,
         level, isPaused, initialMatrix, initialGhostsSummary
     } from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
@@ -43,7 +44,6 @@
 
         if ($gameStatus === 'success' || $gameStatus === 'failure') {
             clearInterval(plasmaInterval);
-            resetGameState();
         }
 
         return () => {
@@ -66,17 +66,10 @@
         currentPlasma.reset();
     }
 
-    const resetGameState = () => {
-        layers.matrix = initialMatrix;
-        $currentRow = initialRow;
-        $currentCol = initialCol;
-        layers.catchGhosts = initialGhostsSummary;
-        layers.escapedGhosts = initialGhostsSummary;
-    }
-
     const prepareGame = () => {
         prepareGhostsLayer();
         preparePlasmaLayer();
+        $rotation = 0;
         layers.matrix = initialMatrix;
         $currentRow = initialRow;
         $currentCol = initialCol;
@@ -95,8 +88,8 @@
 
     const startLevel = () => {
         plasmaInterval = setInterval(() => {
-            if (layers.matrix[initialRow][initialCol]) {
-                $gameStatus = 'failure';
+            if (layers.matrix[initialRow][initialCol] || layers.matrix[initialRow][initialCol + 1]) {
+                checkResult();
             }
 
             if ($isPaused) {
@@ -108,14 +101,6 @@
         }, 1000);
     }
 
-
-    const endLevel = () => {
-
-    }
-
-    const endGame = () => {}
-
-    const startNextLevel = () => {}
 
     const updatePreviousPlasma = () => {
         const currentPlasma: Plasma = {
@@ -141,7 +126,7 @@
         })
     }
 
-    const findNextMatchingItemDown = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+    const findNextMatchingItemDown = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
         if (row > lastRow) {
             return matchingItems;
         }
@@ -149,11 +134,17 @@
         if (item?.color !== color) {
             return matchingItems;
         }
+        if (item.type === 'ghost') {
+            if (hasGhost) {
+                return matchingItems;
+            }
+            hasGhost = true;
+        }
         matchingItems.push(item);
-        return findNextMatchingItemDown(row + 1, col, color, matchingItems);
+        return findNextMatchingItemDown(row + 1, col, color, matchingItems, hasGhost);
     }
 
-    const findNextMatchingItemUp = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+    const findNextMatchingItemUp = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
         if (row === 1) {
             return matchingItems;
         }
@@ -161,11 +152,17 @@
         if (item?.color !== color) {
             return matchingItems;
         }
+        if (item.type === 'ghost') {
+            if (hasGhost) {
+                return matchingItems;
+            }
+            hasGhost = true;
+        }
         matchingItems.push(item);
-        return findNextMatchingItemUp(row - 1, col, color, matchingItems);
+        return findNextMatchingItemUp(row - 1, col, color, matchingItems, hasGhost);
     }
 
-    const findNextMatchingItemLeft = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+    const findNextMatchingItemLeft = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
         if (col < 0) {
             return matchingItems;
         }
@@ -173,11 +170,17 @@
         if (item?.color !== color) {
             return matchingItems;
         }
+        if (item.type === 'ghost') {
+            if (hasGhost) {
+                return matchingItems;
+            }
+            hasGhost = true;
+        }
         matchingItems.push(item);
-        return findNextMatchingItemLeft(row, col - 1, color, matchingItems);
+        return findNextMatchingItemLeft(row, col - 1, color, matchingItems, hasGhost);
     }
 
-    const findNextMatchingItemRight = (row: number, col: number, color: Color, matchingItems: MatrixItem[]) => {
+    const findNextMatchingItemRight = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
         if (col === lastCol) {
             return matchingItems;
         }
@@ -185,8 +188,14 @@
         if (item?.color !== color) {
             return matchingItems;
         }
+        if (item.type === 'ghost') {
+            if (hasGhost) {
+                return matchingItems;
+            }
+            hasGhost = true;
+        }
         matchingItems.push(item);
-        return findNextMatchingItemRight(row, col + 1, color, matchingItems);
+        return findNextMatchingItemRight(row, col + 1, color, matchingItems, hasGhost);
     }
 
     const matchCurrentColorVertical = () => {
@@ -262,29 +271,51 @@
         layers.previousPlasma = layers.previousPlasma.filter((plasma) => !plasmaToRemove[plasma.id]);
         layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id]);
         countCatchGhosts(ghostsToRemove);
+
+        if (layers.ghosts.length) {
+            return;
+        }
+
         checkResult();
     }
 
     const checkResult = () => {
-        if (layers.ghosts.length) {
-            return;
-        }
-        if (Object.values(layers.catchGhosts).some((value) => value > 0)) {
-            $gameStatus = 'success';
-        } else {
-            $gameStatus = 'failure';
-        }
+        const anyGhostCatch = Object.values(layers.catchGhosts).some((value) => value > 0);
+        $gameStatus = anyGhostCatch ? 'success' : 'failure';
+
         clearInterval(plasmaInterval);
     }
 
     const countCatchGhosts = (ghosts: Record<string, MatrixItem>) => {
-        console.log(ghosts);
         Object.values(ghosts).forEach((ghost) => {
             layers.catchGhosts[ghost.color]++
         })
     }
 
-    const checkHorizontal = () => {
+    const matchItemsPerRotation = {
+        0: () => matchItemsHorizontal(),
+        90: () => {
+            const matchingDerivedColorVertical = matchDerivedColorVertical();
+            const matchingCurrentColorHorizontal = matchCurrentColorHorizontal();
+            const matchingDerivedColorHorizontal = matchDerivedColorHorizontal();
+
+            clearItems(matchingDerivedColorVertical);
+            clearItems(matchingCurrentColorHorizontal);
+            clearItems(matchingDerivedColorHorizontal);
+        },
+        180: () => matchItemsHorizontal(),
+        270: () => {
+            const matchingCurrentColorVertical = matchCurrentColorVertical();
+            const matchingCurrentColorHorizontal = matchCurrentColorHorizontal();
+            const matchingDerivedColorHorizontal = matchDerivedColorHorizontal();
+
+            clearItems(matchingCurrentColorVertical);
+            clearItems(matchingCurrentColorHorizontal);
+            clearItems(matchingDerivedColorHorizontal);
+        }
+    }
+
+    const matchItemsHorizontal = () => {
         const matchingCurrentColorVertical = matchCurrentColorVertical()
         const matchingDerivedColorVertical = matchDerivedColorVertical();
 
@@ -299,7 +330,7 @@
 
     const plasmaEnded = () => {
         updatePreviousPlasma();
-        checkHorizontal();
+        matchItemsPerRotation[$rotation]();
         resetPlasma();
     }
 

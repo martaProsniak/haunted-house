@@ -34,7 +34,7 @@
                 {#if layers.escapedGhosts[color] > 0}
                     <div class="relative">
                         <img src={ghostImages[color]} alt={color}>
-                        <div class="absolute bg-white text-stone-900 rounded-full  count">{layers.catchGhosts[color]}</div>
+                        <div class="absolute bg-white text-stone-900 rounded-full  count">{layers.escapedGhosts[color]}</div>
                     </div>
                 {/if}
             {/each}

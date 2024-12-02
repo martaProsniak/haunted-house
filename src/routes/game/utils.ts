@@ -69,7 +69,7 @@ export const getRandomPill: () => { current: Color; derived: Color } = () => {
 const CONFIG = {
 	rowsCount: 16,
 	colsCount: 16,
-	minRow: 4,
+	minRow: 6,
 	maxRow: 15
 };
 

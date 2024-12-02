@@ -25,12 +25,25 @@
 
     const scheduleMovement = () => {
         interval = setInterval(() => {
-            console.log('Interval')
             ghostsToMove.forEach((ghost) => {
                 ghost.imageUrl = ghostsGifs[ghost.color]
                 moveGhost(ghost);
             })
-        }, 1000);
+        }, 2000);
+    }
+
+    const checkResult = () => {
+        if (layers.ghosts.length) {
+            return;
+        }
+        const anyGhostCatch = Object.values(layers.catchGhosts).some((value) => value > 0);
+        $gameStatus = anyGhostCatch ? 'success' : 'failure';
+        clearInterval(interval);
+    }
+
+    const updateAfterMove = (ghost: Ghost) => {
+        ghost.hasMoved = true;
+        ghost.imageUrl = ghostsImages[ghost.color]
     }
 
     const moveUp = (ghost: Ghost) => {
@@ -40,6 +53,7 @@
             layers.escapedGhosts[ghost.color]++;
             layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
             layers.matrix[row][column] = null;
+            checkResult();
         }
 
         if (ghost.hasPillAbove) {
@@ -48,8 +62,6 @@
 
         ghost.row = row - 1;
         layers.matrix[row][column] = null
-        ghost.hasMoved = true;
-        ghost.imageUrl = ghostsImages[ghost.color]
     }
 
     const moveLeft = (ghost: Ghost) => {
@@ -57,8 +69,6 @@
 
         ghost.column = column - 1;
         layers.matrix[row][column] = null
-        ghost.hasMoved = true;
-        ghost.imageUrl = ghostsImages[ghost.color]
     }
 
     const moveRight = (ghost: Ghost) => {
@@ -66,9 +76,6 @@
 
         ghost.column = column + 1;
         layers.matrix[row][column] = null
-        ghost.hasMoved = true;
-        ghost.imageUrl = ghostsImages[ghost.color]
-
     }
 
     const moveGhost = (ghost: Ghost) => {
@@ -76,7 +83,7 @@
             return;
         }
 
-        const {row, column, color, neighbors} = ghost;
+        const {row, column, neighbors} = ghost;
 
         if (row - 1 === $currentRow || ($rotation === 90 && row - 1 === $derivedRow)) {
             return;
@@ -88,7 +95,9 @@
             moveRight(ghost);
         } else if (!neighbors.left && column > 0) {
             moveLeft(ghost);
-        } else console.log('Cannot move', color);
+        }
+
+        updateAfterMove(ghost);
 
     }
 
@@ -104,7 +113,6 @@
                 return ghost;
             }).slice(0, moveCount);
         }
-        console.log(ghostsToMove);
         ghostsToMove.forEach((ghost) => {
             ghost.imageUrl = ghostsGifs[ghost.color]
         })
