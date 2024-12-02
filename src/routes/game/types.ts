@@ -13,8 +13,19 @@ export interface MatrixItem {
 	imageUrl: string;
 }
 
+interface Neighbors {
+	top: MatrixItem | null;
+	bottom: MatrixItem | null;
+	left: MatrixItem | null;
+	right: MatrixItem | null;
+}
+
 export interface Ghost extends MatrixItem {
 	type: 'ghost';
+	isGlued: boolean;
+	hasMoved: boolean;
+	neighbors: Neighbors,
+	hasPillAbove: boolean;
 }
 
 export interface Plasma extends MatrixItem {

@@ -5,9 +5,17 @@ import greenPlasma from '$lib/assets/plasma-green.png';
 import pinkPlasma from '$lib/assets/plasma-pink.png';
 import bluePlasma from '$lib/assets/plasma-blue.png';
 
-import blueGhost from '$lib/assets/ghost-blue.gif';
-import pinkGhost from '$lib/assets/ghost-pink.gif';
-import greenGhost from '$lib/assets/ghost-green.gif';
+import blueGhost from '$lib/assets/ghost-blue.png';
+import pinkGhost from '$lib/assets/ghost-pink.png';
+import greenGhost from '$lib/assets/ghost-green.png';
+
+import blueGhostGif from '$lib/assets/ghost-blue.gif';
+import pinkGhostGif from '$lib/assets/ghost-pink.gif';
+import greenGhostGif from '$lib/assets/ghost-green.gif';
+
+import blueGhostGlued from '$lib/assets/ghost-blue-glued.png';
+import pinkGhostGlued from '$lib/assets/ghost-pink-glued.png';
+import greenGhostGlued from '$lib/assets/ghost-green-glued.png';
 
 export const colors: Record<string, Color> = {
 	pink: 'pink',
@@ -25,6 +33,18 @@ export const ghostsImages: Record<Color, string>= {
 	pink: pinkGhost,
 	blue: blueGhost,
 	green: greenGhost,
+} as const;
+
+export const ghostsImagesGlued: Record<Color, string>= {
+	pink: pinkGhostGlued,
+	blue: blueGhostGlued,
+	green: greenGhostGlued,
+} as const;
+
+export const ghostsGifs: Record<Color, string>= {
+	pink: pinkGhostGif,
+	blue: blueGhostGif,
+	green: greenGhostGif,
 } as const;
 
 export const getRandomColor = () => {
@@ -53,7 +73,6 @@ const CONFIG = {
 	maxRow: 15
 };
 
-// Generowanie wagi dla rzędów
 function generateWeightedRows(): number[] {
 	const { minRow, maxRow } = CONFIG;
 	const weights = Array.from({ length: maxRow - minRow + 1 }, (_, i) => minRow + i).map(row => ({
@@ -63,26 +82,23 @@ function generateWeightedRows(): number[] {
 	return weights.flatMap(({ row, weight }) => Array(weight).fill(row));
 }
 
-// Losowanie rzędu z wagami
 function weightedRowRandom(): number {
 	const weightedRows = generateWeightedRows();
 	return weightedRows[Math.floor(Math.random() * weightedRows.length)];
 }
 
-// Losowanie unikalnej pozycji `(row, column)`
 function getUniquePosition(positions: Set<string>, rowsRange: number[], colsCount: number): { row: number; column: number } {
 	let row: number, column: number;
 
 	do {
-		row = weightedRowRandom(); // Losuj rząd
-		column = Math.floor(Math.random() * colsCount); // Losuj kolumnę
+		row = weightedRowRandom();
+		column = Math.floor(Math.random() * colsCount);
 	} while (positions.has(`${row},${column}`));
 
 	positions.add(`${row},${column}`);
 	return { row, column };
 }
 
-// Obliczanie maksymalnej liczby duszków
 function calculateMaxGhosts(level: number): number {
 	const baseGhosts = 6;
 	const incrementPerLevel = 4;
@@ -91,7 +107,14 @@ function calculateMaxGhosts(level: number): number {
 	return Math.min(baseGhosts + (level - 1) * incrementPerLevel, maxGhostsLimit);
 }
 
-// Generowanie duszków
+function shuffleArray (array: Ghost[]) {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+	return array;
+}
+
 export function generateGhosts(level: number): Ghost[] {
 	const maxGhosts = calculateMaxGhosts(level);
 	const colors: Color[] = ['pink', 'green', 'blue'];
@@ -112,7 +135,7 @@ export function generateGhosts(level: number): Ghost[] {
 		remainingGhosts--;
 	}
 
-	return colors.flatMap(color =>
+	const ghosts: Ghost[] = colors.flatMap(color =>
 		Array(colorCounts[color]).fill(null).map(() => {
 			const { row, column } = getUniquePosition(positions, rowsRange, CONFIG.colsCount);
 
@@ -122,8 +145,19 @@ export function generateGhosts(level: number): Ghost[] {
 				id: uuidv4(),
 				row,
 				column,
-				imageUrl: ghostsImages[color]
+				imageUrl: ghostsImages[color],
+				isGlued: false,
+				hasMoved: false,
+				neighbors: {
+					top: null,
+					bottom: null,
+					left: null,
+					right: null,
+				},
+				hasPillAbove: false,
 			};
 		})
 	);
+
+	return shuffleArray(ghosts)
 }

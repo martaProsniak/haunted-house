@@ -14,29 +14,12 @@
         layers
     } from "./game.state.svelte";
     import type {Ghost} from "./types";
-
+    import {ghostsImagesGlued} from "./utils";
     interface Props {
         ghost: Ghost,
         offset: number,
     }
-
     const {ghost, offset}: Props = $props();
-    let interval: ReturnType<typeof setInterval>;
-    let speed = $derived.by(() => {
-        const {color} = ghost;
-
-        if (color === 'pink') {
-            return 3000;
-        }
-        if (color === 'blue') {
-            return 8000;
-        }
-        if (color === 'green') {
-            return 5000;
-        }
-        return 10 * 60;
-    })
-
     let neighbors = $derived.by(() => {
         return {
             top: ghost.row === 0 ? null : layers.matrix[ghost.row - 1][ghost.column],
@@ -51,103 +34,23 @@
     })
 
     let hasPillAbove = $derived.by(() => {
-        if ($rotation === 0 || $rotation === 180) {
-            return ghost.row - 1 === $currentRow && (ghost.column === $currentCol || ghost.column === $derivedCol);
-        }
         if ($rotation === 270) {
             return ghost.row - 1 === $currentRow && (ghost.column === $currentCol);
         }
         if ($rotation === 90) {
             return ghost.row - 1 === $derivedRow && (ghost.column === $derivedCol);
         }
+        return ghost.row - 1 === $currentRow && (ghost.column === $currentCol || ghost.column === $derivedCol);
     })
-
-    const moveUp = () => {
-        const {row, column, id} = ghost;
-
-        if (row === 0) {
-            clearInterval(interval);
-            layers.escapedGhosts[ghost.color]++;
-            layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
-            layers.matrix[row][column] = null;
-        }
-
-        if (hasPillAbove) {
-            return;
-        }
-
-        ghost.row = row - 1;
-        layers.matrix[row][column] = null
-        $state.snapshot(layers.matrix);
-    }
-
-    const moveLeft = () => {
-        const {row, column} = ghost;
-
-        ghost.column = column - 1;
-        layers.matrix[row][column] = null
-        $state.snapshot(layers.matrix);
-    }
-
-    const moveRight = () => {
-        const {row, column} = ghost;
-
-        ghost.column = column + 1;
-        layers.matrix[row][column] = null
-        $state.snapshot(layers.matrix);
-
-    }
-
-    export const move = () => {
-        if ($isPaused) {
-            return;
-        }
-
-        if (isGlued) {
-            return;
-        }
-
-        const {row, column, color} = ghost;
-
-        if (ghost.row === initialRow) {
-            clearInterval(interval);
-        }
-
-        if (row - 1 === $currentRow || ($rotation === 90 && row - 1 === $derivedRow)) {
-            return;
-        }
-
-        if (!neighbors.top) {
-            moveUp();
-        } else if (!neighbors.right && column !== lastCol) {
-            moveRight();
-        } else if (!neighbors.left && column > 0) {
-            moveLeft();
-        } else console.log('Cannot move', color);
-    }
-
-    const scheduleMovement = () => {
-        interval = setInterval(() => {
-            move();
-        }, speed);
-    }
 
     $effect(() => {
-        if ($gameStatus === 'playing') {
-            scheduleMovement();
+        ghost.isGlued = isGlued;
+        if (isGlued) {
+            ghost.imageUrl = ghostsImagesGlued[ghost.color];
         }
-
-        console.log($gameStatus)
-
-        if ($gameStatus === 'success' || $gameStatus === 'failure') {
-            clearInterval(interval);
-        }
-
-        return () => {
-            clearInterval(interval);
-        }
+        ghost.neighbors = neighbors;
+        ghost.hasPillAbove = hasPillAbove
     })
-
 </script>
 
 <div
