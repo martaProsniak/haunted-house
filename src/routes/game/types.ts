@@ -4,6 +4,13 @@ export type PillPosition = 'horizontal' | 'vertical' | 'verticalFlipped';
 
 export type Color = 'pink' | 'green' | 'blue';
 
+interface Neighbors {
+	top: MatrixItem | null;
+	bottom: MatrixItem | null;
+	left: MatrixItem | null;
+	right: MatrixItem | null;
+}
+
 export interface MatrixItem {
 	type: 'plasma' | 'ghost';
 	color: Color;
@@ -13,12 +20,6 @@ export interface MatrixItem {
 	imageUrl: string;
 }
 
-interface Neighbors {
-	top: MatrixItem | null;
-	bottom: MatrixItem | null;
-	left: MatrixItem | null;
-	right: MatrixItem | null;
-}
 
 export interface Ghost extends MatrixItem {
 	type: 'ghost';

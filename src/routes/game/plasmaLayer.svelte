@@ -7,6 +7,6 @@
 
 <div class="absolute">
     {#each layers.previousPlasma as plasma}
-        <Plasma {...plasma} {offset} />
+        <Plasma plasma={plasma} {offset} />
     {/each}
 </div>

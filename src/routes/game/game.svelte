@@ -1,20 +1,24 @@
 <script lang="ts">
-    import type {Color, MatrixItem, Plasma} from './types'
-    import { v4 as uuidv4 } from "uuid";
+    import type {MatrixItem, Plasma} from './types'
+    import {v4 as uuidv4} from "uuid";
     import {
-        flyingPlasmaColors,
-        layers,
-        initialCol,
-        initialRow,
-        lastCol,
-        lastRow,
         currentCol,
         currentRow,
-        derivedRow,
         derivedCol,
+        derivedRow,
+        flyingPlasmaColors,
         gameStatus,
+        initialCol,
+        initialGhostsSummary,
+        initialMatrix,
+        initialRow,
+        isPaused,
+        lastCol,
+        lastRow,
+        layers,
+        level,
         rotation,
-        level, isPaused, initialMatrix, initialGhostsSummary, totalGhosts
+        totalGhosts
     } from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -23,7 +27,14 @@
     import GhostsInfo from './ghostsInfo.svelte';
     import Score from './score.svelte';
     import EndLevel from "./EndLevel.svelte";
-    import {generateGhosts, plasmaImages} from "./utils";
+    import {
+        findNextMatchingItemDown,
+        findNextMatchingItemLeft,
+        findNextMatchingItemRight,
+        findNextMatchingItemUp,
+        generateGhosts,
+        plasmaImages
+    } from "./utils";
 
     const offset = 44;
     const gap = 4;
@@ -75,6 +86,7 @@
         $currentCol = initialCol;
         $totalGhosts = layers.ghosts.length;
         $gameStatus = 'playing';
+        $isPaused = false;
         layers.catchGhosts = initialGhostsSummary;
         layers.escapedGhosts = initialGhostsSummary;
     }
@@ -110,7 +122,7 @@
             color: flyingPlasmaColors.current,
             row: $currentRow,
             column: $currentCol,
-            imageUrl: plasmaImages[flyingPlasmaColors.current]
+            imageUrl: plasmaImages[flyingPlasmaColors.current],
         };
         const derivedPlasma: Plasma = {
             type: 'plasma',
@@ -122,81 +134,9 @@
         };
         layers.previousPlasma.push(currentPlasma, derivedPlasma);
 
-        layers.previousPlasma.forEach(({row, column, id, color, imageUrl}) => {
-            layers.matrix[row][column] = {type: 'plasma', id, color, row, column, imageUrl};
+        layers.previousPlasma.forEach((plasma) => {
+            layers.matrix[plasma.row][plasma.column] = plasma;
         })
-    }
-
-    const findNextMatchingItemDown = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
-        if (row > lastRow) {
-            return matchingItems;
-        }
-        const item = layers.matrix[row]?.[col];
-        if (item?.color !== color) {
-            return matchingItems;
-        }
-        if (item.type === 'ghost') {
-            if (hasGhost) {
-                return matchingItems;
-            }
-            hasGhost = true;
-        }
-        matchingItems.push(item);
-        return findNextMatchingItemDown(row + 1, col, color, matchingItems, hasGhost);
-    }
-
-    const findNextMatchingItemUp = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
-        if (row === 1) {
-            return matchingItems;
-        }
-        const item = layers.matrix[row]?.[col];
-        if (item?.color !== color) {
-            return matchingItems;
-        }
-        if (item.type === 'ghost') {
-            if (hasGhost) {
-                return matchingItems;
-            }
-            hasGhost = true;
-        }
-        matchingItems.push(item);
-        return findNextMatchingItemUp(row - 1, col, color, matchingItems, hasGhost);
-    }
-
-    const findNextMatchingItemLeft = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
-        if (col < 0) {
-            return matchingItems;
-        }
-        const item = layers.matrix[row]?.[col];
-        if (item?.color !== color) {
-            return matchingItems;
-        }
-        if (item.type === 'ghost') {
-            if (hasGhost) {
-                return matchingItems;
-            }
-            hasGhost = true;
-        }
-        matchingItems.push(item);
-        return findNextMatchingItemLeft(row, col - 1, color, matchingItems, hasGhost);
-    }
-
-    const findNextMatchingItemRight = (row: number, col: number, color: Color, matchingItems: MatrixItem[], hasGhost = false) => {
-        if (col === lastCol) {
-            return matchingItems;
-        }
-        const item = layers.matrix[row]?.[col];
-        if (item?.color !== color) {
-            return matchingItems;
-        }
-        if (item.type === 'ghost') {
-            if (hasGhost) {
-                return matchingItems;
-            }
-            hasGhost = true;
-        }
-        matchingItems.push(item);
-        return findNextMatchingItemRight(row, col + 1, color, matchingItems, hasGhost);
     }
 
     const matchCurrentColorVertical = () => {
@@ -284,7 +224,6 @@
         const anyGhostCatch = Object.values(layers.catchGhosts).some((value) => value > 0);
         $gameStatus = anyGhostCatch ? 'success' : 'failure';
 
-        clearInterval(plasmaInterval);
     }
 
     const countCatchGhosts = (ghosts: Record<string, MatrixItem>) => {

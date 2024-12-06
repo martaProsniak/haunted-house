@@ -1,5 +1,5 @@
-import type { Color, Ghost } from './types';
-import { v4 as uuidv4 } from "uuid";
+import type { Color, Ghost, MatrixItem } from './types';
+import { v4 as uuidv4 } from 'uuid';
 
 import greenPlasma from '$lib/assets/plasma-green.png';
 import pinkPlasma from '$lib/assets/plasma-pink.png';
@@ -16,6 +16,7 @@ import greenGhostGif from '$lib/assets/ghost-green.gif';
 import blueGhostGlued from '$lib/assets/ghost-blue-glued.png';
 import pinkGhostGlued from '$lib/assets/ghost-pink-glued.png';
 import greenGhostGlued from '$lib/assets/ghost-green-glued.png';
+import { lastCol, lastRow, layers } from './game.state.svelte';
 
 export const colors: Record<string, Color> = {
 	pink: 'pink',
@@ -23,33 +24,33 @@ export const colors: Record<string, Color> = {
 	green: 'green'
 };
 
-export const plasmaImages: Record<Color, string>= {
+export const plasmaImages: Record<Color, string> = {
 	pink: pinkPlasma,
 	blue: bluePlasma,
-	green: greenPlasma,
+	green: greenPlasma
 } as const;
 
-export const ghostsImages: Record<Color, string>= {
+export const ghostsImages: Record<Color, string> = {
 	pink: pinkGhost,
 	blue: blueGhost,
-	green: greenGhost,
+	green: greenGhost
 } as const;
 
-export const ghostsImagesGlued: Record<Color, string>= {
+export const ghostsImagesGlued: Record<Color, string> = {
 	pink: pinkGhostGlued,
 	blue: blueGhostGlued,
-	green: greenGhostGlued,
+	green: greenGhostGlued
 } as const;
 
-export const ghostsGifs: Record<Color, string>= {
+export const ghostsGifs: Record<Color, string> = {
 	pink: pinkGhostGif,
 	blue: blueGhostGif,
-	green: greenGhostGif,
+	green: greenGhostGif
 } as const;
 
 export const getRandomColor = () => {
 	return Object.values(colors)[Math.floor(Math.random() * Object.values(colors).length)];
-}
+};
 
 export const getRandomPill: () => { current: Color; derived: Color } = () => {
 	const singleColorChance = 0.25;
@@ -64,7 +65,7 @@ export const getRandomPill: () => { current: Color; derived: Color } = () => {
 	}
 
 	return { current, derived };
-}
+};
 
 const CONFIG = {
 	rowsCount: 16,
@@ -75,7 +76,7 @@ const CONFIG = {
 
 function generateWeightedRows(): number[] {
 	const { minRow, maxRow } = CONFIG;
-	const weights = Array.from({ length: maxRow - minRow + 1 }, (_, i) => minRow + i).map(row => ({
+	const weights = Array.from({ length: maxRow - minRow + 1 }, (_, i) => minRow + i).map((row) => ({
 		row,
 		weight: row - minRow + 1
 	}));
@@ -87,7 +88,11 @@ function weightedRowRandom(): number {
 	return weightedRows[Math.floor(Math.random() * weightedRows.length)];
 }
 
-function getUniquePosition(positions: Set<string>, rowsRange: number[], colsCount: number): { row: number; column: number } {
+function getUniquePosition(
+	positions: Set<string>,
+	rowsRange: number[],
+	colsCount: number
+): { row: number; column: number } {
 	let row: number, column: number;
 
 	do {
@@ -107,7 +112,7 @@ function calculateMaxGhosts(level: number): number {
 	return Math.min(baseGhosts + (level - 1) * incrementPerLevel, maxGhostsLimit);
 }
 
-function shuffleArray (array: Ghost[]) {
+function shuffleArray(array: Ghost[]) {
 	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
 		[array[i], array[j]] = [array[j], array[i]];
@@ -120,7 +125,10 @@ export function generateGhosts(level: number): Ghost[] {
 	const colors: Color[] = ['pink', 'green', 'blue'];
 	const ghostsPerColor = Math.floor(maxGhosts / colors.length);
 	const positions = new Set<string>();
-	const rowsRange = Array.from({ length: CONFIG.maxRow - CONFIG.minRow + 1 }, (_, i) => CONFIG.minRow + i);
+	const rowsRange = Array.from(
+		{ length: CONFIG.maxRow - CONFIG.minRow + 1 },
+		(_, i) => CONFIG.minRow + i
+	);
 
 	const colorCounts: Record<Color, number> = {
 		pink: ghostsPerColor,
@@ -135,29 +143,125 @@ export function generateGhosts(level: number): Ghost[] {
 		remainingGhosts--;
 	}
 
-	const ghosts: Ghost[] = colors.flatMap(color =>
-		Array(colorCounts[color]).fill(null).map(() => {
-			const { row, column } = getUniquePosition(positions, rowsRange, CONFIG.colsCount);
+	const ghosts: Ghost[] = colors.flatMap((color) =>
+		Array(colorCounts[color])
+			.fill(null)
+			.map(() => {
+				const { row, column } = getUniquePosition(positions, rowsRange, CONFIG.colsCount);
 
-			return {
-				type: 'ghost',
-				color,
-				id: uuidv4(),
-				row,
-				column,
-				imageUrl: ghostsImages[color],
-				isGlued: false,
-				hasMoved: false,
-				neighbors: {
-					top: null,
-					bottom: null,
-					left: null,
-					right: null,
-				},
-				hasPillAbove: false,
-			};
-		})
+				return {
+					type: 'ghost',
+					color,
+					id: uuidv4(),
+					row,
+					column,
+					imageUrl: ghostsImages[color],
+					isGlued: false,
+					hasMoved: false,
+					neighbors: {
+						top: null,
+						bottom: null,
+						left: null,
+						right: null
+					},
+					hasPillAbove: false
+				};
+			})
 	);
 
-	return shuffleArray(ghosts)
+	return shuffleArray(ghosts);
 }
+export const findNextMatchingItemDown = (
+	row: number,
+	col: number,
+	color: Color,
+	matchingItems: MatrixItem[],
+	hasGhost = false
+): MatrixItem[] => {
+	if (row > lastRow) {
+		return matchingItems;
+	}
+	const item = layers.matrix[row]?.[col];
+	if (item?.color !== color) {
+		return matchingItems;
+	}
+	if (item.type === 'ghost') {
+		if (hasGhost) {
+			return matchingItems;
+		}
+		hasGhost = true;
+	}
+	matchingItems.push(item);
+	return findNextMatchingItemDown(row + 1, col, color, matchingItems, hasGhost);
+};
+export const findNextMatchingItemUp = (
+	row: number,
+	col: number,
+	color: Color,
+	matchingItems: MatrixItem[],
+	hasGhost = false
+): MatrixItem[]  => {
+	if (row === 1) {
+		return matchingItems;
+	}
+	const item = layers.matrix[row]?.[col];
+	if (item?.color !== color) {
+		return matchingItems;
+	}
+	if (item.type === 'ghost') {
+		if (hasGhost) {
+			return matchingItems;
+		}
+		hasGhost = true;
+	}
+	matchingItems.push(item);
+	return findNextMatchingItemUp(row - 1, col, color, matchingItems, hasGhost);
+};
+
+export const findNextMatchingItemLeft = (
+	row: number,
+	col: number,
+	color: Color,
+	matchingItems: MatrixItem[],
+	hasGhost = false
+): MatrixItem[]  => {
+	if (col < 0) {
+		return matchingItems;
+	}
+	const item = layers.matrix[row]?.[col];
+	if (item?.color !== color) {
+		return matchingItems;
+	}
+	if (item.type === 'ghost') {
+		if (hasGhost) {
+			return matchingItems;
+		}
+		hasGhost = true;
+	}
+	matchingItems.push(item);
+	return findNextMatchingItemLeft(row, col - 1, color, matchingItems, hasGhost);
+};
+
+export const findNextMatchingItemRight = (
+	row: number,
+	col: number,
+	color: Color,
+	matchingItems: MatrixItem[],
+	hasGhost = false
+): MatrixItem[]  => {
+	if (col === lastCol) {
+		return matchingItems;
+	}
+	const item = layers.matrix[row]?.[col];
+	if (item?.color !== color) {
+		return matchingItems;
+	}
+	if (item.type === 'ghost') {
+		if (hasGhost) {
+			return matchingItems;
+		}
+		hasGhost = true;
+	}
+	matchingItems.push(item);
+	return findNextMatchingItemRight(row, col + 1, color, matchingItems, hasGhost);
+};
