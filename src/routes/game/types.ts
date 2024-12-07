@@ -37,7 +37,7 @@ export type Matrix = Array<Array<MatrixItem | null>>;
 
 export type GameStatus = 'not-started' | 'started' | 'playing' | 'success' | 'failure';
 
-export type GhostSummary = Record<string, number>
+export type GhostSummary = Record<string, Ghost>
 
 export interface GameLayers {
 	matrix: Matrix;

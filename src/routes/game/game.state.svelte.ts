@@ -20,7 +20,7 @@ export const currentRow: Writable<number> = writable(initialRow);
 export const currentCol: Writable<number> = writable(initialCol);
 export const rotation: Writable<Rotation> = writable(0);
 export const gameStatus: Writable<GameStatus> = writable('not-started');
-export const level: Writable<number> = writable(1);
+export const level: Writable<number> = writable(0);
 export const isPaused: Writable<boolean> = writable(false);
 export const score: Writable<number> = writable(0);
 export const totalScore: Writable<number> = writable(0);
@@ -56,19 +56,14 @@ export const derivedCol: Readable<number> = derived(
 
 // State
 export const initialMatrix = Array.from(Array(rowsCount).keys()).map(() => Array.from(Array(colsCount).keys()).map(() => null));
-export const initialGhostsSummary: GhostSummary = {
-	pink: 0,
-	blue: 0,
-	green: 0,
-}
 
 
 export const layers: GameLayers = $state({
 	matrix: initialMatrix,
 	ghosts: [],
 	previousPlasma: [],
-	escapedGhosts: initialGhostsSummary,
-	catchGhosts: initialGhostsSummary,
+	escapedGhosts: {},
+	catchGhosts: {},
 	equipment: []
 });
 

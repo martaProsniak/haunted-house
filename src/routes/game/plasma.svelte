@@ -76,7 +76,7 @@
         style:top={`${plasma.row * offset}px`}
         style:left={`${plasma.column * offset}px`}
         class="plasma-previous"
-        out:fade={{ duration: 200 }} in:scale={{duration: 200}}>
+        out:scale={{ duration: 200}} in:scale={{duration: 100}}>
 </div>
 
 <style>

@@ -9,7 +9,7 @@
         lastRow,
         layers
     } from "./game.state.svelte";
-    import {fade} from 'svelte/transition'
+    import {fade, scale} from 'svelte/transition'
     import type {Ghost} from "./types";
     import {ghostsImages, ghostsImagesGlued} from "./utils";
     interface Props {
@@ -58,7 +58,7 @@
         style:background-image={`url("${ghost.imageUrl}")`}
         style:top={`${ghost.row * offset}px`}
         style:left={`${ghost.column * offset}px`}
-        in:fade={{duration: 200}} out:fade={{duration: 200}}
+        in:scale={{duration: 200}} out:scale={{duration: 100}}
 ></div>
 
 <style>

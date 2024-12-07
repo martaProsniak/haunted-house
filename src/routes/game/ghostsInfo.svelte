@@ -5,12 +5,22 @@
     import pinkGhost from '$lib/assets/ghost-pink.png';
     import greenGhost from '$lib/assets/ghost-green.png';
 
-    let catchCount = $derived.by(() => {
-        return Object.values(layers.catchGhosts).reduce((sum, current) => current + sum, 0)
+    let catchCount = $derived(Object.keys(layers.catchGhosts).length)
+
+    let escapedCount = $derived(Object.keys(layers.escapedGhosts).length)
+
+    let catchGhostsPerColor: Record<string, number> = $derived.by(() => {
+        return Object.values(layers.catchGhosts).reduce((acc, ghost) => {
+            acc[ghost.color]++;
+            return acc;
+        }, {pink: 0, blue: 0, green: 0})
     })
 
-    let escapedCount = $derived.by(() => {
-        return Object.values(layers.escapedGhosts).reduce((sum, current) => current + sum, 0)
+    let escapedGhostsPerColor: Record<string, number> = $derived.by(() => {
+        return Object.values(layers.escapedGhosts).reduce((acc, ghost) => {
+            acc[ghost.color]++;
+            return acc;
+        }, {pink: 0, blue: 0, green: 0})
     })
 
     const ghostImages: Record<string, string> = {
@@ -26,11 +36,11 @@
     <div>
         <span>Catch ghosts: {catchCount} / {$totalGhosts}</span>
         <div class="flex gap-x-4 mt-2 mb-8 h-[48px]">
-            {#each Object.keys(layers.catchGhosts) as color}
-                {#if layers.catchGhosts[color] > 0}
+            {#each Object.keys(catchGhostsPerColor) as color}
+                {#if catchGhostsPerColor[color] > 0}
                     <div class="relative" in:fade={{duration: 200}}>
                         <img src={ghostImages[color]} alt={color}>
-                        <div class="absolute bg-white text-stone-900 rounded-full  count">{layers.catchGhosts[color]}</div>
+                        <div class="absolute bg-white text-stone-900 rounded-full  count">{catchGhostsPerColor[color]}</div>
                     </div>
                 {/if}
             {/each}
@@ -40,11 +50,11 @@
     <div>
         <span>Escaped ghosts: {escapedCount} / {$totalGhosts}</span>
         <div class="flex gap-x-4 mt-2 mb-8 h-[48px]">
-            {#each Object.keys(layers.escapedGhosts) as color}
-                {#if layers.escapedGhosts[color] > 0}
+            {#each Object.keys(escapedGhostsPerColor) as color}
+                {#if escapedGhostsPerColor[color] > 0}
                     <div class="relative" in:fade={{duration: 200}}>
                         <img src={ghostImages[color]} alt={color}>
-                        <div class="absolute bg-white text-stone-900 rounded-full  count">{layers.escapedGhosts[color]}</div>
+                        <div class="absolute bg-white text-stone-900 rounded-full  count">{escapedGhostsPerColor[color]}</div>
                     </div>
                 {/if}
             {/each}

@@ -1,10 +1,14 @@
-import type { Color, MatrixItem } from './types';
-import { lastCol, lastRow, layers, score } from './game.state.svelte';
+import type {Color, MatrixItem, Ghost, Plasma} from './types';
+import { lastCol, lastRow, layers, score, totalGhosts } from './game.state.svelte';
 import {get} from "svelte/store";
 
-export const countCatchGhosts = (ghosts: Record<string, MatrixItem>) => {
+export const countCatchGhosts = (ghosts: Record<string, Ghost>) => {
 	Object.values(ghosts).forEach((ghost) => {
-		layers.catchGhosts[ghost.color]++;
+		if (layers.catchGhosts[ghost.id]) {
+			console.log('Already present')
+			return;
+		}
+		layers.catchGhosts[ghost.id] = ghost;
 	});
 };
 
@@ -135,17 +139,23 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
 		return 0;
 	}
 
-	const plasmaToRemove: Record<string, MatrixItem> = {};
-	const ghostsToRemove: Record<string, MatrixItem> = {};
+	const plasmaToRemove: Record<string, Plasma> = {};
+	const ghostsToRemove: Record<string, Ghost> = {};
     let points = 0;
 
 	matchingItems.forEach((item) => {
 		if (item.type === 'ghost') {
-			ghostsToRemove[item.id] = item;
+			if (ghostsToRemove[item.id]) {
+				return;
+			}
+			ghostsToRemove[item.id] = item as Ghost;
             points += 100;
 		}
 		if (item.type === 'plasma') {
-			plasmaToRemove[item.id] = item;
+			if (plasmaToRemove[item.id]) {
+				return;
+			}
+			plasmaToRemove[item.id] = item as Plasma;
             points += 20;
 		}
 	});
@@ -156,10 +166,10 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
     score.set(get(score) + points)
 };
 
-export const checkResult = () => {
-    if (layers.ghosts.length) {
+export const checkResult = (noMoreMoves = false) => {
+	if (layers.ghosts.length && !noMoreMoves) {
         return;
     }
-    const anyGhostCatch = Object.values(layers.catchGhosts).some((value) => value > 0);
-    return anyGhostCatch ? 'success' : 'failure';
+
+    return Object.keys(layers.catchGhosts).length >= get(totalGhosts) / 2 ? 'success' : 'failure';
 }

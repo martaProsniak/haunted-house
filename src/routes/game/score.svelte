@@ -3,4 +3,6 @@
 </script>
 
 <div>Level score: {$score}</div>
-<div>Total score: {$totalScore}</div>
+{#if $totalScore > 0}
+    <div>Total score: {$totalScore}</div>
+{/if}

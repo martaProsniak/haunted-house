@@ -60,8 +60,8 @@
     const moveUp = (ghost: Ghost) => {
         const {row, column, id} = ghost;
 
-        if (row === 0) {
-            layers.escapedGhosts[ghost.color]++;
+        if (row === initialRow) {
+            layers.escapedGhosts[ghost.id] = ghost;
             layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
             layers.matrix[row][column] = null;
             checkResultAfterMove();
