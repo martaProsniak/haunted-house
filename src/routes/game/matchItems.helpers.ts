@@ -1,5 +1,6 @@
 import type { Color, MatrixItem } from './types';
-import { lastCol, lastRow, layers } from './game.state.svelte';
+import { lastCol, lastRow, layers, score } from './game.state.svelte';
+import {get} from "svelte/store";
 
 export const countCatchGhosts = (ghosts: Record<string, MatrixItem>) => {
 	Object.values(ghosts).forEach((ghost) => {
@@ -131,25 +132,28 @@ export const matchColorHorizontal = (row: number, column: number) => {
 
 export const clearItems = (matchingItems: MatrixItem[]) => {
 	if (matchingItems.length < 4) {
-		return;
+		return 0;
 	}
 
 	const plasmaToRemove: Record<string, MatrixItem> = {};
 	const ghostsToRemove: Record<string, MatrixItem> = {};
+    let points = 0;
 
 	matchingItems.forEach((item) => {
-		// layers.matrix[item.row][item.column] = null;
 		if (item.type === 'ghost') {
 			ghostsToRemove[item.id] = item;
+            points += 100;
 		}
 		if (item.type === 'plasma') {
 			plasmaToRemove[item.id] = item;
+            points += 20;
 		}
 	});
 
 	layers.previousPlasma = layers.previousPlasma.filter((plasma) => !plasmaToRemove[plasma.id]);
 	layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id]);
 	countCatchGhosts(ghostsToRemove);
+    score.set(get(score) + points)
 };
 
 export const checkResult = () => {

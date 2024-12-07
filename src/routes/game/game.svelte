@@ -18,7 +18,9 @@
         layers,
         level,
         rotation,
-        totalGhosts
+        totalGhosts,
+        totalScore,
+        score
     } from './game.state.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -48,7 +50,7 @@
 
     $effect(() => {
         if ($gameStatus === 'started') {
-            prepareGame();
+            prepareLevel();
         }
 
         if ($gameStatus === 'playing') {
@@ -95,7 +97,7 @@
         currentPlasma.reset();
     }
 
-    const prepareGame = () => {
+    const prepareLevel = () => {
         prepareGhostsLayer();
         preparePlasmaLayer();
         $rotation = 0;
@@ -107,6 +109,8 @@
         $isPaused = false;
         layers.catchGhosts = initialGhostsSummary;
         layers.escapedGhosts = initialGhostsSummary;
+        $totalScore+= $score;
+        $score = 0;
     }
 
     const prepareGhostsLayer = () => {
@@ -175,7 +179,6 @@
             const matchingCurrentColorHorizontal = matchColorHorizontal($currentRow, $currentCol);
             const matchingDerivedColorHorizontal = matchColorHorizontal($derivedRow, $derivedCol);
 
-
             clearItems(matchingCurrentColorVertical);
             clearItems(matchingCurrentColorHorizontal);
             clearItems(matchingDerivedColorHorizontal);
@@ -188,7 +191,6 @@
 
         const matchingCurrentColorHorizontal = matchColorHorizontal($currentRow, $currentCol);
         const matchingDerivedColorHorizontal = matchColorHorizontal($derivedRow, $derivedCol);
-
 
         clearItems(matchingCurrentColorVertical);
         clearItems(matchingDerivedColorVertical);

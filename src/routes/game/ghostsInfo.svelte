@@ -22,7 +22,7 @@
 
 </script>
 
-<div class="text-xs">
+<div class="text-l space-y-4">
     <div>
         <span>Catch ghosts: {catchCount} / {$totalGhosts}</span>
         <div class="flex gap-x-4 mt-2 mb-8 h-[48px]">

@@ -23,6 +23,7 @@ export const gameStatus: Writable<GameStatus> = writable('not-started');
 export const level: Writable<number> = writable(1);
 export const isPaused: Writable<boolean> = writable(false);
 export const score: Writable<number> = writable(0);
+export const totalScore: Writable<number> = writable(0);
 export const totalGhosts: Writable<number> = writable(0);
 
 export const derivedRow: Readable<number> = derived(
