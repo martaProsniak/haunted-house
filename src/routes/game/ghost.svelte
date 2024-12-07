@@ -58,7 +58,7 @@
         style:background-image={`url("${ghost.imageUrl}")`}
         style:top={`${ghost.row * offset}px`}
         style:left={`${ghost.column * offset}px`}
-        transition:fade={{duration: 200}}
+        in:fade={{duration: 200}} out:fade={{duration: 200}}
 ></div>
 
 <style>
