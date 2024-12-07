@@ -26,15 +26,17 @@
     import Board from './board.svelte';
     import GhostsInfo from './ghostsInfo.svelte';
     import Score from './score.svelte';
-    import EndLevel from "./EndLevel.svelte";
+    import EndLevel from "./endLevel.svelte";
     import {
-        findNextMatchingItemDown,
-        findNextMatchingItemLeft,
-        findNextMatchingItemRight,
-        findNextMatchingItemUp,
         generateGhosts,
         plasmaImages
     } from "./utils";
+    import {
+        checkResult,
+        clearItems,
+        matchColorHorizontal,
+        matchColorVertical
+    } from "./matchItems.helpers";
 
     const offset = 44;
     const gap = 4;
@@ -65,10 +67,26 @@
         }
     });
 
-    $effect(() => {
-        layers.ghosts.forEach(({row, column, id, color, imageUrl}) => {
-            layers.matrix[row][column] = {type: 'ghost', id, color, row, column, imageUrl};
+    const updateMatrix = () => {
+        layers.matrix.forEach((row, rowIndex) => {
+            row.forEach((cell, cellIndex) => {
+                const plasma = layers.previousPlasma.find((plasma) => plasma.row === rowIndex && plasma.column === cellIndex);
+                if (plasma) {
+                    layers.matrix[rowIndex][cellIndex] = plasma;
+                    return;
+                }
+                const ghost = layers.ghosts.find((ghost) => ghost.row === rowIndex && ghost.column === cellIndex);
+                if (ghost) {
+                    layers.matrix[rowIndex][cellIndex] = ghost;
+                    return;
+                }
+                layers.matrix[rowIndex][cellIndex] = null;
+            })
         })
+    }
+
+    $effect(() => {
+        updateMatrix();
     });
 
     const resetPlasma = () => {
@@ -139,105 +157,13 @@
         })
     }
 
-    const matchCurrentColorVertical = () => {
-        const itemInMatrix = layers.matrix[$currentRow][$currentCol];
-        if (!itemInMatrix) {
-            return [];
-        }
-        const {color} = itemInMatrix;
-        const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemDown($currentRow + 1, $currentCol, color, matchingItems);
-        findNextMatchingItemUp($currentRow - 1, $currentCol, color, matchingItems);
-
-        return matchingItems;
-    }
-
-    const matchCurrentColorHorizontal = () => {
-        const itemInMatrix = layers.matrix[$currentRow][$currentCol];
-        if (!itemInMatrix) {
-            return [];
-        }
-        const {color} = itemInMatrix;
-        const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemLeft($currentRow, $currentCol - 1, color, matchingItems);
-        findNextMatchingItemRight($currentRow, $currentCol + 1, color, matchingItems);
-
-        return matchingItems;
-    }
-
-    const matchDerivedColorHorizontal = () => {
-        const itemInMatrix = layers.matrix[$derivedRow][$derivedCol];
-        if (!itemInMatrix) {
-            return [];
-        }
-        const {color} = itemInMatrix;
-        const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemLeft($derivedRow, $derivedCol - 1, color, matchingItems);
-        findNextMatchingItemRight($derivedRow, $derivedCol + 1, color, matchingItems);
-
-        return matchingItems;
-    }
-
-    const matchDerivedColorVertical = () => {
-        const itemInMatrix = layers.matrix[$derivedRow][$derivedCol];
-        if (!itemInMatrix) {
-            return [];
-        }
-        const {color} = itemInMatrix;
-        const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemDown($derivedRow + 1, $derivedCol, color, matchingItems);
-        findNextMatchingItemUp($derivedRow - 1, $derivedCol, color, matchingItems);
-
-        return matchingItems;
-    }
-
-    const clearItems = (matchingItems: MatrixItem[]) => {
-        if (matchingItems.length < 4) {
-            return;
-        }
-
-        const plasmaToRemove: Record<string, MatrixItem> = {};
-        const ghostsToRemove: Record<string, MatrixItem> = {};
-
-        matchingItems.forEach((item => {
-            layers.matrix[item.row][item.column] = null;
-            if (item.type === 'ghost') {
-                ghostsToRemove[item.id] = item;
-            }
-            if (item.type === 'plasma') {
-                plasmaToRemove[item.id] = item
-            }
-        }))
-
-        layers.previousPlasma = layers.previousPlasma.filter((plasma) => !plasmaToRemove[plasma.id]);
-        layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id]);
-        countCatchGhosts(ghostsToRemove);
-
-        if (layers.ghosts.length) {
-            return;
-        }
-
-        checkResult();
-    }
-
-    const checkResult = () => {
-        const anyGhostCatch = Object.values(layers.catchGhosts).some((value) => value > 0);
-        $gameStatus = anyGhostCatch ? 'success' : 'failure';
-
-    }
-
-    const countCatchGhosts = (ghosts: Record<string, MatrixItem>) => {
-        Object.values(ghosts).forEach((ghost) => {
-            layers.catchGhosts[ghost.color]++
-        })
-    }
 
     const matchItemsPerRotation = {
         0: () => matchItemsHorizontal(),
         90: () => {
-            const matchingDerivedColorVertical = matchDerivedColorVertical();
-            const matchingCurrentColorHorizontal = matchCurrentColorHorizontal();
-            const matchingDerivedColorHorizontal = matchDerivedColorHorizontal();
+            const matchingDerivedColorVertical = matchColorVertical($derivedRow, $derivedCol);
+            const matchingCurrentColorHorizontal = matchColorHorizontal($currentRow, $currentCol);
+            const matchingDerivedColorHorizontal = matchColorHorizontal($derivedRow, $derivedCol);
 
             clearItems(matchingDerivedColorVertical);
             clearItems(matchingCurrentColorHorizontal);
@@ -245,9 +171,10 @@
         },
         180: () => matchItemsHorizontal(),
         270: () => {
-            const matchingCurrentColorVertical = matchCurrentColorVertical();
-            const matchingCurrentColorHorizontal = matchCurrentColorHorizontal();
-            const matchingDerivedColorHorizontal = matchDerivedColorHorizontal();
+            const matchingCurrentColorVertical = matchColorVertical($currentRow, $currentCol);
+            const matchingCurrentColorHorizontal = matchColorHorizontal($currentRow, $currentCol);
+            const matchingDerivedColorHorizontal = matchColorHorizontal($derivedRow, $derivedCol);
+
 
             clearItems(matchingCurrentColorVertical);
             clearItems(matchingCurrentColorHorizontal);
@@ -256,11 +183,12 @@
     }
 
     const matchItemsHorizontal = () => {
-        const matchingCurrentColorVertical = matchCurrentColorVertical()
-        const matchingDerivedColorVertical = matchDerivedColorVertical();
+        const matchingCurrentColorVertical = matchColorVertical($currentRow, $currentCol);
+        const matchingDerivedColorVertical = matchColorVertical($derivedRow, $derivedCol);
 
-        const matchingCurrentColorHorizontal = matchCurrentColorHorizontal();
-        const matchingDerivedColorHorizontal = matchDerivedColorHorizontal();
+        const matchingCurrentColorHorizontal = matchColorHorizontal($currentRow, $currentCol);
+        const matchingDerivedColorHorizontal = matchColorHorizontal($derivedRow, $derivedCol);
+
 
         clearItems(matchingCurrentColorVertical);
         clearItems(matchingDerivedColorVertical);
@@ -271,6 +199,10 @@
     const plasmaEnded = () => {
         updatePreviousPlasma();
         matchItemsPerRotation[$rotation]();
+        const result = checkResult();
+        if (result) {
+            $gameStatus = result;
+        }
         resetPlasma();
     }
 

@@ -1,13 +1,8 @@
 <script lang="ts">
-    import type {MatrixItem, Plasma} from "./types";
+    import type { Plasma} from "./types";
     import {fade, scale} from 'svelte/transition'
-    import {currentRow, lastCol, lastRow, layers, gameStatus, isPaused} from "./game.state.svelte";
-    import {
-        findNextMatchingItemDown,
-        findNextMatchingItemLeft,
-        findNextMatchingItemRight,
-        findNextMatchingItemUp
-    } from "./utils";
+    import {currentRow, gameStatus, isPaused, lastCol, lastRow, layers} from "./game.state.svelte";
+    import {checkResult, clearItems, matchColorHorizontal, matchColorVertical} from "./matchItems.helpers";
 
     interface Props {
         plasma: Plasma;
@@ -29,82 +24,22 @@
 
     let canMoveDown = $derived.by(() => {
         if (plasma.row + 1 === $currentRow) return false;
-        return !neighbors.bottom;
+        if (neighbors.bottom) return false;
+        if (neighbors.left?.type === 'ghost' && neighbors.left?.color === plasma.color) return false;
+        if (neighbors.right?.type === 'ghost' && neighbors.right?.color === plasma.color) return false;
+        return true
     })
 
-    const clearItems = (matchingItems: MatrixItem[]) => {
-        if (matchingItems.length < 4) {
-            return;
-        }
-
-        const plasmaToRemove: Record<string, MatrixItem> = {};
-        const ghostsToRemove: Record<string, MatrixItem> = {};
-
-        matchingItems.forEach((item => {
-            layers.matrix[item.row][item.column] = null;
-            if (item.type === 'ghost') {
-                ghostsToRemove[item.id] = item;
-            }
-            if (item.type === 'plasma') {
-                plasmaToRemove[item.id] = item
-            }
-        }))
-
-        layers.previousPlasma = layers.previousPlasma.filter((plasma) => !plasmaToRemove[plasma.id]);
-        layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id]);
-        countCatchGhosts(ghostsToRemove);
-
-        if (layers.ghosts.length) {
-            return;
-        }
-
-        checkResult();
-    }
-
-    const checkResult = () => {
-        const anyGhostCatch = Object.values(layers.catchGhosts).some((value) => value > 0);
-        $gameStatus = anyGhostCatch ? 'success' : 'failure';
-
-    }
-
-    const countCatchGhosts = (ghosts: Record<string, MatrixItem>) => {
-        Object.values(ghosts).forEach((ghost) => {
-            layers.catchGhosts[ghost.color]++
-        })
-    }
-
-    const matchCurrentColorVertical = () => {
-        const itemInMatrix = layers.matrix[plasma.row][plasma.column];
-        if (!itemInMatrix) {
-            return [];
-        }
-        const {color} = itemInMatrix;
-        const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemDown(plasma.row + 1, plasma.column, color, matchingItems);
-        findNextMatchingItemUp(plasma.row - 1, plasma.column, color, matchingItems);
-
-        return matchingItems;
-    }
-
-    const matchCurrentColorHorizontal = () => {
-        const itemInMatrix = layers.matrix[plasma.row][plasma.column];
-        if (!itemInMatrix) {
-            return [];
-        }
-        const {color} = itemInMatrix;
-        const matchingItems: MatrixItem[] = [itemInMatrix];
-        findNextMatchingItemLeft(plasma.row, plasma.column - 1, color, matchingItems);
-        findNextMatchingItemRight(plasma.row, plasma.column + 1, color, matchingItems);
-
-        return matchingItems;
-    }
-
     const matchItems = () => {
-        const matchingTop = matchCurrentColorVertical();
-        const matchingHorizontal = matchCurrentColorHorizontal();
+        const matchingTop = matchColorVertical(plasma.row, plasma.column);
+        const matchingHorizontal = matchColorHorizontal(plasma.row, plasma.column);
 
         clearItems(matchingTop);
         clearItems(matchingHorizontal);
+        const result = checkResult();
+        if (result) {
+            $gameStatus = result;
+        }
     }
 
     $effect(() => {
@@ -120,7 +55,6 @@
                 return;
             }
             if ($isPaused) {
-                console.log('Paused')
                 return;
             }
             if (canMoveDown) {
@@ -134,8 +68,6 @@
         return () => {
             clearInterval(interval);
         }
-
-
     })
 </script>
 

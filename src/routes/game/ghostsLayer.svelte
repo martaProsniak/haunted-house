@@ -13,6 +13,7 @@
     import GhostSprite from './ghost.svelte'
     import type {Ghost} from "./types";
     import {ghostsGifs, ghostsImages} from "./utils";
+    import {checkResult, clearItems, matchColorHorizontal, matchColorVertical} from "./matchItems.helpers";
 
     const {offset} = $props();
     let interval: ReturnType<typeof setInterval>;
@@ -32,18 +33,28 @@
         }, 2000);
     }
 
-    const checkResult = () => {
-        if (layers.ghosts.length) {
-            return;
+    const checkResultAfterMove = () => {
+        const result = checkResult();
+        if (result) {
+            $gameStatus = result;
+            clearInterval(interval);
         }
-        const anyGhostCatch = Object.values(layers.catchGhosts).some((value) => value > 0);
-        $gameStatus = anyGhostCatch ? 'success' : 'failure';
-        clearInterval(interval);
+    }
+
+
+    const matchItems = (ghost: Ghost) => {
+        const matchingTop = matchColorVertical(ghost.row, ghost.column);
+        const matchingHorizontal = matchColorHorizontal(ghost.row, ghost.column);
+
+        clearItems(matchingTop);
+        clearItems(matchingHorizontal);
+        checkResultAfterMove();
     }
 
     const updateAfterMove = (ghost: Ghost) => {
         ghost.hasMoved = true;
-        ghost.imageUrl = ghostsImages[ghost.color]
+        ghost.imageUrl = ghostsImages[ghost.color];
+        matchItems(ghost);
     }
 
     const moveUp = (ghost: Ghost) => {
@@ -53,7 +64,7 @@
             layers.escapedGhosts[ghost.color]++;
             layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
             layers.matrix[row][column] = null;
-            checkResult();
+            checkResultAfterMove();
         }
 
         if (ghost.hasPillAbove) {

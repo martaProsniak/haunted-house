@@ -11,12 +11,13 @@
     } from "./game.state.svelte";
     import {fade} from 'svelte/transition'
     import type {Ghost} from "./types";
-    import {ghostsImagesGlued} from "./utils";
+    import {ghostsImages, ghostsImagesGlued} from "./utils";
     interface Props {
         ghost: Ghost,
         offset: number,
     }
     const {ghost, offset}: Props = $props();
+
     let neighbors = $derived.by(() => {
         return {
             top: ghost.row === 0 ? null : layers.matrix[ghost.row - 1][ghost.column],
@@ -44,6 +45,8 @@
         ghost.isGlued = isGlued;
         if (isGlued) {
             ghost.imageUrl = ghostsImagesGlued[ghost.color];
+        } else {
+            ghost.imageUrl = ghostsImages[ghost.color]
         }
         ghost.neighbors = neighbors;
         ghost.hasPillAbove = hasPillAbove

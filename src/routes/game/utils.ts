@@ -1,4 +1,4 @@
-import type { Color, Ghost, MatrixItem } from './types';
+import type { Color, Ghost } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 import greenPlasma from '$lib/assets/plasma-green.png';
@@ -16,7 +16,6 @@ import greenGhostGif from '$lib/assets/ghost-green.gif';
 import blueGhostGlued from '$lib/assets/ghost-blue-glued.png';
 import pinkGhostGlued from '$lib/assets/ghost-pink-glued.png';
 import greenGhostGlued from '$lib/assets/ghost-green-glued.png';
-import { lastCol, lastRow, layers } from './game.state.svelte';
 
 export const colors: Record<string, Color> = {
 	pink: 'pink',
@@ -171,97 +170,3 @@ export function generateGhosts(level: number): Ghost[] {
 
 	return shuffleArray(ghosts);
 }
-export const findNextMatchingItemDown = (
-	row: number,
-	col: number,
-	color: Color,
-	matchingItems: MatrixItem[],
-	hasGhost = false
-): MatrixItem[] => {
-	if (row > lastRow) {
-		return matchingItems;
-	}
-	const item = layers.matrix[row]?.[col];
-	if (item?.color !== color) {
-		return matchingItems;
-	}
-	if (item.type === 'ghost') {
-		if (hasGhost) {
-			return matchingItems;
-		}
-		hasGhost = true;
-	}
-	matchingItems.push(item);
-	return findNextMatchingItemDown(row + 1, col, color, matchingItems, hasGhost);
-};
-export const findNextMatchingItemUp = (
-	row: number,
-	col: number,
-	color: Color,
-	matchingItems: MatrixItem[],
-	hasGhost = false
-): MatrixItem[]  => {
-	if (row === 1) {
-		return matchingItems;
-	}
-	const item = layers.matrix[row]?.[col];
-	if (item?.color !== color) {
-		return matchingItems;
-	}
-	if (item.type === 'ghost') {
-		if (hasGhost) {
-			return matchingItems;
-		}
-		hasGhost = true;
-	}
-	matchingItems.push(item);
-	return findNextMatchingItemUp(row - 1, col, color, matchingItems, hasGhost);
-};
-
-export const findNextMatchingItemLeft = (
-	row: number,
-	col: number,
-	color: Color,
-	matchingItems: MatrixItem[],
-	hasGhost = false
-): MatrixItem[]  => {
-	if (col < 0) {
-		return matchingItems;
-	}
-	const item = layers.matrix[row]?.[col];
-	if (item?.color !== color) {
-		return matchingItems;
-	}
-	if (item.type === 'ghost') {
-		if (hasGhost) {
-			return matchingItems;
-		}
-		hasGhost = true;
-	}
-	matchingItems.push(item);
-	return findNextMatchingItemLeft(row, col - 1, color, matchingItems, hasGhost);
-};
-
-export const findNextMatchingItemRight = (
-	row: number,
-	col: number,
-	color: Color,
-	matchingItems: MatrixItem[],
-	hasGhost = false
-): MatrixItem[]  => {
-	if (col === lastCol) {
-		return matchingItems;
-	}
-	const item = layers.matrix[row]?.[col];
-	if (item?.color !== color) {
-		return matchingItems;
-	}
-	if (item.type === 'ghost') {
-		if (hasGhost) {
-			return matchingItems;
-		}
-		hasGhost = true;
-	}
-	matchingItems.push(item);
-	return findNextMatchingItemRight(row, col + 1, color, matchingItems, hasGhost);
-};

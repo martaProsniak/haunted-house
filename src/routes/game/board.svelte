@@ -14,7 +14,9 @@
 {#each layers.matrix as row, rowIndex}
     <div class="w-fit flex flex-row flex-nowrap gap-1">
         {#each row as cell, cellIndex}
-            <div class="cell" style:background-image={`url("${getCellBgImg(rowIndex, cellIndex)}")`}></div>
+            <div class="cell" style:background-image={`url("${getCellBgImg(rowIndex, cellIndex)}")`}>
+                {layers.matrix[rowIndex][cellIndex]?.type === 'ghost' ? 'G' : layers.matrix[rowIndex][cellIndex]?.type === 'plasma' ? 'P' : ''}
+            </div>
         {/each}
     </div>
 {/each}
