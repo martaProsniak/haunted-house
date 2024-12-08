@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {layers} from "./game.state.svelte";
+    import {layers} from "./gameState.svelte.js";
     import Plasma from './plasma.svelte'
 
     const {offset} = $props();

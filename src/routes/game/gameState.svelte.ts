@@ -1,7 +1,6 @@
 import { derived, type Readable, type Writable, writable } from 'svelte/store';
-import { colors, getRandomColor, ghostsImages } from './utils';
-import type {GameLayers, GameStatus, Ghost, GhostSummary, Matrix, Rotation} from './types';
-import { v4 as uuidv4 } from "uuid";
+import { getRandomColor } from './utils';
+import type {GameLayers, GameStatus, Rotation} from './types';
 
 // Constants
 export const flyingPlasmaColors = $state({

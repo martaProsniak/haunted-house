@@ -9,7 +9,7 @@
         rotation,
         derivedRow,
         lastCol
-    } from "./game.state.svelte";
+    } from "./gameState.svelte.js";
     import GhostSprite from './ghost.svelte'
     import type {Ghost} from "./types";
     import {ghostsGifs, ghostsImages} from "./utils";

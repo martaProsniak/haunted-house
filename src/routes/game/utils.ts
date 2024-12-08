@@ -69,7 +69,7 @@ export const getRandomPill: () => { current: Color; derived: Color } = () => {
 const CONFIG = {
 	rowsCount: 16,
 	colsCount: 16,
-	minRow: 6,
+	minRow: 8,
 	maxRow: 15
 };
 
@@ -104,8 +104,8 @@ function getUniquePosition(
 }
 
 function calculateMaxGhosts(level: number): number {
-	const baseGhosts = 6;
-	const incrementPerLevel = 4;
+	const baseGhosts = 3;
+	const incrementPerLevel = 2;
 	const maxGhostsLimit = Math.floor(0.75 * CONFIG.rowsCount * CONFIG.colsCount);
 
 	return Math.min(baseGhosts + (level - 1) * incrementPerLevel, maxGhostsLimit);

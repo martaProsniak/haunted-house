@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {nextPlasmaColors, gameStatus, isPaused} from "./game.state.svelte.js"
+    import {nextPlasmaColors, gameStatus, isPaused} from "./gameState.svelte.js"
 
     import plasmaBlueBlue from '$lib/assets/flying-blue-blue.png';
     import plasmaPinkPink from '$lib/assets/flying-pink-pink.png';

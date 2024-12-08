@@ -8,7 +8,7 @@
         derivedCol,
         lastRow,
         layers
-    } from "./game.state.svelte";
+    } from "./gameState.svelte.js";
     import {fade, scale} from 'svelte/transition'
     import type {Ghost} from "./types";
     import {ghostsImages, ghostsImagesGlued} from "./utils";

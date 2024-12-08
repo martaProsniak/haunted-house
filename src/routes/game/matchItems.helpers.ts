@@ -1,5 +1,5 @@
 import type {Color, MatrixItem, Ghost, Plasma} from './types';
-import { lastCol, lastRow, layers, score, totalGhosts } from './game.state.svelte';
+import { lastCol, lastRow, layers, score, totalGhosts } from './gameState.svelte.js';
 import {get} from "svelte/store";
 
 export const countCatchGhosts = (ghosts: Record<string, Ghost>) => {

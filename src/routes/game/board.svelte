@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {lastCol, lastRow, layers} from "./game.state.svelte";
+    import {lastCol, lastRow, layers} from "./gameState.svelte.js";
     import floorImage from '$lib/assets/floor.png';
     import candleImage from '$lib/assets/candle.png'
 

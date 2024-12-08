@@ -10,7 +10,7 @@
         gameStatus,
         isPaused,
         layers, nextPlasmaColors
-    } from "./game.state.svelte.js";
+    } from "./gameState.svelte.js";
     import plasmaBlueBlue from '$lib/assets/flying-blue-blue.png';
     import plasmaPinkPink from '$lib/assets/flying-pink-pink.png';
     import plasmaGreenGreen from '$lib/assets/flying-green-green.png';

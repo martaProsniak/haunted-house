@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {layers, totalGhosts} from "./game.state.svelte";
+    import {layers, totalGhosts} from "./gameState.svelte.js";
     import {fade} from 'svelte/transition'
     import blueGhost from '$lib/assets/ghost-blue.png';
     import pinkGhost from '$lib/assets/ghost-pink.png';

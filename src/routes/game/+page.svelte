@@ -2,6 +2,7 @@
     import Game from './game.svelte';
     import Header from './header.svelte';
     import Footer from './footer.svelte';
+
 </script>
 
 <div class="container mx-auto">

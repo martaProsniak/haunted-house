@@ -20,7 +20,7 @@
         totalGhosts,
         totalScore,
         score
-    } from './game.state.svelte.js'
+    } from './gameState.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
     import FlyingPlasma from './flyingPlasma.svelte';

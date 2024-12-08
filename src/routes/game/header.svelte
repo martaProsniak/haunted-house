@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {gameStatus, isPaused, score, totalScore, level} from "./game.state.svelte";
+    import {gameStatus, isPaused, score, totalScore, level} from "./gameState.svelte.js";
 
     const startGame = () => {
         $gameStatus = 'started';

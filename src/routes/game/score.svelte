@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {score, totalScore} from "./game.state.svelte";
+    import {score, totalScore} from "./gameState.svelte.js";
 </script>
 
 <div>Level score: {$score}</div>

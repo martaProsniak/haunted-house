@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {gameStatus, level} from "./game.state.svelte";
+    import {gameStatus, level} from "./gameState.svelte.js";
 
     const onclick = () => {
         if ($gameStatus === 'success') {
