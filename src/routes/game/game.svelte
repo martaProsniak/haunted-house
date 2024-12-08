@@ -243,33 +243,33 @@
     }
 
     const handleKeyDown = (ev: KeyboardEvent) => {
+        if (ev.key.startsWith('Arrow')) {
+            ev.preventDefault();
+        }
+
         if ($gameStatus !== 'playing' || $isPaused) {
             return;
         }
 
         if (ev.key === 'ArrowLeft') {
-            ev.preventDefault();
             currentPlasma.moveLeft();
         }
 
         if (ev.key === 'ArrowRight') {
-            ev.preventDefault();
             currentPlasma.moveRight();
         }
 
         if (ev.key === 'ArrowDown') {
-            ev.preventDefault();
             moveDown();
         }
 
         if (ev.key === 'ArrowUp') {
-            ev.preventDefault();
             currentPlasma.rotate();
         }
     }
 </script>
 
-<svelte:window on:keydown={handleKeyDown}></svelte:window>
+<svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 <div class="container mx-auto h-full">
     <div class="ghosts">
