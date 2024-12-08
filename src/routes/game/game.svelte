@@ -28,6 +28,7 @@
     import GhostsInfo from './ghostsInfo.svelte';
     import Score from './score.svelte';
     import EndLevel from "./endLevel.svelte";
+    import NextPlasma from './nextPlasma.svelte';
     import {
         generateGhosts,
         plasmaImages
@@ -274,6 +275,7 @@
 <div class="container mx-auto h-full">
     <div class="ghosts">
         <GhostsInfo />
+        <NextPlasma />
     </div>
     <div class=" w-fit h-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative board">
         <Board />

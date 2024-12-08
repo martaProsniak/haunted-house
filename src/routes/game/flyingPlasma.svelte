@@ -9,7 +9,7 @@
         derivedCol,
         gameStatus,
         isPaused,
-        layers
+        layers, nextPlasmaColors
     } from "./game.state.svelte.js";
     import plasmaBlueBlue from '$lib/assets/flying-blue-blue.png';
     import plasmaPinkPink from '$lib/assets/flying-pink-pink.png';
@@ -180,8 +180,10 @@
 
     export const reset = () => {
         const pillColors = getRandomPill();
-        flyingPlasmaColors.current = pillColors.current;
-        flyingPlasmaColors.derived = pillColors.derived;
+        flyingPlasmaColors.current = nextPlasmaColors.current;
+        flyingPlasmaColors.derived = nextPlasmaColors.derived;
+        nextPlasmaColors.current = pillColors.current;
+        nextPlasmaColors.derived = pillColors.derived;
         $rotation = 0;
         topCorrection = 0;
         left = initialLeft;

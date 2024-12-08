@@ -8,6 +8,11 @@ export const flyingPlasmaColors = $state({
 	current: getRandomColor(),
 	derived: getRandomColor()
 });
+
+export const nextPlasmaColors = $state({
+	current: getRandomColor(),
+	derived: getRandomColor()
+});
 export const rowsCount = 16;
 export const colsCount = 16;
 export const initialRow = 0;
