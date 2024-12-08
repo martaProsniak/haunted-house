@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {MatrixItem, Plasma} from './types'
+    import type {Matrix, MatrixItem, Plasma} from './types'
     import {v4 as uuidv4} from "uuid";
     import {
         currentCol,
@@ -55,10 +55,10 @@
     let currentPlasma: FlyingPlasma;
     let plasmaInterval: ReturnType<typeof setInterval>;
 
-    const createPlasma = () => {
+    const createPlasma = (idSuffix = '') => {
         const currentPlasma: Plasma = {
             type: 'plasma',
-            id: uuidv4(),
+            id: idSuffix ? `${idSuffix}-current` : uuidv4(),
             color: flyingPlasmaColors.current,
             row: $currentRow,
             column: $currentCol,
@@ -66,7 +66,7 @@
         };
         const derivedPlasma: Plasma = {
             type: 'plasma',
-            id: uuidv4(),
+            id: idSuffix ? `${idSuffix}-derived` : uuidv4(),
             color: flyingPlasmaColors.derived,
             row: $derivedRow,
             column: $derivedCol,
@@ -76,10 +76,20 @@
         return {curr: currentPlasma, der: derivedPlasma};
     }
 
-    let plasmaInMatrix = $derived.by(() => createPlasma());
+    let plasmaInMatrix = $derived.by(() => createPlasma('plasma'));
 
-    $effect(() => {
-        updateMatrix();
+    const matrix: Matrix = $derived.by(() => {
+        console.log('Deriving')
+        const matrix: Matrix = structuredClone(initialMatrix);
+        layers.previousPlasma.forEach((plasma) => {
+            matrix[plasma.row][plasma.column] = plasma;
+        })
+        layers.ghosts.forEach((ghost) => {
+            matrix[ghost.row][ghost.column] = ghost;
+        })
+        matrix[$currentRow][$currentCol] = plasmaInMatrix.curr;
+        matrix[$derivedRow][$derivedCol] = plasmaInMatrix.der;
+        return matrix;
     });
 
     $effect(() => {
@@ -103,24 +113,6 @@
         }
     });
 
-    const updateMatrix = () => {
-        layers.matrix.forEach((row, rowIndex) => {
-            row.forEach((cell, cellIndex) => {
-                const plasma = layers.previousPlasma.find((plasma) => plasma.row === rowIndex && plasma.column === cellIndex);
-                if (plasma) {
-                    layers.matrix[rowIndex][cellIndex] = plasma;
-                    return;
-                }
-                const ghost = layers.ghosts.find((ghost) => ghost.row === rowIndex && ghost.column === cellIndex);
-                if (ghost) {
-                    layers.matrix[rowIndex][cellIndex] = ghost;
-                    return;
-                }
-                layers.matrix[rowIndex][cellIndex] = null;
-            })
-        })
-    }
-
     const resetPlasma = () => {
         currentPlasma.reset();
     }
@@ -128,7 +120,6 @@
     const prepareLevel = () => {
         prepareGhostsLayer();
         preparePlasmaLayer();
-        layers.matrix = initialMatrix;
         $totalGhosts = layers.ghosts.length;
         $gameStatus = 'playing';
         $isPaused = false;
@@ -157,7 +148,8 @@
 
     const startLevel = () => {
         plasmaInterval = setInterval(() => {
-            if (layers.matrix[initialRow + 1][initialCol] || layers.matrix[initialRow + 1][initialCol + 1]) {
+            if ((matrix[initialRow][initialCol] && !matrix[initialRow][initialCol]?.id.includes('plasma')) || (matrix[initialRow][initialCol + 1] && !matrix[initialRow][initialCol + 1]?.id.includes('plasma'))) {
+                console.log('Ending')
                 checkEndLevel(true)
             }
 
@@ -167,9 +159,6 @@
 
             moveDown();
 
-            layers.matrix[$currentRow][$currentCol] = plasmaInMatrix.curr;
-            layers.matrix[$derivedRow][$derivedCol] = plasmaInMatrix.der;
-
         }, $gameInterval);
     }
 
@@ -178,19 +167,15 @@
         lastPlasma = createPlasma();
 
         layers.previousPlasma.push(lastPlasma.curr, lastPlasma.der);
-
-        layers.previousPlasma.forEach((plasma) => {
-            layers.matrix[plasma.row][plasma.column] = plasma;
-        })
     }
 
 
     const matchItemsPerRotation = {
         0: (plasma: LastPlasma) => matchItemsHorizontal(plasma),
         90: (plasma: LastPlasma) => {
-            const matchingDerivedColorVertical = matchColorVertical(plasma.der.row, plasma.der.column);
-            const matchingCurrentColorHorizontal = matchColorHorizontal(plasma.curr.row, plasma.curr.column);
-            const matchingDerivedColorHorizontal = matchColorHorizontal(plasma.der.row, plasma.der.column);
+            const matchingDerivedColorVertical = matchColorVertical(plasma.der.row, plasma.der.column, matrix);
+            const matchingCurrentColorHorizontal = matchColorHorizontal(plasma.curr.row, plasma.curr.column, matrix);
+            const matchingDerivedColorHorizontal = matchColorHorizontal(plasma.der.row, plasma.der.column, matrix);
 
             clearItems(matchingDerivedColorVertical);
             clearItems(matchingCurrentColorHorizontal);
@@ -198,9 +183,9 @@
         },
         180: (plasma: LastPlasma) => matchItemsHorizontal(plasma),
         270: (plasma: LastPlasma) => {
-            const matchingCurrentColorVertical = matchColorVertical(plasma.curr.row, plasma.curr.column);
-            const matchingCurrentColorHorizontal = matchColorHorizontal(plasma.curr.row, plasma.curr.column);
-            const matchingDerivedColorHorizontal = matchColorHorizontal(plasma.der.row, plasma.der.column);
+            const matchingCurrentColorVertical = matchColorVertical(plasma.curr.row, plasma.curr.column, matrix);
+            const matchingCurrentColorHorizontal = matchColorHorizontal(plasma.curr.row, plasma.curr.column, matrix);
+            const matchingDerivedColorHorizontal = matchColorHorizontal(plasma.der.row, plasma.der.column, matrix);
 
             clearItems(matchingCurrentColorVertical);
             clearItems(matchingCurrentColorHorizontal);
@@ -209,11 +194,11 @@
     }
 
     const matchItemsHorizontal = (plasma: LastPlasma) => {
-        const matchingCurrentColorVertical = matchColorVertical(plasma.curr.row, plasma.curr.column);
-        const matchingDerivedColorVertical = matchColorVertical(plasma.der.row, plasma.der.column);
+        const matchingCurrentColorVertical = matchColorVertical(plasma.curr.row, plasma.curr.column, matrix);
+        const matchingDerivedColorVertical = matchColorVertical(plasma.der.row, plasma.der.column, matrix);
 
-        const matchingCurrentColorHorizontal = matchColorHorizontal(plasma.curr.row, plasma.curr.column);
-        const matchingDerivedColorHorizontal = matchColorHorizontal(plasma.der.row, plasma.der.column);
+        const matchingCurrentColorHorizontal = matchColorHorizontal(plasma.curr.row, plasma.curr.column, matrix);
+        const matchingDerivedColorHorizontal = matchColorHorizontal(plasma.der.row, plasma.der.column, matrix);
 
         clearItems(matchingCurrentColorVertical);
         clearItems(matchingDerivedColorVertical);
@@ -279,10 +264,10 @@
         <NextPlasma />
     </div>
     <div class=" w-fit h-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative board">
-        <Board />
-        <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
-        <GhostsLayer {offset} />
-        <PlasmaLayer {offset}/>
+        <Board {matrix} />
+        <FlyingPlasma bind:this={currentPlasma} {matrix} {initialTop} {initialLeft} {lastRow} {lastCol} />
+        <GhostsLayer {offset} {matrix} />
+        <PlasmaLayer {offset} {matrix} />
     </div>
     <div class="score">
         <Score />

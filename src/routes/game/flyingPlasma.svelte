@@ -13,13 +13,14 @@
         rotation
     } from "./gameState.svelte.js";
     import {flyingPlasmaImages, plasmaImages} from "./constants";
-    import type {Plasma} from "./types";
+    import type {Matrix, Plasma} from "./types";
 
     interface Props {
         initialTop: number,
         initialLeft: number,
         lastRow: number,
-        lastCol: number
+        lastCol: number,
+        matrix: Matrix,
     }
 
     const offset = 44;
@@ -27,18 +28,19 @@
         initialTop,
         initialLeft,
         lastRow,
-        lastCol
+        lastCol,
+        matrix,
     }: Props = $props();
     let left = $state(initialLeft);
     let topCorrection = $state(0);
     let top = $derived(initialTop + (offset * $currentRow) - topCorrection);
-    let hidden = $derived($gameStatus !== 'playing' && !$isPaused);
+    let hidden = $derived($gameStatus.includes('started'));
 
     const itemBelowHelper = {
-        0: () => layers.matrix[$currentRow + 1][$currentCol] || layers.matrix[$derivedRow + 1][$derivedCol],
-        90: () => layers.matrix[$derivedRow + 1][$derivedCol],
-        180: () => layers.matrix[$currentRow + 1][$currentCol] || layers.matrix[$derivedRow + 1][$derivedCol],
-        270: () => layers.matrix[$currentRow + 1][$currentCol]
+        0: () => matrix[$currentRow + 1][$currentCol] || matrix[$derivedRow + 1][$derivedCol],
+        90: () => matrix[$derivedRow + 1][$derivedCol],
+        180: () => matrix[$currentRow + 1][$currentCol] || matrix[$derivedRow + 1][$derivedCol],
+        270: () => matrix[$currentRow + 1][$currentCol]
     }
 
     const isLastRow = () => {
@@ -92,24 +94,24 @@
     }
 
     const isLeftCollision = {
-        0: () => layers.matrix[$currentRow][$currentCol - 1],
-        90: () => layers.matrix[$currentRow][$currentCol - 1] || layers.matrix[$derivedRow][$derivedCol - 1],
-        180: () => layers.matrix[$derivedRow][$derivedCol - 1],
-        270: () => layers.matrix[$currentRow][$currentCol - 1] || layers.matrix[$derivedRow][$derivedCol - 1],
+        0: () => matrix[$currentRow][$currentCol - 1],
+        90: () => matrix[$currentRow][$currentCol - 1] || matrix[$derivedRow][$derivedCol - 1],
+        180: () => matrix[$derivedRow][$derivedCol - 1],
+        270: () => matrix[$currentRow][$currentCol - 1] || matrix[$derivedRow][$derivedCol - 1],
     }
 
     const isRightCollision = {
-        0: () => layers.matrix[$currentRow][$derivedCol + 1],
-        90: () => layers.matrix[$currentRow][$currentCol + 1] || layers.matrix[$derivedRow][$derivedCol + 1],
-        180: () => layers.matrix[$derivedRow][$currentCol + 1],
-        270: () => layers.matrix[$currentRow][$currentCol + 1] || layers.matrix[$derivedRow][$derivedCol + 1],
+        0: () => matrix[$currentRow][$derivedCol + 1],
+        90: () => matrix[$currentRow][$currentCol + 1] || matrix[$derivedRow][$derivedCol + 1],
+        180: () => matrix[$derivedRow][$currentCol + 1],
+        270: () => matrix[$currentRow][$currentCol + 1] || matrix[$derivedRow][$derivedCol + 1],
     }
 
     const isRotateCollision = {
         0: () => false,
-        90: () => layers.matrix[$derivedRow][$derivedCol + 1],
+        90: () => matrix[$derivedRow][$derivedCol + 1],
         180: () => false,
-        270: () => layers.matrix[$currentRow][$currentCol + 1],
+        270: () => matrix[$currentRow][$currentCol + 1],
     }
 
     export const moveDown = () => {

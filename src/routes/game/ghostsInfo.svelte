@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {layers, totalGhosts, gameInterval} from "./gameState.svelte.js";
+    import {layers, totalGhosts, gameInterval, level} from "./gameState.svelte.js";
     import {fade} from 'svelte/transition'
     import blueGhost from '$lib/assets/ghost-blue.png';
     import pinkGhost from '$lib/assets/ghost-pink.png';
@@ -36,6 +36,7 @@
     {#if $gameInterval === 500}
         <div>Fast level!</div>
     {/if}
+    <div>Current level: {$level}</div>
     <div>
         <span>Catch ghosts: {catchCount} / {$totalGhosts}</span>
         <div class="flex gap-x-4 mt-2 mb-8 h-[48px]">
