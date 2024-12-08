@@ -1,13 +1,8 @@
 <script lang="ts">
     import {
-        currentCol,
-        currentRow,
-        derivedCol,
-        derivedRow,
         lastCol,
         lastRow,
         layers,
-        rotation
     } from "./gameState.svelte.js";
     import {scale} from 'svelte/transition'
     import type {Ghost} from "./types";
@@ -32,16 +27,6 @@
         return Object.values(neighbors).some((neighbour) => (neighbour?.color === ghost.color && neighbour.type === 'plasma'))
     })
 
-    let hasPillAbove = $derived.by(() => {
-        if ($rotation === 270) {
-            return ghost.row - 1 === $currentRow && (ghost.column === $currentCol);
-        }
-        if ($rotation === 90) {
-            return ghost.row - 1 === $derivedRow && (ghost.column === $derivedCol);
-        }
-        return ghost.row - 1 === $currentRow && (ghost.column === $currentCol || ghost.column === $derivedCol);
-    })
-
     $effect(() => {
         ghost.isGlued = isGlued;
         if (isGlued) {
@@ -50,7 +35,6 @@
             ghost.imageUrl = ghostsImages[ghost.color]
         }
         ghost.neighbors = neighbors;
-        ghost.hasPillAbove = hasPillAbove
     })
 </script>
 
@@ -61,7 +45,7 @@
         style:left={`${ghost.column * offset}px`}
         style:box-shadow={ghost.isGlued ? `0 0 0 1px ${mapColorsToHex[ghost.color]}` : ''}
         style:background-color={ghost.isGlued ? `${mapColorsToHex[ghost.color]}` : `${mapColorsToHex[ghost.color]}` + '55'}
-        in:scale={{duration: 200}} out:scale={{duration: 100}}
+        in:scale={{duration: 100}} out:scale={{duration: 100}}
 ></div>
 
 <style>

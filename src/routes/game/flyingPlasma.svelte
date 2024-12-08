@@ -6,13 +6,14 @@
         derivedCol,
         derivedRow,
         flyingPlasmaColors,
-        gameStatus,
+        gameStatus, initialCol, initialRow,
         isPaused,
         layers,
         nextPlasmaColors,
         rotation
     } from "./gameState.svelte.js";
-    import {flyingPlasmaImages} from "./constants";
+    import {flyingPlasmaImages, plasmaImages} from "./constants";
+    import type {Plasma} from "./types";
 
     interface Props {
         initialTop: number,
@@ -153,12 +154,17 @@
         rotationHandler[$rotation]();
     }
 
+
+
+
     export const reset = () => {
         const pillColors = getRandomPill();
         flyingPlasmaColors.current = nextPlasmaColors.current;
         flyingPlasmaColors.derived = nextPlasmaColors.derived;
         nextPlasmaColors.current = pillColors.current;
         nextPlasmaColors.derived = pillColors.derived;
+        $currentRow = initialRow;
+        $currentCol = initialCol;
         $rotation = 0;
         topCorrection = 0;
         left = initialLeft;
