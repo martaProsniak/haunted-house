@@ -30,8 +30,7 @@
     import EndLevel from "./endLevel.svelte";
     import NextPlasma from './nextPlasma.svelte';
     import {
-        generateGhosts,
-        plasmaImages
+        generateGhosts
     } from "./utils";
     import {
         checkResult,
@@ -39,6 +38,8 @@
         matchColorHorizontal,
         matchColorVertical
     } from "./matchItems.helpers";
+    import {plasmaImages} from "./constants";
+    import ghost from "./ghost.svelte";
 
     interface LastPlasma {
         curr: Plasma;
@@ -53,6 +54,10 @@
 
     let currentPlasma: FlyingPlasma;
     let plasmaInterval: ReturnType<typeof setInterval>;
+
+    $effect(() => {
+        updateMatrix();
+    });
 
     $effect(() => {
         if ($gameStatus === 'started') {
@@ -93,10 +98,6 @@
         })
     }
 
-    $effect(() => {
-        updateMatrix();
-    });
-
     const resetPlasma = () => {
         $currentRow = initialRow;
         $currentCol = initialCol;
@@ -127,14 +128,18 @@
         layers.previousPlasma = [];
     }
 
+    const checkEndLevel = (noMoves = false) => {
+        const result = checkResult(noMoves);
+        if (result) {
+            $gameStatus = result;
+            clearInterval(plasmaInterval);
+        }
+    }
+
     const startLevel = () => {
         plasmaInterval = setInterval(() => {
             if (layers.matrix[initialRow + 1][initialCol] || layers.matrix[initialRow + 1][initialCol + 1]) {
-                const result = checkResult(true);
-                if (result) {
-                    $gameStatus = result;
-                    clearInterval(plasmaInterval);
-                }
+                checkEndLevel(true)
             }
 
             if ($isPaused) {
@@ -221,10 +226,7 @@
         updatePreviousPlasma();
         resetPlasma();
         matchItemsPerRotation[$rotation](lastPlasma!);
-        const result = checkResult();
-        if (result) {
-            $gameStatus = result;
-        }
+        checkEndLevel();
 
     }
 

@@ -12,8 +12,8 @@
     } from "./gameState.svelte.js";
     import GhostSprite from './ghost.svelte'
     import type {Ghost} from "./types";
-    import {ghostsGifs, ghostsImages} from "./utils";
     import {checkResult, clearItems, matchColorHorizontal, matchColorVertical} from "./matchItems.helpers";
+    import {ghostsGifs, ghostsImages} from "./constants";
 
     const {offset} = $props();
     let interval: ReturnType<typeof setInterval>;
@@ -58,12 +58,11 @@
     }
 
     const moveUp = (ghost: Ghost) => {
-        const {row, column, id} = ghost;
+        const {row, id} = ghost;
 
         if (row === initialRow) {
             layers.escapedGhosts[ghost.id] = ghost;
             layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
-            layers.matrix[row][column] = null;
             checkResultAfterMove();
         }
 
@@ -72,21 +71,18 @@
         }
 
         ghost.row = row - 1;
-        layers.matrix[row][column] = null
     }
 
     const moveLeft = (ghost: Ghost) => {
-        const {row, column} = ghost;
+        const {column} = ghost;
 
         ghost.column = column - 1;
-        layers.matrix[row][column] = null
     }
 
     const moveRight = (ghost: Ghost) => {
-        const {row, column} = ghost;
+        const {column} = ghost;
 
         ghost.column = column + 1;
-        layers.matrix[row][column] = null
     }
 
     const moveGhost = (ghost: Ghost) => {

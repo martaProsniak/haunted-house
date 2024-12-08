@@ -1,43 +1,18 @@
 <script lang="ts">
     import {getRandomPill} from "./utils";
     import {
-        flyingPlasmaColors,
-        currentRow,
         currentCol,
-        rotation,
-        derivedRow,
+        currentRow,
         derivedCol,
+        derivedRow,
+        flyingPlasmaColors,
         gameStatus,
         isPaused,
-        layers, nextPlasmaColors
+        layers,
+        nextPlasmaColors,
+        rotation
     } from "./gameState.svelte.js";
-    import plasmaBlueBlue from '$lib/assets/flying-blue-blue.png';
-    import plasmaPinkPink from '$lib/assets/flying-pink-pink.png';
-    import plasmaGreenGreen from '$lib/assets/flying-green-green.png';
-    import plasmaGreenBlue from '$lib/assets/flying-green-blue.png';
-    import plasmaGreenPink from '$lib/assets/flying-green-pink.png';
-    import plasmaBluePink from '$lib/assets/flying-blue-pink.png';
-    import plasmaPinkBlue from '$lib/assets/flying-pink-blue.png';
-    import plasmaPinkGreen from '$lib/assets/flying-pink-green.png';
-    import plasmaBlueGreen from '$lib/assets/flying-blue-green.png';
-
-    const flyingPlasmaImages = {
-        pink: {
-            pink: plasmaPinkPink,
-            blue: plasmaPinkBlue,
-            green: plasmaPinkGreen
-        },
-        blue: {
-            pink: plasmaBluePink,
-            blue: plasmaBlueBlue,
-            green: plasmaBlueGreen
-        },
-        green: {
-            pink: plasmaGreenPink,
-            blue: plasmaGreenBlue,
-            green: plasmaGreenGreen
-        }
-    };
+    import {flyingPlasmaImages} from "./constants";
 
     interface Props {
         initialTop: number,

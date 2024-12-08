@@ -1,8 +1,9 @@
 <script lang="ts">
     import type { Plasma} from "./types";
-    import {fade, scale} from 'svelte/transition'
+    import { scale} from 'svelte/transition'
     import {currentRow, gameStatus, isPaused, lastCol, lastRow, layers} from "./gameState.svelte.js";
     import {checkResult, clearItems, matchColorHorizontal, matchColorVertical} from "./matchItems.helpers";
+    import {mapColorsToHex} from "./constants";
 
     interface Props {
         plasma: Plasma;
@@ -58,8 +59,6 @@
                 return;
             }
             if (canMoveDown) {
-                layers.matrix[plasma.row][plasma.column] = null;
-                layers.matrix[plasma.row + 1][plasma.column] = plasma;
                 plasma.row++;
                 matchItems();
             }
@@ -87,5 +86,6 @@
         z-index: 10;
         box-sizing: border-box;
         font-size: 12px;
+        border-radius: 4px;
     }
 </style>

@@ -1,51 +1,6 @@
 import type { Color, Ghost } from './types';
 import { v4 as uuidv4 } from 'uuid';
-
-import greenPlasma from '$lib/assets/plasma-green.png';
-import pinkPlasma from '$lib/assets/plasma-pink.png';
-import bluePlasma from '$lib/assets/plasma-blue.png';
-
-import blueGhost from '$lib/assets/ghost-blue.png';
-import pinkGhost from '$lib/assets/ghost-pink.png';
-import greenGhost from '$lib/assets/ghost-green.png';
-
-import blueGhostGif from '$lib/assets/ghost-blue.gif';
-import pinkGhostGif from '$lib/assets/ghost-pink.gif';
-import greenGhostGif from '$lib/assets/ghost-green.gif';
-
-import blueGhostGlued from '$lib/assets/ghost-blue-glued.png';
-import pinkGhostGlued from '$lib/assets/ghost-pink-glued.png';
-import greenGhostGlued from '$lib/assets/ghost-green-glued.png';
-
-export const colors: Record<string, Color> = {
-	pink: 'pink',
-	blue: 'blue',
-	green: 'green'
-};
-
-export const plasmaImages: Record<Color, string> = {
-	pink: pinkPlasma,
-	blue: bluePlasma,
-	green: greenPlasma
-} as const;
-
-export const ghostsImages: Record<Color, string> = {
-	pink: pinkGhost,
-	blue: blueGhost,
-	green: greenGhost
-} as const;
-
-export const ghostsImagesGlued: Record<Color, string> = {
-	pink: pinkGhostGlued,
-	blue: blueGhostGlued,
-	green: greenGhostGlued
-} as const;
-
-export const ghostsGifs: Record<Color, string> = {
-	pink: pinkGhostGif,
-	blue: blueGhostGif,
-	green: greenGhostGif
-} as const;
+import { colors, ghostsImages } from './constants';
 
 export const getRandomColor = () => {
 	return Object.values(colors)[Math.floor(Math.random() * Object.values(colors).length)];
