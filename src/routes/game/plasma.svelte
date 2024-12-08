@@ -60,12 +60,17 @@
             }
             if (canMoveDown) {
                 plasma.row++;
-                matchItems();
             }
         }, 1000);
 
         return () => {
             clearInterval(interval);
+        }
+    })
+
+    $effect(() => {
+        if (Object.values(neighbors).some((neighbour) => Boolean(neighbour))) {
+            matchItems();
         }
     })
 </script>

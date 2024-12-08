@@ -20,7 +20,7 @@
     let freeGhosts = $derived.by(() => {
         return layers.ghosts.filter((ghost) => !ghost.isGlued);
     })
-    let moveCount = $derived.by(() => Math.min(Math.ceil($level / 3), 5));
+    let moveCount = $derived.by(() => Math.min(Math.ceil($level / 2), 3));
     let ghostsToMove: Ghost[] = [];
 
 
@@ -90,6 +90,11 @@
             return;
         }
 
+        if (ghost.isGlued || isBlocked(ghost)) {
+            ghost.hasMoved = true;
+            return;
+        }
+
         const {row, column, neighbors} = ghost;
 
         if (row - 1 === $currentRow || ($rotation === 90 && row - 1 === $derivedRow)) {
@@ -113,7 +118,7 @@
     }
 
     const prepareGhostsToMove = () => {
-        ghostsToMove = freeGhosts.filter((ghost) => !ghost.hasMoved && !isBlocked(ghost)).slice(0, moveCount);
+        ghostsToMove = layers.ghosts.filter((ghost) => !ghost.hasMoved).slice(0, moveCount);
         if (!ghostsToMove.length) {
             ghostsToMove = freeGhosts.map((ghost) => {
                 ghost.hasMoved = false;
@@ -121,6 +126,7 @@
             }).slice(0, moveCount);
         }
         ghostsToMove.forEach((ghost) => {
+            if (ghost.isGlued) return;
             ghost.imageUrl = ghostsGifs[ghost.color]
         })
 
