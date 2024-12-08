@@ -243,25 +243,27 @@
     }
 
     const handleKeyDown = (ev: KeyboardEvent) => {
-        ev.preventDefault();
-
-        if ($gameStatus !== 'playing') {
+        if ($gameStatus !== 'playing' || $isPaused) {
             return;
         }
 
         if (ev.key === 'ArrowLeft') {
+            ev.preventDefault();
             currentPlasma.moveLeft();
         }
 
         if (ev.key === 'ArrowRight') {
+            ev.preventDefault();
             currentPlasma.moveRight();
         }
 
         if (ev.key === 'ArrowDown') {
+            ev.preventDefault();
             moveDown();
         }
 
         if (ev.key === 'ArrowUp') {
+            ev.preventDefault();
             currentPlasma.rotate();
         }
     }
