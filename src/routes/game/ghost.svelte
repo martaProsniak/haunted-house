@@ -18,6 +18,12 @@
     }
     const {ghost, offset}: Props = $props();
 
+    const mapGhostsToBgColors = {
+        pink: '#ec3597',
+        green: '#45e732',
+        blue: '#2398ec',
+    }
+
     let neighbors = $derived.by(() => {
         return {
             top: ghost.row === 0 ? null : layers.matrix[ghost.row - 1][ghost.column],
@@ -58,6 +64,8 @@
         style:background-image={`url("${ghost.imageUrl}")`}
         style:top={`${ghost.row * offset}px`}
         style:left={`${ghost.column * offset}px`}
+        style:box-shadow={ghost.isGlued ? `0 0 0 1px ${mapGhostsToBgColors[ghost.color]}` : ''}
+        style:background-color={ghost.isGlued ? `${mapGhostsToBgColors[ghost.color]}` : `${mapGhostsToBgColors[ghost.color]}` + '55'}
         in:scale={{duration: 200}} out:scale={{duration: 100}}
 ></div>
 
@@ -68,5 +76,7 @@
         position: absolute;
         z-index: 10;
         box-sizing: border-box;
+        border-radius: 4px;
+        transition: background-color ease 0.2s;
     }
 </style>
