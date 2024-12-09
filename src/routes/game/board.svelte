@@ -2,9 +2,6 @@
     import {lastCol, lastRow, layers} from "./gameState.svelte.js";
     import floorImage from '$lib/assets/floor.png';
     import candleImage from '$lib/assets/candle.png'
-    import type {Matrix} from "./types";
-
-    const {matrix}: { matrix: Matrix } = $props();
 
     const getCellBgImg = (row:number, col: number) => {
         if ((row === 0 || row === lastRow) && (col === 0 || col === lastCol)) {
@@ -14,11 +11,11 @@
     }
 </script>
 
-{#each matrix as row, rowIndex}
+{#each layers.matrix as row, rowIndex}
     <div class="w-fit flex flex-row flex-nowrap gap-1">
         {#each row as cell, cellIndex}
             <div class="cell" style:background-image={`url("${getCellBgImg(rowIndex, cellIndex)}")`}>
-                {matrix[rowIndex][cellIndex]?.type === 'ghost' ? 'G' : matrix[rowIndex][cellIndex]?.type === 'plasma' ? 'P' : ''}
+                {layers.matrix[rowIndex][cellIndex]?.type === 'ghost' ? 'G' : layers.matrix[rowIndex][cellIndex]?.type === 'plasma' ? 'P' : ''}
             </div>
         {/each}
     </div>

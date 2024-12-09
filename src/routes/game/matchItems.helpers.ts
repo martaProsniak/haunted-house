@@ -1,4 +1,4 @@
-import type {Color, MatrixItem, Ghost, Plasma, Matrix} from './types';
+import type {Color, MatrixItem, Ghost, Plasma} from './types';
 import { lastCol, lastRow, layers, score, totalGhosts } from './gameState.svelte.js';
 import {get} from "svelte/store";
 
@@ -17,14 +17,13 @@ export const findNextMatchingItemDown = (
 	col: number,
 	color: Color,
 	matchingItems: MatrixItem[],
-	matrix: Matrix,
 	hasGhost = false
 ): MatrixItem[] => {
 	if (row > lastRow) {
 		return matchingItems;
 	}
-	const item = matrix[row]?.[col];
-	if (item?.color !== color || item.id.includes('plasma')) {
+	const item = layers.matrix[row]?.[col];
+	if (item?.color !== color) {
 		return matchingItems;
 	}
 	if (item.type === 'ghost') {
@@ -34,7 +33,7 @@ export const findNextMatchingItemDown = (
 		hasGhost = true;
 	}
 	matchingItems.push(item);
-	return findNextMatchingItemDown(row + 1, col, color, matchingItems, matrix, hasGhost);
+	return findNextMatchingItemDown(row + 1, col, color, matchingItems, hasGhost);
 };
 
 export const findNextMatchingItemUp = (
@@ -42,14 +41,13 @@ export const findNextMatchingItemUp = (
 	col: number,
 	color: Color,
 	matchingItems: MatrixItem[],
-	matrix: Matrix,
 	hasGhost = false
 ): MatrixItem[] => {
 	if (row === 1) {
 		return matchingItems;
 	}
-	const item = matrix[row]?.[col];
-	if (item?.color !== color || item.id.includes('plasma')) {
+	const item = layers.matrix[row]?.[col];
+	if (item?.color !== color) {
 		return matchingItems;
 	}
 	if (item.type === 'ghost') {
@@ -59,7 +57,7 @@ export const findNextMatchingItemUp = (
 		hasGhost = true;
 	}
 	matchingItems.push(item);
-	return findNextMatchingItemUp(row - 1, col, color, matchingItems, matrix, hasGhost);
+	return findNextMatchingItemUp(row - 1, col, color, matchingItems, hasGhost);
 };
 
 export const findNextMatchingItemLeft = (
@@ -67,14 +65,13 @@ export const findNextMatchingItemLeft = (
 	col: number,
 	color: Color,
 	matchingItems: MatrixItem[],
-	matrix: Matrix,
 	hasGhost = false
 ): MatrixItem[] => {
 	if (col < 0) {
 		return matchingItems;
 	}
-	const item = matrix[row]?.[col];
-	if (item?.color !== color || item.id.includes('plasma')) {
+	const item = layers.matrix[row]?.[col];
+	if (item?.color !== color) {
 		return matchingItems;
 	}
 	if (item.type === 'ghost') {
@@ -84,7 +81,7 @@ export const findNextMatchingItemLeft = (
 		hasGhost = true;
 	}
 	matchingItems.push(item);
-	return findNextMatchingItemLeft(row, col - 1, color, matchingItems, matrix, hasGhost);
+	return findNextMatchingItemLeft(row, col - 1, color, matchingItems, hasGhost);
 };
 
 export const findNextMatchingItemRight = (
@@ -92,14 +89,13 @@ export const findNextMatchingItemRight = (
 	col: number,
 	color: Color,
 	matchingItems: MatrixItem[],
-	matrix: Matrix,
 	hasGhost = false
 ): MatrixItem[] => {
 	if (col === lastCol) {
 		return matchingItems;
 	}
-	const item = matrix[row]?.[col];
-	if (item?.color !== color || item.id.includes('plasma')) {
+	const item = layers.matrix[row]?.[col];
+	if (item?.color !== color) {
 		return matchingItems;
 	}
 	if (item.type === 'ghost') {
@@ -109,31 +105,31 @@ export const findNextMatchingItemRight = (
 		hasGhost = true;
 	}
 	matchingItems.push(item);
-	return findNextMatchingItemRight(row, col + 1, color, matchingItems, matrix, hasGhost);
+	return findNextMatchingItemRight(row, col + 1, color, matchingItems, hasGhost);
 };
 
-export const matchColorVertical = (row: number, column: number, matrix: Matrix) => {
-	const itemInMatrix = matrix[row][column];
+export const matchColorVertical = (row: number, column: number) => {
+	const itemInMatrix = layers.matrix[row][column];
 	if (!itemInMatrix) {
 		return [];
 	}
 	const { color } = itemInMatrix;
 	const matchingItems: MatrixItem[] = [itemInMatrix];
-	findNextMatchingItemDown(row + 1, column, color, matchingItems, matrix);
-	findNextMatchingItemUp(row - 1, column, color, matchingItems, matrix);
+	findNextMatchingItemDown(row + 1, column, color, matchingItems);
+	findNextMatchingItemUp(row - 1, column, color, matchingItems);
 
 	return matchingItems;
 };
 
-export const matchColorHorizontal = (row: number, column: number, matrix: Matrix) => {
-	const itemInMatrix = matrix[row][column];
+export const matchColorHorizontal = (row: number, column: number) => {
+	const itemInMatrix = layers.matrix[row][column];
 	if (!itemInMatrix) {
 		return [];
 	}
 	const { color } = itemInMatrix;
 	const matchingItems: MatrixItem[] = [itemInMatrix];
-	findNextMatchingItemLeft(row, column - 1, color, matchingItems, matrix);
-	findNextMatchingItemRight(row, column + 1, color, matchingItems, matrix);
+	findNextMatchingItemLeft(row, column - 1, color, matchingItems);
+	findNextMatchingItemRight(row, column + 1, color, matchingItems);
 
 	return matchingItems;
 };

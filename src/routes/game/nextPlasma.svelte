@@ -2,7 +2,7 @@
     import {nextPlasmaColors, gameStatus, isPaused} from "./gameState.svelte.js"
     import {flyingPlasmaImages} from "./constants";
 
-    let hidden = $derived($gameStatus.includes('started'));
+    let hidden = $derived($gameStatus !== 'playing' && !$isPaused);
 
 </script>
 

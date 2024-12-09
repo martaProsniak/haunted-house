@@ -1,25 +1,25 @@
 <script lang="ts">
-    import type {Matrix, Plasma} from "./types";
+    import type { Plasma} from "./types";
     import { scale} from 'svelte/transition'
     import {currentRow, gameStatus, isPaused, lastCol, lastRow, layers, gameInterval} from "./gameState.svelte.js";
     import {checkResult, clearItems, matchColorHorizontal, matchColorVertical} from "./matchItems.helpers";
+    import {mapColorsToHex} from "./constants";
 
     interface Props {
         plasma: Plasma;
         offset: number;
-        matrix: Matrix;
     }
 
-    const {plasma, offset, matrix}: Props = $props();
+    const {plasma, offset}: Props = $props();
 
     let interval: ReturnType<typeof setInterval>;
 
     let neighbors = $derived.by(() => {
         return {
-            top: plasma.row === 0 ? null : matrix[plasma.row - 1][plasma.column],
-            right: plasma.column === lastCol ? null : matrix[plasma.row][plasma.column + 1],
-            bottom: plasma.row === lastRow ? null : matrix[plasma.row + 1][plasma.column],
-            left: plasma.row === 0 ? null : matrix[plasma.row][plasma.column - 1],
+            top: plasma.row === 0 ? null : layers.matrix[plasma.row - 1][plasma.column],
+            right: plasma.column === lastCol ? null : layers.matrix[plasma.row][plasma.column + 1],
+            bottom: plasma.row === lastRow ? null : layers.matrix[plasma.row + 1][plasma.column],
+            left: plasma.row === 0 ? null : layers.matrix[plasma.row][plasma.column - 1],
         }
     })
 
@@ -32,8 +32,8 @@
     })
 
     const matchItems = () => {
-        const matchingTop = matchColorVertical(plasma.row, plasma.column, matrix);
-        const matchingHorizontal = matchColorHorizontal(plasma.row, plasma.column, matrix);
+        const matchingTop = matchColorVertical(plasma.row, plasma.column);
+        const matchingHorizontal = matchColorHorizontal(plasma.row, plasma.column);
 
         clearItems(matchingTop);
         clearItems(matchingHorizontal);

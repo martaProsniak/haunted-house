@@ -12,10 +12,11 @@
         gameInterval,
     } from "./gameState.svelte.js";
     import GhostSprite from './ghost.svelte'
-    import type {Ghost, Matrix} from "./types";
+    import type {Ghost} from "./types";
+    import {checkResult, clearItems, matchColorHorizontal, matchColorVertical} from "./matchItems.helpers";
     import {ghostsGifs, ghostsImages} from "./constants";
 
-    const {offset, matrix}: {offset: number, matrix: Matrix} = $props()
+    const {offset} = $props();
     let interval: ReturnType<typeof setInterval>;
     let freeGhosts = $derived.by(() => {
         return layers.ghosts.filter((ghost) => !ghost.isGlued);
@@ -33,9 +34,28 @@
         }, $gameInterval * 2);
     }
 
+    const checkResultAfterMove = () => {
+        const result = checkResult();
+        if (result) {
+            $gameStatus = result;
+            clearInterval(interval);
+        }
+    }
+
+
+    const matchItems = (ghost: Ghost) => {
+        const matchingTop = matchColorVertical(ghost.row, ghost.column);
+        const matchingHorizontal = matchColorHorizontal(ghost.row, ghost.column);
+
+        clearItems(matchingTop);
+        clearItems(matchingHorizontal);
+        checkResultAfterMove();
+    }
+
     const updateAfterMove = (ghost: Ghost) => {
         ghost.hasMoved = true;
         ghost.imageUrl = ghostsImages[ghost.color];
+        matchItems(ghost);
     }
 
     const moveUp = (ghost: Ghost) => {
@@ -44,6 +64,7 @@
         if (row === initialRow) {
             layers.escapedGhosts[ghost.id] = ghost;
             layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
+            checkResultAfterMove();
         }
 
         if (ghost.hasPillAbove) {
@@ -132,6 +153,6 @@
 
 <div class="absolute">
     {#each layers.ghosts as ghost}
-        <GhostSprite {ghost} {matrix} {offset} />
+        <GhostSprite {ghost} {offset} />
     {/each}
 </div>
