@@ -40,7 +40,6 @@
     } from "./matchItems.helpers";
     import {plasmaImages} from "./constants";
     import ghost from "./ghost.svelte";
-    import plasma from "./plasma.svelte";
 
     interface LastPlasma {
         curr: Plasma;
@@ -55,29 +54,6 @@
 
     let currentPlasma: FlyingPlasma;
     let plasmaInterval: ReturnType<typeof setInterval>;
-
-    const createPlasma = () => {
-        const currentPlasma: Plasma = {
-            type: 'plasma',
-            id: uuidv4(),
-            color: flyingPlasmaColors.current,
-            row: $currentRow,
-            column: $currentCol,
-            imageUrl: plasmaImages[flyingPlasmaColors.current],
-        };
-        const derivedPlasma: Plasma = {
-            type: 'plasma',
-            id: uuidv4(),
-            color: flyingPlasmaColors.derived,
-            row: $derivedRow,
-            column: $derivedCol,
-            imageUrl: plasmaImages[flyingPlasmaColors.derived]
-        };
-
-        return {curr: currentPlasma, der: derivedPlasma};
-    }
-
-    let plasmaInMatrix = $derived.by(() => createPlasma());
 
     $effect(() => {
         updateMatrix();
@@ -123,13 +99,18 @@
     }
 
     const resetPlasma = () => {
+        $currentRow = initialRow;
+        $currentCol = initialCol;
         currentPlasma.reset();
     }
 
     const prepareLevel = () => {
         prepareGhostsLayer();
         preparePlasmaLayer();
+        $rotation = 0;
         layers.matrix = initialMatrix;
+        $currentRow = initialRow;
+        $currentCol = initialCol;
         $totalGhosts = layers.ghosts.length;
         $gameStatus = 'playing';
         $isPaused = false;
@@ -137,7 +118,6 @@
         layers.escapedGhosts = {};
         $totalScore+= $score;
         $score = 0;
-        resetPlasma();
     }
 
     const prepareGhostsLayer = () => {
@@ -168,15 +148,35 @@
 
             moveDown();
 
-            layers.matrix[$currentRow][$currentCol] = plasmaInMatrix.curr;
-            layers.matrix[$derivedRow][$derivedCol] = plasmaInMatrix.der;
-
         }, 1000);
+    }
+
+    const createLastPlasma = () => {
+        const currentPlasma: Plasma = {
+            type: 'plasma',
+            id: uuidv4(),
+            color: flyingPlasmaColors.current,
+            row: $currentRow,
+            column: $currentCol,
+            imageUrl: plasmaImages[flyingPlasmaColors.current],
+        };
+        const derivedPlasma: Plasma = {
+            type: 'plasma',
+            id: uuidv4(),
+            color: flyingPlasmaColors.derived,
+            row: $derivedRow,
+            column: $derivedCol,
+            imageUrl: plasmaImages[flyingPlasmaColors.derived]
+        };
+
+        lastPlasma = {curr: currentPlasma, der: derivedPlasma};
+
+        return lastPlasma;
     }
 
 
     const updatePreviousPlasma = () => {
-        lastPlasma = createPlasma();
+        lastPlasma = createLastPlasma();
 
         layers.previousPlasma.push(lastPlasma.curr, lastPlasma.der);
 
