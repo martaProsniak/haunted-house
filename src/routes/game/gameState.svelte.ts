@@ -29,14 +29,6 @@ export const isPaused: Writable<boolean> = writable(false);
 export const score: Writable<number> = writable(0);
 export const totalScore: Writable<number> = writable(0);
 export const totalGhosts: Writable<number> = writable(0);
-export const gameInterval: Readable<number> = derived(
-	[level], ([level]) => {
-		if (level % 3 === 0) {
-			return 500;
-		}
-		return 1000;
-	}
-);
 
 export const derivedRow: Readable<number> = derived(
 	[rotation, currentRow],

@@ -8,8 +8,7 @@
         currentRow,
         rotation,
         derivedRow,
-        lastCol,
-        gameInterval,
+        lastCol
     } from "./gameState.svelte.js";
     import GhostSprite from './ghost.svelte'
     import type {Ghost} from "./types";
@@ -31,7 +30,7 @@
                 ghost.imageUrl = ghostsGifs[ghost.color]
                 moveGhost(ghost);
             })
-        }, $gameInterval * 2);
+        }, 2000);
     }
 
     const checkResultAfterMove = () => {
@@ -119,7 +118,7 @@
     }
 
     const prepareGhostsToMove = () => {
-        ghostsToMove = freeGhosts.filter((ghost) => !ghost.hasMoved).slice(0, moveCount);
+        ghostsToMove = layers.ghosts.filter((ghost) => !ghost.hasMoved).slice(0, moveCount);
         if (!ghostsToMove.length) {
             ghostsToMove = freeGhosts.map((ghost) => {
                 ghost.hasMoved = false;
@@ -127,6 +126,7 @@
             }).slice(0, moveCount);
         }
         ghostsToMove.forEach((ghost) => {
+            if (ghost.isGlued) return;
             ghost.imageUrl = ghostsGifs[ghost.color]
         })
 

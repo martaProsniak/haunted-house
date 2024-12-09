@@ -19,8 +19,7 @@
         rotation,
         totalGhosts,
         totalScore,
-        score,
-        gameInterval
+        score
     } from './gameState.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -40,6 +39,8 @@
         matchColorVertical
     } from "./matchItems.helpers";
     import {plasmaImages} from "./constants";
+    import ghost from "./ghost.svelte";
+    import plasma from "./plasma.svelte";
 
     interface LastPlasma {
         curr: Plasma;
@@ -170,7 +171,7 @@
             layers.matrix[$currentRow][$currentCol] = plasmaInMatrix.curr;
             layers.matrix[$derivedRow][$derivedCol] = plasmaInMatrix.der;
 
-        }, $gameInterval);
+        }, 1000);
     }
 
 
