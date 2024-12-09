@@ -59,13 +59,19 @@
                 return;
             }
             if (canMoveDown) {
+                layers.matrix[plasma.row][plasma.column] = null;
                 plasma.row++;
-                matchItems();
             }
         }, 1000);
 
         return () => {
             clearInterval(interval);
+        }
+    })
+
+    $effect(() => {
+        if (Object.values(neighbors).some(neighbor => Boolean(neighbor))) {
+            matchItems();
         }
     })
 </script>

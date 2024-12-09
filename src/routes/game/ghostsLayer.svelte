@@ -58,7 +58,7 @@
     }
 
     const moveUp = (ghost: Ghost) => {
-        const {row, id} = ghost;
+        const {row, column, id} = ghost;
 
         if (row === initialRow) {
             layers.escapedGhosts[ghost.id] = ghost;
@@ -70,18 +70,21 @@
             return;
         }
 
+        layers.matrix[row][column] = null;
         ghost.row = row - 1;
     }
 
     const moveLeft = (ghost: Ghost) => {
-        const {column} = ghost;
+        const {row, column} = ghost;
 
+        layers.matrix[row][column] = null;
         ghost.column = column - 1;
     }
 
     const moveRight = (ghost: Ghost) => {
-        const {column} = ghost;
+        const {row, column} = ghost;
 
+        layers.matrix[row][column] = null;
         ghost.column = column + 1;
     }
 

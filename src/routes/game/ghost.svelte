@@ -32,6 +32,8 @@
         return Object.values(neighbors).some((neighbour) => (neighbour?.color === ghost.color && neighbour.type === 'plasma'))
     })
 
+    let willMove = $derived(ghost.imageUrl.endsWith('gif'))
+
     let hasPillAbove = $derived.by(() => {
         if ($rotation === 270) {
             return ghost.row - 1 === $currentRow && (ghost.column === $currentCol);
@@ -59,7 +61,7 @@
         style:background-image={`url("${ghost.imageUrl}")`}
         style:top={`${ghost.row * offset}px`}
         style:left={`${ghost.column * offset}px`}
-        style:box-shadow={ghost.isGlued ? `0 0 0 1px ${mapColorsToHex[ghost.color]}` : ''}
+        style:box-shadow={ghost.isGlued || willMove ? `0 0 0 1px ${mapColorsToHex[ghost.color]}` : ''}
         style:background-color={ghost.isGlued ? `${mapColorsToHex[ghost.color]}` : `${mapColorsToHex[ghost.color]}` + '55'}
         in:scale={{duration: 200}} out:scale={{duration: 100}}
 ></div>
