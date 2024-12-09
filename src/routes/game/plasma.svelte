@@ -3,7 +3,6 @@
     import { scale} from 'svelte/transition'
     import {currentRow, gameStatus, isPaused, lastCol, lastRow, layers} from "./gameState.svelte.js";
     import {checkResult, clearItems, matchColorHorizontal, matchColorVertical} from "./matchItems.helpers";
-    import {mapColorsToHex} from "./constants";
 
     interface Props {
         plasma: Plasma;
@@ -60,6 +59,7 @@
             }
             if (canMoveDown) {
                 layers.matrix[plasma.row][plasma.column] = null;
+                layers.matrix[plasma.row + 1][plasma.column] = null;
                 plasma.row++;
             }
         }, 1000);

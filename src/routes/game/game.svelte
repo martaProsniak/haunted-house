@@ -29,6 +29,7 @@
     import Score from './score.svelte';
     import EndLevel from "./endLevel.svelte";
     import NextPlasma from './nextPlasma.svelte';
+    import RemovedLayer from './removedItems.svelte';
     import {
         generateGhosts
     } from "./utils";
@@ -39,7 +40,6 @@
         matchColorVertical
     } from "./matchItems.helpers";
     import {plasmaImages} from "./constants";
-    import ghost from "./ghost.svelte";
 
     interface LastPlasma {
         curr: Plasma;
@@ -284,6 +284,7 @@
         <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
         <GhostsLayer {offset} />
         <PlasmaLayer {offset}/>
+        <RemovedLayer {offset} />
     </div>
     <div class="score">
         <Score />

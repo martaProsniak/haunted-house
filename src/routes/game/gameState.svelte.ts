@@ -68,6 +68,7 @@ export const layers: GameLayers = $state({
 	previousPlasma: [],
 	escapedGhosts: {},
 	catchGhosts: {},
-	equipment: []
+	equipment: [],
+	removedItems: {},
 });
 

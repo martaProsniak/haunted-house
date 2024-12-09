@@ -39,6 +39,8 @@ export type GameStatus = 'not-started' | 'started' | 'playing' | 'success' | 'fa
 
 export type GhostSummary = Record<string, Ghost>
 
+export type RemovedItems = Record<string, MatrixItem[]>
+
 export interface GameLayers {
 	matrix: Matrix;
 	ghosts: Ghost[];
@@ -46,4 +48,5 @@ export interface GameLayers {
     escapedGhosts: GhostSummary;
     catchGhosts: GhostSummary;
     equipment: Plasma[];
+	removedItems: RemovedItems,
 }

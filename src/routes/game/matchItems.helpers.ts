@@ -1,6 +1,7 @@
 import type {Color, MatrixItem, Ghost, Plasma} from './types';
 import { lastCol, lastRow, layers, score, totalGhosts } from './gameState.svelte.js';
 import {get} from "svelte/store";
+import { v4 as uuidv4 } from 'uuid';
 
 export const countCatchGhosts = (ghosts: Record<string, Ghost>) => {
 	Object.values(ghosts).forEach((ghost) => {
@@ -160,6 +161,10 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
 		}
 	});
 
+	const removedPlasma: MatrixItem[] = layers.previousPlasma.filter((plasma) => plasmaToRemove[plasma.id]);
+	const removedGhosts: MatrixItem[] = layers.ghosts.filter((ghost) => ghostsToRemove[ghost.id]);
+	const id = uuidv4();
+	layers.removedItems[id] = removedGhosts.concat(...removedPlasma)
 	layers.previousPlasma = layers.previousPlasma.filter((plasma) => !plasmaToRemove[plasma.id]);
 	layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id]);
 	countCatchGhosts(ghostsToRemove);

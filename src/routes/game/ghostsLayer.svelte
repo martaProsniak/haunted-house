@@ -71,6 +71,7 @@
         }
 
         layers.matrix[row][column] = null;
+        layers.matrix[row-1][column] = ghost;
         ghost.row = row - 1;
     }
 
@@ -78,6 +79,7 @@
         const {row, column} = ghost;
 
         layers.matrix[row][column] = null;
+        layers.matrix[row][column - 1] = ghost;
         ghost.column = column - 1;
     }
 
@@ -85,6 +87,7 @@
         const {row, column} = ghost;
 
         layers.matrix[row][column] = null;
+        layers.matrix[row][column + 1] = ghost;
         ghost.column = column + 1;
     }
 
