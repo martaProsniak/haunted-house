@@ -6,7 +6,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        freckle: ['"Freckle Face"', ...defaultTheme.fontFamily.sans]
+        nunito: ["Nunito", ...defaultTheme.fontFamily.sans],
+        creepster: ['"Creepster"', ...defaultTheme.fontFamily.serif],
+        luckiest: ["Luckiest Guy", ...defaultTheme.fontFamily.sans],
+
       }
     },
   },

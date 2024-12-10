@@ -2,10 +2,18 @@
     import {lastCol, lastRow, layers} from "./gameState.svelte.js";
     import floorImage from '$lib/assets/floor.png';
     import candleImage from '$lib/assets/candle.png'
+    import pumpkinImage from '$lib/assets/pumpkin.png';
+    import webImage from '$lib/assets/web.png';
 
     const getCellBgImg = (row:number, col: number) => {
         if ((row === 0 || row === lastRow) && (col === 0 || col === lastCol)) {
+            return webImage;
+        }
+        if ((row === 3 ) && (col === 0 || col === lastCol)) {
             return candleImage;
+        }
+        if ((row === lastRow ) && (col === 1 || col === lastCol - 1)) {
+            return pumpkinImage;
         }
         return floorImage;
     }
@@ -28,5 +36,6 @@
         box-sizing: border-box;
         color: white;
         font-size: 12px;
+        opacity: 0.5;
     }
 </style>

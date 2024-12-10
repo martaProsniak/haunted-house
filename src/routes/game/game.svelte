@@ -116,7 +116,6 @@
         $isPaused = false;
         layers.catchGhosts = {};
         layers.escapedGhosts = {};
-        $totalScore+= $score;
         $score = 0;
     }
 
@@ -279,7 +278,7 @@
         <GhostsInfo />
         <NextPlasma />
     </div>
-    <div class=" w-fit h-fit bg-stone-800 flex flex-nowrap flex-col gap-1 p-1 relative board">
+    <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board">
         <Board />
         <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
         <GhostsLayer {offset} />

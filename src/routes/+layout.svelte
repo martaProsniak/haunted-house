@@ -4,6 +4,6 @@
     const {children} = $props();
 </script>
 
-<div class="bg-stone-900 text-stone-100 min-h-screen">
+<div class="text-stone-100 min-h-screen h-full font-nunito">
     {@render children()}
 </div>

@@ -5,7 +5,7 @@
 
 </script>
 
-<div class="container mx-auto">
+<div class="container mx-auto max-h-screen grid gap-4">
     <div class="header">
         <Header />
     </div>
@@ -21,9 +21,8 @@
 
 <style>
     .container {
-        display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: 150px minmax(708px, 1fr) 100px;
+        grid-template-rows: minmax(150px, 1fr) minmax(828px, 2fr) minmax(80px, 1fr);
         grid-template-areas: 'header' 'game' 'footer';
         max-width: 1440px;
 

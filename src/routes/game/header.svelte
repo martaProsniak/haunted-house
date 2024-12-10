@@ -24,8 +24,8 @@
     }
 </script>
 
-<div class="p-2">
-    <header class="text-2xl font-freckle">
+<div class="p-2 space-y-2 mt-4">
+    <header class="text-4xl font-creepster">
         Hounted House
     </header>
     <button class="p-2 bg-pink-500 rounded-s w-40" onclick={startGame}>Start new game</button>
