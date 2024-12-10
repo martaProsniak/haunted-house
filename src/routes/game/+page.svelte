@@ -9,7 +9,7 @@
     <div class="header">
         <Header />
     </div>
-    <div class="game">
+    <div class="game rounded-xl">
         <Game />
     </div>
     <footer class="footer">
@@ -32,6 +32,7 @@
 
         .game {
             grid-area: game;
+            background-color: rgba(12, 12, 13, 0.78);
         }
 
         .footer {
