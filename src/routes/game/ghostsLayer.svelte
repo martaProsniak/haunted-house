@@ -16,28 +16,42 @@
     import {ghostsGifs, ghostsImages} from "./constants";
 
     const {offset} = $props();
-    let interval: ReturnType<typeof setInterval>;
     let freeGhosts = $derived.by(() => {
         return layers.ghosts.filter((ghost) => !ghost.isGlued);
     })
-    let moveCount = $derived.by(() => Math.min(Math.ceil($level / 3), 5));
+    let moveCount = $derived.by(() => Math.min(Math.ceil($level / 5), 5));
     let ghostsToMove: Ghost[] = [];
-
+    let animationFrameId: number;
+    let lastFrameTime: number | null = null; // Poprawna inicjalizacja
 
     const scheduleMovement = () => {
-        interval = setInterval(() => {
-            ghostsToMove.forEach((ghost) => {
-                ghost.imageUrl = ghostsGifs[ghost.color]
-                moveGhost(ghost);
-            })
-        }, 2000);
-    }
+        const animateMovement = (timestamp: number) => {
+            if (lastFrameTime === null) {
+                lastFrameTime = timestamp; // Ustawienie przy pierwszym wywołaniu
+            }
+
+            if (timestamp - lastFrameTime >= 2000) { // 2000ms delay
+                lastFrameTime = timestamp;
+                ghostsToMove.forEach((ghost) => {
+                    ghost.imageUrl = ghostsGifs[ghost.color];
+                    moveGhost(ghost);
+                });
+            }
+
+            if ($gameStatus === 'playing') {
+                animationFrameId = requestAnimationFrame(animateMovement);
+            }
+        };
+
+        animationFrameId = requestAnimationFrame(animateMovement);
+    };
+
 
     const checkResultAfterMove = () => {
         const result = checkResult();
         if (result) {
             $gameStatus = result;
-            clearInterval(interval);
+            stopAnimation();
         }
     }
 
@@ -64,6 +78,7 @@
             layers.escapedGhosts[ghost.id] = ghost;
             layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
             checkResultAfterMove();
+            return;
         }
 
         if (ghost.hasPillAbove) {
@@ -132,23 +147,28 @@
 
     }
 
+    const stopAnimation = () => {
+        cancelAnimationFrame(animationFrameId);
+        lastFrameTime = null;
+    }
+
     $effect(() => {
         if ($gameStatus === 'playing') {
             if (!freeGhosts.length) {
-                return
+                return;
             }
             prepareGhostsToMove();
             scheduleMovement();
         }
 
         if ($gameStatus === 'success' || $gameStatus === 'failure') {
-            clearInterval(interval);
+            ghostsToMove = [];
         }
 
         return () => {
-            clearInterval(interval);
-        }
-    })
+            stopAnimation();
+        };
+    });
 </script>
 
 <div class="absolute">

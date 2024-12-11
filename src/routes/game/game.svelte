@@ -53,32 +53,72 @@
     let lastPlasma: LastPlasma | null = $state(null);
 
     let currentPlasma: FlyingPlasma;
-    let plasmaInterval: ReturnType<typeof setInterval>;
+
+    let animationFrameId: number | null = null;
+    let lastFrameTime: number | null = null;
 
     $effect(() => {
         updateMatrix();
     });
 
     $effect(() => {
+        // Inicjalizujemy animację tylko w przypadku rozpoczęcia gry
         if ($gameStatus === 'started') {
             prepareLevel();
         }
 
         if ($gameStatus === 'playing') {
-            startLevel();
+            if (animationFrameId === null) {
+                animationFrameId = requestAnimationFrame(animateLevel);
+            }
         }
 
         if ($gameStatus === 'success' || $gameStatus === 'failure') {
-            clearInterval(plasmaInterval);
+            if (animationFrameId !== null) {
+                cancelAnimation();
+            }
         }
 
         return () => {
-            if (plasmaInterval) {
-                console.log('clear interval');
-                clearInterval(plasmaInterval);
+            if (animationFrameId !== null) {
+                cancelAnimation();
             }
-        }
+        };
     });
+
+    const cancelAnimation = () => {
+        if (animationFrameId === null) {
+            return;
+        }
+        cancelAnimationFrame(animationFrameId);
+        lastFrameTime = null;
+        animationFrameId = null;
+    }
+
+    const animateLevel = (currentTime: number) => {
+        if (!lastFrameTime) {
+            lastFrameTime = currentTime;
+        }
+
+        const delta = currentTime - lastFrameTime;
+
+        if ($gameStatus === 'playing' && delta >= 1000) {
+            if (layers.matrix[initialRow + 1][initialCol] || layers.matrix[initialRow + 1][initialCol + 1]) {
+                checkEndLevel(true);
+            }
+
+            if (!$isPaused) {
+                moveDown();
+            }
+
+            lastFrameTime = currentTime;
+        }
+
+        if ($gameStatus === 'playing') {
+            animationFrameId = requestAnimationFrame(animateLevel);
+        }
+    };
+
 
     const updateMatrix = () => {
         layers.matrix.forEach((row, rowIndex) => {
@@ -131,23 +171,8 @@
         const result = checkResult(noMoves);
         if (result) {
             $gameStatus = result;
-            clearInterval(plasmaInterval);
+            animationFrameId && cancelAnimation();
         }
-    }
-
-    const startLevel = () => {
-        plasmaInterval = setInterval(() => {
-            if (layers.matrix[initialRow + 1][initialCol] || layers.matrix[initialRow + 1][initialCol + 1]) {
-                checkEndLevel(true)
-            }
-
-            if ($isPaused) {
-                return;
-            }
-
-            moveDown();
-
-        }, 1000);
     }
 
     const createLastPlasma = () => {
@@ -173,7 +198,6 @@
         return lastPlasma;
     }
 
-
     const updatePreviousPlasma = () => {
         lastPlasma = createLastPlasma();
 
@@ -183,7 +207,6 @@
             layers.matrix[plasma.row][plasma.column] = plasma;
         })
     }
-
 
     const matchItemsPerRotation = {
         0: (plasma: LastPlasma) => matchItemsHorizontal(plasma),

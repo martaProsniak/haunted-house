@@ -11,7 +11,9 @@
 
     const {plasma, offset}: Props = $props();
 
-    let interval: ReturnType<typeof setInterval>;
+    let animationFrame: number;
+    let lastTime: number | null = null;
+    const moveInterval = 1000;
 
     let neighbors = $derived.by(() => {
         return {
@@ -42,32 +44,49 @@
         }
     }
 
+    const animatePlasma = (timestamp: number) => {
+        if (!plasma || $gameStatus !== 'playing' || $isPaused) {
+            animationFrame = requestAnimationFrame(animatePlasma);
+            return;
+        }
+
+        if (lastTime === null) {
+            lastTime = timestamp;
+        }
+
+        const delta = timestamp - lastTime;
+
+        if (delta >= moveInterval) {
+            if (plasma.row === lastRow) {
+                cancelAnimationFrame(animationFrame);
+                return;
+            }
+
+            if (canMoveDown) {
+                layers.matrix[plasma.row][plasma.column] = null;
+                plasma.row++;
+                layers.matrix[plasma.row][plasma.column] = plasma;
+            }
+
+            lastTime = timestamp;
+        }
+
+        animationFrame = requestAnimationFrame(animatePlasma);
+    }
+
     $effect(() => {
         if (!plasma) {
             return;
         }
-        interval = setInterval(() => {
-            if (plasma.row === lastRow) {
-                clearInterval(interval);
-                return;
-            }
-            if ($gameStatus !== 'playing') {
-                return;
-            }
-            if ($isPaused) {
-                return;
-            }
-            if (canMoveDown) {
-                layers.matrix[plasma.row][plasma.column] = null;
-                layers.matrix[plasma.row + 1][plasma.column] = null;
-                plasma.row++;
-            }
-        }, 1000);
+
+        lastTime = null;
+        animationFrame = requestAnimationFrame(animatePlasma);
 
         return () => {
-            clearInterval(interval);
-        }
-    })
+            cancelAnimationFrame(animationFrame);
+            lastTime = null;
+        };
+    });
 
     $effect(() => {
         if (Object.values(neighbors).some(neighbor => Boolean(neighbor))) {
