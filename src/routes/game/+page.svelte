@@ -22,7 +22,7 @@
 <style>
     .container {
         grid-template-columns: 1fr;
-        grid-template-rows: minmax(150px, 1fr) minmax(828px, 2fr) minmax(80px, 1fr);
+        grid-template-rows: minmax(100px, 1fr) minmax(808px, 1fr) minmax(80px, 1fr);
         grid-template-areas: 'header' 'game' 'footer';
         max-width: 1440px;
 
