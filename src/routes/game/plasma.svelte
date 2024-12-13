@@ -27,9 +27,7 @@
     let canMoveDown = $derived.by(() => {
         if (plasma.row + 1 === $currentRow) return false;
         if (neighbors.bottom) return false;
-        if (neighbors.left?.type === 'ghost' && neighbors.left?.color === plasma.color) return false;
-        if (neighbors.right?.type === 'ghost' && neighbors.right?.color === plasma.color) return false;
-        return true
+        return !(Object.values(neighbors).some((neighbor) => neighbor?.type === 'ghost' && neighbor?.color === plasma.color));
     })
 
     const matchItems = () => {

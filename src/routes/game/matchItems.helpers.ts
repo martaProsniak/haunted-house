@@ -1,5 +1,5 @@
 import type {Color, MatrixItem, Ghost, Plasma} from './types';
-import { lastCol, lastRow, layers, score, totalGhosts } from './gameState.svelte.js';
+import {initialRow, initialCol, lastCol, lastRow, layers, score, totalGhosts} from './gameState.svelte.js';
 import {get} from "svelte/store";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -44,7 +44,7 @@ export const findNextMatchingItemUp = (
 	matchingItems: MatrixItem[],
 	hasGhost = false
 ): MatrixItem[] => {
-	if (row === 1) {
+	if (row < initialRow) {
 		return matchingItems;
 	}
 	const item = layers.matrix[row]?.[col];
@@ -68,7 +68,7 @@ export const findNextMatchingItemLeft = (
 	matchingItems: MatrixItem[],
 	hasGhost = false
 ): MatrixItem[] => {
-	if (col < 0) {
+	if (col < initialCol) {
 		return matchingItems;
 	}
 	const item = layers.matrix[row]?.[col];
@@ -92,7 +92,7 @@ export const findNextMatchingItemRight = (
 	matchingItems: MatrixItem[],
 	hasGhost = false
 ): MatrixItem[] => {
-	if (col === lastCol) {
+	if (col < lastCol) {
 		return matchingItems;
 	}
 	const item = layers.matrix[row]?.[col];

@@ -22,10 +22,10 @@ export const getRandomPill: () => { current: Color; derived: Color } = () => {
 };
 
 const CONFIG = {
-	rowsCount: 16,
-	colsCount: 16,
-	minRow: 8,
-	maxRow: 15
+	rowsCount: 14,
+	colsCount: 8,
+	minRow: 7,
+	maxRow: 13
 };
 
 function generateWeightedRows(): number[] {
@@ -60,7 +60,7 @@ function getUniquePosition(
 
 function calculateMaxGhosts(level: number): number {
 	const baseGhosts = 3;
-	const incrementPerLevel = 2;
+	const incrementPerLevel = 1;
 	const maxGhostsLimit = Math.floor(0.75 * CONFIG.rowsCount * CONFIG.colsCount);
 
 	return Math.min(baseGhosts + (level - 1) * incrementPerLevel, maxGhostsLimit);

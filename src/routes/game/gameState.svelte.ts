@@ -12,10 +12,10 @@ export const nextPlasmaColors = $state({
 	current: getRandomColor(),
 	derived: getRandomColor()
 });
-export const rowsCount = 16;
-export const colsCount = 16;
+export const rowsCount = 14;
+export const colsCount = 8;
 export const initialRow = 0;
-export const initialCol = 7;
+export const initialCol = (colsCount / 2) - 1;
 export const lastRow = rowsCount - 1;
 export const lastCol = colsCount - 1;
 
