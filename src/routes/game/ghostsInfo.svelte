@@ -5,8 +5,6 @@
     import pinkGhost from '$lib/assets/ghost-pink.png';
     import greenGhost from '$lib/assets/ghost-green.png';
 
-    const {startGame, restartLevel, togglePause, isPlaying, isPaused} = $props();
-
     let catchCount = $derived(Object.keys(layers.catchGhosts).length)
 
     let escapedCount = $derived(Object.keys(layers.escapedGhosts).length)
@@ -35,9 +33,6 @@
 </script>
 
 <div class="text-l space-y-4">
-    <button class="p-2 bg-pink-500 rounded-s w-40" onclick={startGame}>Start new game</button>
-    <button class="p-2 bg-violet-500 rounded-s w-40" onclick={restartLevel}>Restart level</button>
-    <button class="p-2 bg-orange-500 rounded-s w-40" disabled={!isPlaying} onclick={togglePause}>{!isPaused ? 'Pause' : 'Play'}</button>
     <div>
         <span>Catch ghosts: {catchCount} / {$totalGhosts}</span>
         <div class="flex gap-x-4 mt-2 mb-8 h-[48px]">
