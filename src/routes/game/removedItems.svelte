@@ -1,30 +1,59 @@
 <script lang="ts">
     import {layers} from "./gameState.svelte";
-    import {fade} from 'svelte/transition'
+    import {scale} from 'svelte/transition'
     import {mapColorsToHex} from "./constants";
 
     const {offset} = $props();
 
+    const removalTimes = new Map<string, number>();
+
     $effect(() => {
         Object.keys(layers.removedItems).forEach((key) => {
-            setTimeout(() => {
-                delete layers.removedItems[key];
-            }, 500)
-        })
-    })
+            if (!removalTimes.has(key)) {
+                removalTimes.set(key, performance.now());
+            }
+        });
+
+        const checkAndRemoveItems = (currentTime: number) => {
+            removalTimes.forEach((startTime, key) => {
+                if (currentTime - startTime >= 500) {
+                    layers.removedItems[key] = layers.removedItems[key].map(() => null)
+                    removalTimes.delete(key);
+                }
+            });
+
+            if (removalTimes.size > 0) {
+                requestAnimationFrame(checkAndRemoveItems);
+            }
+        };
+
+        requestAnimationFrame(checkAndRemoveItems);
+    });
+
+    const deleteKey = (key: string) => {
+        if (layers.removedItems[key].filter(Boolean).length) {
+            return;
+        }
+        delete layers.removedItems[key];
+    }
 </script>
 
 <div class="absolute">
-    {#each Object.values(layers.removedItems) as removedItems}
-        {#each removedItems as item}
-            <div
-                    style:background-image={`url("${item.imageUrl}")`}
-                    style:top={`${item.row * offset}px`}
-                    style:left={`${item.column * offset}px`}
-                    style:box-shadow={`0 0 0 1px ${mapColorsToHex[item.color]}`}
-                    class="item-removed"
-                    out:fade={{ duration: 100}} in:fade={{duration: 100}}>
-            </div>
+    {#each Object.keys(layers.removedItems) as group}
+        {#each layers.removedItems[group] as item}
+            {#if item}
+                <div
+                        style:background-image={`url("${item.imageUrl}")`}
+                        style:top={`${item.row * offset}px`}
+                        style:left={`${item.column * offset}px`}
+                        style:box-shadow={`0 0 0 1px ${mapColorsToHex[item.color]}`}
+                        class="item-removed"
+                        out:scale={{ duration: 200}}
+                        onoutroend={() => deleteKey(group) }
+
+                >
+                </div>
+            {/if}
         {/each}
     {/each}
 </div>
@@ -38,6 +67,5 @@
         box-sizing: border-box;
         font-size: 12px;
         border-radius: 4px;
-        transition: box-shadow .2s ease-in-out;
     }
 </style>

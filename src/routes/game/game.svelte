@@ -50,6 +50,7 @@
     const gap = 4;
     const initialTop = gap;
     const initialLeft = gap + (initialCol * offset);
+    let frequency = $state(1000);
     let lastPlasma: LastPlasma | null = $state(null);
 
     let currentPlasma: FlyingPlasma;
@@ -62,7 +63,6 @@
     });
 
     $effect(() => {
-        // Inicjalizujemy animację tylko w przypadku rozpoczęcia gry
         if ($gameStatus === 'started') {
             prepareLevel();
         }

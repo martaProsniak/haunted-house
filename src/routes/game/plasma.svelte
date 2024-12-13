@@ -13,7 +13,7 @@
 
     let animationFrame: number;
     let lastTime: number | null = null;
-    const moveInterval = 1000;
+    const moveInterval = 500;
 
     let neighbors = $derived.by(() => {
         return {
