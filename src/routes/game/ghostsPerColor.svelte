@@ -25,7 +25,7 @@
 </script>
 
 {#if $gameStatus !== 'not-started'}
-    <div class="" in:fade={{duration: 200}}>
+    <div class="h-16" in:fade={{duration: 200}}>
         <div class="flex gap-x-6 w-fit items-center">
             {#each Object.keys(ghostsPerColor) as color}
                 <div class="relative">

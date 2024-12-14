@@ -18,9 +18,7 @@
          transition:scale={{duration: 300}}
          style:box-shadow={`0 0 2px 2px ${boxShadowColor}`}
     >
-            <span>
-                {count}
-            </span>
+        <div class="mt-1">{count}</div>
     </div>
 {/key}
 
