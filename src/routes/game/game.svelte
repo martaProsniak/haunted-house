@@ -345,7 +345,6 @@
         grid-template-columns: 300px minmax(396px, 1fr) 300px;
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';
-        align-items: center;
 
         .ghosts {
             grid-area: ghosts;
@@ -353,7 +352,7 @@
 
         .board {
             grid-area: board;
-            box-shadow: 0 0 20px 20px #3a3340;
+            box-shadow: 0 0 20px 20px #290b4038;
         }
 
         .score {

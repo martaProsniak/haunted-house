@@ -24,10 +24,10 @@
     }
 </script>
 
-<div class="space-y-4 font-luckiest text-xl">
-    <button class="p-4 bg-violet-900 rounded-lg w-52 mb-20" disabled={$gameStatus !== 'playing'} onclick={togglePause}>{!$isPaused ? 'Pause' : 'Play'}</button>
+<div class="space-y-4 font-luckiest text-xl px-6 text-right">
+    <button class="p-4 shadow-sm shadow-violet-700 hover:bg-violet-700 focus:bg-violet-700 transition-colors rounded-lg w-52 mb-20" disabled={$gameStatus !== 'playing'} onclick={togglePause}>{!$isPaused ? 'Pause' : 'Play'}</button>
 
 
-    <button class="p-4 bg-violet-800 rounded-lg w-52" onclick={startGame}>Start new game</button>
-    <button class="p-4 bg-violet-700 rounded-lg w-52" onclick={restartLevel}>Restart level</button>
+    <button class="p-4 shadow-sm shadow-violet-700 hover:bg-violet-700 focus:bg-violet-700 transition-colors rounded-lg w-52" onclick={startGame}>New game</button>
+    <button class="p-4 shadow-sm shadow-violet-700 hover:bg-violet-700 focus:bg-violet-700 transition-colors rounded-lg w-52" onclick={restartLevel}>Restart level</button>
 </div>
