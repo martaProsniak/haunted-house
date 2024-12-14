@@ -19,7 +19,7 @@
     let freeGhosts = $derived.by(() => {
         return layers.ghosts.filter((ghost) => !ghost.isGlued);
     })
-    let moveCount = $derived.by(() => Math.min(Math.ceil($level / 5), 5));
+    const moveCount = 1;
     let ghostsToMove: Ghost[] = [];
     let animationFrameId: number;
     let lastFrameTime: number | null = null; // Poprawna inicjalizacja

@@ -85,7 +85,6 @@
             if (animationFrameId !== null) {
                 cancelAnimation();
             }
-            console.log(layers)
         }
 
         return () => {
@@ -324,7 +323,6 @@
     <div class="ghosts">
         <Controls />
     </div>
-    {#if $gameStatus !== 'not-started'}
         <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board" in:fade={{duration: 200}}>
             <Board />
             <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
@@ -332,7 +330,6 @@
             <PlasmaLayer {offset}/>
             <RemovedLayer {offset} />
         </div>
-    {/if}
     <div class="score">
         <GameInfo />
     </div>

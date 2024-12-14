@@ -6,7 +6,7 @@
     import Level from "./level.svelte";
 </script>
 
-<div class="space-y-16 text-xl font-luckiest tracking-wide h-full">
+<div class="space-y-12 text-xl font-luckiest tracking-wide h-full">
     <NextPlasma />
     <Score />
     <div class="">

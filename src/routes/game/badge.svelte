@@ -15,10 +15,10 @@
 
 {#key count}
     <div class="absolute bg-white text-stone-900 rounded-full  badge text-base font-luckiest"
-         transition:scale={{duration: 300}}
+         transition:scale|local={{duration: 300}}
          style:box-shadow={`0 0 2px 2px ${boxShadowColor}`}
     >
-        <div class="mt-1">{count}</div>
+        <div>{count}</div>
     </div>
 {/key}
 
