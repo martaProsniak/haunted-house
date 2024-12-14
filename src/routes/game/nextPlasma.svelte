@@ -7,9 +7,9 @@
 
 </script>
 
-<div class="h-[100px] space-y-2">
+<div class="space-y-2">
     {#if !hidden}
-        <p class="font-luckiest text-xl">Next pill:</p>
+        <p class="font-luckiest">Next plasma bullet:</p>
         <div    transition:scale={{duration: 300}}
                 class="pill"
                 style:background-image={`url("${flyingPlasmaImages[nextPlasmaColors.current][nextPlasmaColors.derived]}")`}>

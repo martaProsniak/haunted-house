@@ -9,11 +9,10 @@
     import Badge from './badge.svelte'
 
     interface Props {
-        ghosts: GhostSummary,
-        label: string
+        ghosts: GhostSummary
     }
 
-    const {ghosts, label}: Props = $props();
+    const {ghosts}: Props = $props();
 
     let ghostsPerColor: Record<string, number> = $derived.by(() => groupGhostsPerColor(ghosts));
 
@@ -25,12 +24,11 @@
 
 </script>
 
-{#if $gameStatus === 'playing'}
-    <div class="font-luckiest tracking-wide text-xl" in:fade={{duration: 200}}>
-        <span>{label}:</span>
-        <div class="flex gap-x-6 mt-2 mb-8 min-h-[60px]">
+{#if $gameStatus !== 'not-started'}
+    <div class="" in:fade={{duration: 200}}>
+        <div class="flex gap-x-6 w-fit items-center">
             {#each Object.keys(ghostsPerColor) as color}
-                <div class="relative w-[50px]">
+                <div class="relative">
                     <img class="w-full" src={ghostImages[color]} alt={color}>
                         <Badge count={ghostsPerColor[color]} color={color}/>
                 </div>

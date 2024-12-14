@@ -2,10 +2,18 @@
     import {layers} from "./gameState.svelte";
     import NextPlasma from "./nextPlasma.svelte";
     import GhostsPerColor from "./ghostsPerColor.svelte";
+    import Score from './score.svelte'
 </script>
 
-<div class="space-y-8">
+<div class="space-y-20 text-xl font-luckiest tracking-wide h-full">
     <NextPlasma />
-    <GhostsPerColor ghosts={layers.catchGhosts} label="Catch ghosts" />
-    <GhostsPerColor ghosts={layers.escapedGhosts} label="Escaped Ghosts" />
+    <Score />
+    <div class="">
+        <p>Catch ghosts:</p>
+        <GhostsPerColor ghosts={layers.catchGhosts} />
+    </div>
+    <div>
+        <p>Escaped ghosts:</p>
+        <GhostsPerColor ghosts={layers.escapedGhosts} />
+    </div>
 </div>

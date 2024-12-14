@@ -25,8 +25,8 @@
     import GhostsLayer from './ghostsLayer.svelte';
     import FlyingPlasma from './flyingPlasma.svelte';
     import Board from './board.svelte';
-    import GhostsInfo from './controls.svelte';
-    import Score from './gameInfo.svelte';
+    import Controls from './controls.svelte';
+    import GameInfo from './gameInfo.svelte';
     import EndLevel from "./endLevel.svelte";
     import RemovedLayer from './removedItems.svelte';
     import WelcomeModal from './welcomeModal.svelte';
@@ -85,6 +85,7 @@
             if (animationFrameId !== null) {
                 cancelAnimation();
             }
+            console.log(layers)
         }
 
         return () => {
@@ -319,9 +320,9 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
-<div class="container h-full gap-x-10">
+<div class="container h-full gap-x-20">
     <div class="ghosts">
-        <GhostsInfo />
+        <Controls />
     </div>
     {#if $gameStatus !== 'not-started'}
         <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board" in:fade={{duration: 200}}>
@@ -333,7 +334,7 @@
         </div>
     {/if}
     <div class="score">
-        <Score />
+        <GameInfo />
     </div>
     <EndLevel />
     {#if showWelcomeModal}
@@ -344,9 +345,10 @@
 <style>
     .container {
         display: grid;
-        grid-template-columns: 300px 396px 300px;
+        grid-template-columns: 300px minmax(396px, 1fr) 300px;
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';
+        align-items: center;
 
         .ghosts {
             grid-area: ghosts;

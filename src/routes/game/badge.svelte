@@ -14,7 +14,7 @@
 
 
 {#key count}
-    <div class="absolute bg-white text-stone-900 rounded-full  badge text-lg font-luckiest"
+    <div class="absolute bg-white text-stone-900 rounded-full  badge text-base font-luckiest"
          transition:scale={{duration: 300}}
          style:box-shadow={`0 0 2px 2px ${boxShadowColor}`}
     >
@@ -29,8 +29,8 @@
     .badge {
         width: 32px;
         height: 32px;
-        top: 28px;
-        left: 28px;
+        top: 24px;
+        left: 24px;
         display: flex;
         justify-content: center;
         align-items: center;
