@@ -1,4 +1,4 @@
-import type { Color, Ghost } from './types';
+import type {Color, Ghost, GhostSummary} from './types';
 import { v4 as uuidv4 } from 'uuid';
 import { colors, ghostsImages } from './constants';
 
@@ -124,4 +124,11 @@ export function generateGhosts(level: number): Ghost[] {
 	);
 
 	return shuffleArray(ghosts);
+}
+
+export const groupGhostsPerColor = (ghosts: GhostSummary) => {
+	return Object.values(ghosts).reduce((acc, ghost) => {
+		acc[ghost.color]++;
+		return acc;
+	}, {pink: 0, blue: 0, green: 0})
 }

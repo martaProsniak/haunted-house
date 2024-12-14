@@ -1,0 +1,38 @@
+<script lang="ts">
+    import {fade, scale} from "svelte/transition";
+    import {mapColorsToHex} from "./constants";
+    import type {Color} from "./types";
+
+    interface Props {
+        count: number;
+        color: string
+    }
+
+    const {count, color}: Props = $props();
+    let boxShadowColor = $derived(mapColorsToHex[(color as Color)])
+</script>
+
+
+{#key count}
+    <div class="absolute bg-white text-stone-900 rounded-full  badge text-lg font-luckiest"
+         transition:scale={{duration: 300}}
+         style:box-shadow={`0 0 2px 2px ${boxShadowColor}`}
+    >
+            <span>
+                {count}
+            </span>
+    </div>
+{/key}
+
+
+<style>
+    .badge {
+        width: 32px;
+        height: 32px;
+        top: 28px;
+        left: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

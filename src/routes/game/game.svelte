@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {MatrixItem, Plasma} from './types'
+    import type {Plasma} from './types'
     import {v4 as uuidv4} from "uuid";
     import {
         currentCol,
@@ -25,11 +25,11 @@
     import GhostsLayer from './ghostsLayer.svelte';
     import FlyingPlasma from './flyingPlasma.svelte';
     import Board from './board.svelte';
-    import GhostsInfo from './ghostsInfo.svelte';
-    import Score from './score.svelte';
+    import GhostsInfo from './controls.svelte';
+    import Score from './gameInfo.svelte';
     import EndLevel from "./endLevel.svelte";
-    import NextPlasma from './nextPlasma.svelte';
     import RemovedLayer from './removedItems.svelte';
+    import WelcomeModal from './welcomeModal.svelte';
     import {
         generateGhosts
     } from "./utils";
@@ -40,6 +40,8 @@
         matchColorVertical
     } from "./matchItems.helpers";
     import {plasmaImages} from "./constants";
+    import {fade} from "svelte/transition";
+    import {onDestroy} from "svelte";
 
     interface LastPlasma {
         curr: Plasma;
@@ -50,13 +52,19 @@
     const gap = 4;
     const initialTop = gap;
     const initialLeft = gap + (initialCol * offset);
-    let frequency = $state(1000);
-    let lastPlasma: LastPlasma | null = $state(null);
 
+    let lastPlasma: LastPlasma | null = $state(null);
     let currentPlasma: FlyingPlasma;
 
     let animationFrameId: number | null = null;
     let lastFrameTime: number | null = null;
+
+    let showWelcomeModal = $state(true);
+
+    const startGame = () => {
+        showWelcomeModal = false;
+        $gameStatus = 'started';
+    }
 
     $effect(() => {
         updateMatrix();
@@ -85,6 +93,10 @@
             }
         };
     });
+
+    onDestroy(() => {
+        resetGame();
+    })
 
     const cancelAnimation = () => {
         if (animationFrameId === null) {
@@ -118,6 +130,16 @@
             animationFrameId = requestAnimationFrame(animateLevel);
         }
     };
+
+    const resetGame = () => {
+        layers.matrix = initialMatrix;
+        layers.ghosts = [];
+        layers.escapedGhosts = {};
+        layers.catchGhosts = {};
+        layers.removedItems = {};
+        $gameStatus = 'not-started';
+        $score = 0;
+    }
 
 
     const updateMatrix = () => {
@@ -156,6 +178,7 @@
         $isPaused = false;
         layers.catchGhosts = {};
         layers.escapedGhosts = {};
+        layers.removedItems = {};
         $score = 0;
     }
 
@@ -296,31 +319,34 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
-<div class="container mx-auto h-full">
+<div class="container h-full gap-x-10">
     <div class="ghosts">
         <GhostsInfo />
-        <NextPlasma />
     </div>
-    <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board">
-        <Board />
-        <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
-        <GhostsLayer {offset} />
-        <PlasmaLayer {offset}/>
-        <RemovedLayer {offset} />
-    </div>
+    {#if $gameStatus !== 'not-started'}
+        <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board" in:fade={{duration: 200}}>
+            <Board />
+            <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
+            <GhostsLayer {offset} />
+            <PlasmaLayer {offset}/>
+            <RemovedLayer {offset} />
+        </div>
+    {/if}
     <div class="score">
         <Score />
     </div>
     <EndLevel />
+    {#if showWelcomeModal}
+        <WelcomeModal {startGame} />
+    {/if}
 </div>
 
 <style>
     .container {
         display: grid;
-        grid-template-columns: minmax(300px, 1fr) 708px minmax(300px, 1fr);
-        grid-template-rows: minmax(708px, 1fr);
+        grid-template-columns: 300px 396px 300px;
+        grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';
-        align-items: center;
 
         .ghosts {
             grid-area: ghosts;
@@ -328,6 +354,7 @@
 
         .board {
             grid-area: board;
+            box-shadow: 0 0 20px 20px #3a3340;
         }
 
         .score {

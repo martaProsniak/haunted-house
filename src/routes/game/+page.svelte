@@ -5,10 +5,8 @@
 
 </script>
 
-<div class="container mx-auto max-h-screen grid gap-4">
-    <div class="header">
-        <Header />
-    </div>
+<Header />
+<div class="container max-h-screen grid gap-4 mx-auto ">
     <div class="game rounded-xl">
         <Game />
     </div>
@@ -22,13 +20,9 @@
 <style>
     .container {
         grid-template-columns: 1fr;
-        grid-template-rows: minmax(150px, 1fr) minmax(828px, 2fr) minmax(80px, 1fr);
-        grid-template-areas: 'header' 'game' 'footer';
-        max-width: 1440px;
-
-        .header {
-            grid-area: header;
-        }
+        grid-template-rows: minmax(620px, 1fr) 100px;
+        grid-template-areas: 'game' 'footer';
+        width: fit-content;
 
         .game {
             grid-area: game;

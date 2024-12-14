@@ -5,29 +5,12 @@
 
     const {offset} = $props();
 
-    const removalTimes = new Map<string, number>();
-
     $effect(() => {
         Object.keys(layers.removedItems).forEach((key) => {
-            if (!removalTimes.has(key)) {
-                removalTimes.set(key, performance.now());
-            }
+            setTimeout(() => {
+                layers.removedItems[key] = layers.removedItems[key].map(() => null)
+            }, 500)
         });
-
-        const checkAndRemoveItems = (currentTime: number) => {
-            removalTimes.forEach((startTime, key) => {
-                if (currentTime - startTime >= 500) {
-                    layers.removedItems[key] = layers.removedItems[key].map(() => null)
-                    removalTimes.delete(key);
-                }
-            });
-
-            if (removalTimes.size > 0) {
-                requestAnimationFrame(checkAndRemoveItems);
-            }
-        };
-
-        requestAnimationFrame(checkAndRemoveItems);
     });
 
     const deleteKey = (key: string) => {

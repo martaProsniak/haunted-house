@@ -7,21 +7,21 @@
 
 </script>
 
-<p class="mb-4">Next plasma:</p>
-{#if !hidden}
-    <div    transition:scale={{duration: 300}}
-            class="pill"
-            style:background-image={`url("${flyingPlasmaImages[nextPlasmaColors.current][nextPlasmaColors.derived]}")`}>
-    </div>
-{/if}
+<div class="h-[100px] space-y-2">
+    {#if !hidden}
+        <p class="font-luckiest text-xl">Next pill:</p>
+        <div    transition:scale={{duration: 300}}
+                class="pill"
+                style:background-image={`url("${flyingPlasmaImages[nextPlasmaColors.current][nextPlasmaColors.derived]}")`}>
+        </div>
+    {/if}
+</div>
 
 <style>
     .pill {
         width: 84px;
         height: 40px;
-        position: absolute;
         z-index: 10;
         box-sizing: border-box;
-        font-size: 12px;
     }
 </style>
