@@ -29,7 +29,7 @@
     })
 
     let isGlued = $derived.by(() => {
-        return Object.values(neighbors).some((neighbour) => (neighbour?.color === ghost.color && neighbour.type === 'plasma'))
+        return Object.values(neighbors).some((neighbour) => ((neighbour?.color === ghost.color && neighbour.type === 'plasma') || neighbour?.color === 'rainbow'))
     })
 
     let willMove = $derived(ghost.imageUrl.endsWith('gif'))

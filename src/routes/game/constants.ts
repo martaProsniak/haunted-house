@@ -1,4 +1,4 @@
-import type { Color } from './types';
+import type {BaseColor, Color, Equipment, SpecialColor} from './types';
 import pinkPlasma from '$lib/assets/plasma-pink.png';
 import bluePlasma from '$lib/assets/plasma-blue.png';
 import greenPlasma from '$lib/assets/plasma-green.png';
@@ -20,13 +20,14 @@ import plasmaBlueGreen from '$lib/assets/flying-blue-green.png';
 import plasmaGreenPink from '$lib/assets/flying-green-pink.png';
 import plasmaGreenBlue from '$lib/assets/flying-green-blue.png';
 import plasmaGreenGreen from '$lib/assets/flying-green-green.png';
+import placeholderRainbow from '$lib/assets/right.png'
 
 export const mapColorsToHex = {
 	pink: '#ec3597',
 	green: '#45e732',
 	blue: '#2398ec'
 };
-export const colors: Record<string, Color> = {
+export const colors: Record<string, BaseColor> = {
 	pink: 'pink',
 	blue: 'blue',
 	green: 'green'
@@ -34,19 +35,20 @@ export const colors: Record<string, Color> = {
 export const plasmaImages: Record<Color, string> = {
 	pink: pinkPlasma,
 	blue: bluePlasma,
-	green: greenPlasma
+	green: greenPlasma,
+	rainbow: placeholderRainbow
 } as const;
-export const ghostsImages: Record<Color, string> = {
+export const ghostsImages: Record<BaseColor, string> = {
 	pink: pinkGhost,
 	blue: blueGhost,
 	green: greenGhost
 } as const;
-export const ghostsImagesGlued: Record<Color, string> = {
+export const ghostsImagesGlued: Record<BaseColor, string> = {
 	pink: pinkGhostGlued,
 	blue: blueGhostGlued,
 	green: greenGhostGlued
 } as const;
-export const ghostsGifs: Record<Color, string> = {
+export const ghostsGifs: Record<BaseColor, string> = {
 	pink: pinkGhostGif,
 	blue: blueGhostGif,
 	green: greenGhostGif
@@ -66,5 +68,14 @@ export const flyingPlasmaImages = {
 		pink: plasmaGreenPink,
 		blue: plasmaGreenBlue,
 		green: plasmaGreenGreen
+	},
+	rainbow: {
+		rainbow: placeholderRainbow
 	}
 };
+export const initialEquipment: Equipment = {
+	count: 0,
+	image: placeholderRainbow,
+	type: 'rainbow',
+	color: 'orange'
+}

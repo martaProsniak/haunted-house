@@ -1,17 +1,19 @@
 import { derived, type Readable, type Writable, writable } from 'svelte/store';
 import { getRandomColor } from './utils';
-import type {GameLayers, GameStatus, Rotation} from './types';
+import type {Bullet, Equipment, GameLayers, GameStatus, Rotation, SpecialPlasma} from './types';
+import {initialEquipment} from "./constants";
 
 // Constants
-export const flyingPlasmaColors = $state({
+export const flyingPlasmaColors: Bullet = $state({
 	current: getRandomColor(),
 	derived: getRandomColor()
 });
 
-export const nextPlasmaColors = $state({
+export const nextPlasmaColors: Bullet = $state({
 	current: getRandomColor(),
 	derived: getRandomColor()
 });
+export const specialPlasma: SpecialPlasma | null = $state(null);
 export const rowsCount = 14;
 export const colsCount = 8;
 export const initialRow = 0;
@@ -29,6 +31,7 @@ export const isPaused: Writable<boolean> = writable(false);
 export const score: Writable<number> = writable(0);
 export const totalScore: Writable<number> = writable(0);
 export const totalGhosts: Writable<number> = writable(0);
+export const equipment: Writable<Equipment[]> = writable([initialEquipment]);
 
 export const derivedRow: Readable<number> = derived(
 	[rotation, currentRow],

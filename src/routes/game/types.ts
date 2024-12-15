@@ -2,7 +2,15 @@ export type Rotation = 0 | 90 | 180 | 270;
 
 export type PillPosition = 'horizontal' | 'vertical' | 'verticalFlipped';
 
-export type Color = 'pink' | 'green' | 'blue';
+export type SpecialColor = 'rainbow';
+export type BaseColor = 'pink' | 'green' | 'blue'
+export type Color = BaseColor | SpecialColor;
+
+
+export interface Bullet {
+	current: Color,
+	derived: Color,
+}
 
 interface Neighbors {
 	top: MatrixItem | null;
@@ -24,6 +32,7 @@ export interface MatrixItem {
 
 export interface Ghost extends MatrixItem {
 	type: 'ghost';
+	color: BaseColor;
 	isGlued: boolean;
 	hasMoved: boolean;
 	neighbors: Neighbors,
@@ -42,12 +51,23 @@ export type GhostSummary = Record<string, Ghost>
 
 export type RemovedItems = Record<string, Array<MatrixItem | null>>
 
+export interface Equipment {
+	count: number;
+	image: string,
+	type: SpecialColor,
+	color: string,
+}
+
+export interface SpecialPlasma {
+	current: SpecialColor;
+	derived: SpecialColor;
+}
+
 export interface GameLayers {
 	matrix: Matrix;
 	ghosts: Ghost[];
 	previousPlasma: Plasma[];
     escapedGhosts: GhostSummary;
     catchGhosts: GhostSummary;
-    equipment: Plasma[];
 	removedItems: RemovedItems,
 }
