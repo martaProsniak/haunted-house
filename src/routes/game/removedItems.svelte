@@ -22,7 +22,7 @@
 </script>
 
 <div class="absolute">
-    {#each Object.keys(layers.removedItems) as group}
+    {#each Object.keys(layers.removedItems) as group (group)}
         {#each layers.removedItems[group] as item}
             {#if item}
                 <div

@@ -55,7 +55,7 @@
         const delta = timestamp - lastTime;
 
         if (delta >= moveInterval) {
-            if (plasma.row === lastRow) {
+            if (plasma.row === lastRow || plasma.toBeRemoved) {
                 cancelAnimationFrame(animationFrame);
                 return;
             }
@@ -110,5 +110,6 @@
         box-sizing: border-box;
         font-size: 12px;
         border-radius: 4px;
+        transition: all ease-in-out 0.1s;
     }
 </style>

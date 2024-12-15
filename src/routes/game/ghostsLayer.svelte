@@ -172,7 +172,7 @@
 </script>
 
 <div class="absolute">
-    {#each layers.ghosts as ghost}
+    {#each layers.ghosts as ghost (ghost.id)}
         <GhostSprite {ghost} {offset} />
     {/each}
 </div>

@@ -18,6 +18,7 @@ export interface MatrixItem {
 	row: number;
 	column: number;
 	imageUrl: string;
+	toBeRemoved?: boolean;
 }
 
 

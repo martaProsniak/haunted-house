@@ -14,7 +14,6 @@ import { v4 as uuidv4 } from 'uuid';
 export const countCatchGhosts = (ghosts: Record<string, Ghost>) => {
 	Object.values(ghosts).forEach((ghost) => {
 		if (layers.catchGhosts[ghost.id]) {
-			console.log('Already present');
 			return;
 		}
 		layers.catchGhosts[ghost.id] = ghost;
@@ -188,7 +187,7 @@ export const matchColorHorizontal = (row: number, column: number) => {
 
 export const clearItems = (matchingItems: MatrixItem[]) => {
 	if (matchingItems.length < 4) {
-		return 0;
+		return;
 	}
 
 	const plasmaToRemove: Record<string, Plasma> = {};
@@ -196,6 +195,7 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
 	let points = 0;
 
 	matchingItems.forEach((item) => {
+		item.toBeRemoved = true
 		if (item.type === 'ghost') {
 			if (ghostsToRemove[item.id]) {
 				return;
@@ -217,7 +217,7 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
 	);
 	const removedGhosts: MatrixItem[] = layers.ghosts.filter((ghost) => ghostsToRemove[ghost.id]);
 	const id = uuidv4();
-	layers.removedItems[id] = removedGhosts.concat(...removedPlasma);
+	layers.removedItems[id] = [...removedGhosts.concat(...removedPlasma)];
 	layers.previousPlasma = layers.previousPlasma.filter((plasma) => !plasmaToRemove[plasma.id]);
 	layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id]);
 	countCatchGhosts(ghostsToRemove);

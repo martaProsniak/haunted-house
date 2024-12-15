@@ -74,6 +74,6 @@
         z-index: 10;
         box-sizing: border-box;
         border-radius: 4px;
-        transition: background-color ease 0.2s;
+        transition: all ease-in-out 0.1s;
     }
 </style>

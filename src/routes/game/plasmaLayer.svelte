@@ -6,7 +6,7 @@
 </script>
 
 <div class="absolute">
-    {#each layers.previousPlasma as plasma}
+    {#each layers.previousPlasma as plasma (plasma.id)}
         <Plasma plasma={plasma} {offset} />
     {/each}
 </div>
