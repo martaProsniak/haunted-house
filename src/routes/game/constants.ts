@@ -20,13 +20,14 @@ import plasmaBlueGreen from '$lib/assets/flying-blue-green.png';
 import plasmaGreenPink from '$lib/assets/flying-green-pink.png';
 import plasmaGreenBlue from '$lib/assets/flying-green-blue.png';
 import plasmaGreenGreen from '$lib/assets/flying-green-green.png';
-import plasmaRainbow from '$lib/assets/plasma-rainbow.gif';
-import bulletRainbow from '$lib/assets/flying-rainbow.gif';
+import plasmaRainbow from '$lib/assets/right.png';
+import bulletRainbow from '$lib/assets/left.png';
 
 export const mapColorsToHex = {
 	pink: '#ec3597',
 	green: '#45e732',
-	blue: '#2398ec'
+	blue: '#2398ec',
+	rainbow: '#e9baff'
 };
 export const colors: Record<string, BaseColor> = {
 	pink: 'pink',
@@ -75,8 +76,10 @@ export const flyingPlasmaImages = {
 	}
 };
 export const initialEquipment: Equipment = {
-	count: 0,
-	image: bulletRainbow,
-	type: 'rainbow',
-	color: 'orange'
+	rainbow: {
+		count: 0,
+		image: bulletRainbow,
+		type: 'rainbow',
+		color: 'rainbow'
+	}
 }

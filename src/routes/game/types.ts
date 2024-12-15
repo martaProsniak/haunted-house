@@ -51,16 +51,20 @@ export type GhostSummary = Record<string, Ghost>
 
 export type RemovedItems = Record<string, Array<MatrixItem | null>>
 
-export interface Equipment {
+export interface EquipmentItem {
 	count: number;
 	image: string,
 	type: SpecialColor,
-	color: string,
+	color: SpecialColor,
 }
 
-export interface SpecialPlasma {
-	current: SpecialColor;
-	derived: SpecialColor;
+export interface Equipment {
+	rainbow: {
+		count: number;
+		image: string,
+		type: "rainbow",
+		color: "rainbow",
+	}
 }
 
 export interface GameLayers {

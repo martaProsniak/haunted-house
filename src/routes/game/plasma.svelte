@@ -14,6 +14,7 @@
     let animationFrame: number;
     let lastTime: number | null = null;
     const moveInterval = 500;
+    let isRainbow = $derived(plasma.color === 'rainbow');
 
     let neighbors = $derived.by(() => {
         return {
@@ -27,6 +28,7 @@
     let canMoveDown = $derived.by(() => {
         if (plasma.row + 1 === $currentRow) return false;
         if (neighbors.bottom) return false;
+        if (isRainbow) return !(Object.values(neighbors).some((neighbor) => neighbor?.type === 'ghost'))
         return !(Object.values(neighbors).some((neighbor) => neighbor?.type === 'ghost' && neighbor?.color === plasma.color));
     })
 
@@ -64,6 +66,7 @@
                 layers.matrix[plasma.row][plasma.column] = null;
                 plasma.row++;
                 layers.matrix[plasma.row][plasma.column] = plasma;
+                matchItems();
             }
 
             lastTime = timestamp;
@@ -86,11 +89,6 @@
         };
     });
 
-    $effect(() => {
-        if (Object.values(neighbors).some(neighbor => Boolean(neighbor))) {
-            matchItems();
-        }
-    })
 </script>
 
 <div

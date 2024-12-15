@@ -2,6 +2,7 @@
     import {gameStatus, level, score, totalScore, layers} from "./gameState.svelte.js";
     import {fade} from "svelte/transition";
     import GhostsPerColor from "./ghostsPerColor.svelte";
+    import EquipmentPerLevel from "./equipmentPerLevel.svelte";
 
     let open = $derived($gameStatus === 'success' || $gameStatus === 'failure');
 
@@ -20,23 +21,27 @@
             <p>Total score: {$totalScore}</p>
         {/if}
     </div>
-    <div class="flex items-center gap-x-4">
-        <span class="w-52">Catch ghosts:</span>
+    <div class="flex items-center justify-start gap-x-4">
+        <span class="w-52 text-right">Catch ghosts:</span>
         <GhostsPerColor ghosts={layers.catchGhosts}/>
     </div>
-    <div class="flex items-center gap-x-4">
-        <span class="w-52">Escaped ghosts:</span>
+    <div class="flex items-center justify-start gap-x-4">
+        <span class="w-52 text-right">Escaped ghosts:</span>
         <GhostsPerColor ghosts={layers.escapedGhosts}/>
     </div>
 {/snippet}
 
 {#snippet success()}
-    <div class="space-y-16 w-fit mx-auto text-center font-luckiest tracking-wide text-2xl">
+    <div class="space-y-10 w-fit mx-auto text-center font-luckiest tracking-wide text-2xl">
         <div class="space-y-4">
             <p>Job well done!</p>
             <p>You completed {$level}. level!</p>
         </div>
         {@render info()}
+        <div class="flex items-center justify-start gap-x-4">
+            <span class="w-52 text-right">Bonuses:</span>
+            <EquipmentPerLevel />
+        </div>
 
         <button class="p-4 bg-violet-900 rounded-lg " {onclick}>Start next level</button>
     </div>
@@ -51,7 +56,7 @@
 {/snippet}
 
 {#if open}
-    <dialog class="w-8/12 py-20 px-32  text-yellow-50 bg-stone-950" open in:fade={{duration: 200}}
+    <dialog class="w-8/12 py-20 px-32  text-violet-200 bg-stone-950" open in:fade={{duration: 200}}
             out:fade={{duration: 100}}>
         {#if $gameStatus === 'success'}
             {@render success()}

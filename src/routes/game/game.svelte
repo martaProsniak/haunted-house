@@ -19,7 +19,7 @@
         rotation,
         totalGhosts,
         totalScore,
-        score
+        score, nextPlasmaColors, equipmentThisLevel
     } from './gameState.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -179,6 +179,7 @@
         layers.catchGhosts = {};
         layers.escapedGhosts = {};
         layers.removedItems = {};
+        equipmentThisLevel.rainbow.count = 0;
         $score = 0;
     }
 

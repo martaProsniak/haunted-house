@@ -1,4 +1,4 @@
-import type {Color, Ghost, GhostSummary} from './types';
+import type {BaseColor, Color, Ghost, GhostSummary} from './types';
 import { v4 as uuidv4 } from 'uuid';
 import { colors, ghostsImages } from './constants';
 
@@ -76,7 +76,7 @@ function shuffleArray(array: Ghost[]) {
 
 export function generateGhosts(level: number): Ghost[] {
 	const maxGhosts = calculateMaxGhosts(level);
-	const colors: Color[] = ['pink', 'green', 'blue'];
+	const colors: BaseColor[] = ['pink', 'green', 'blue'];
 	const ghostsPerColor = Math.floor(maxGhosts / colors.length);
 	const positions = new Set<string>();
 	const rowsRange = Array.from(
@@ -84,7 +84,7 @@ export function generateGhosts(level: number): Ghost[] {
 		(_, i) => CONFIG.minRow + i
 	);
 
-	const colorCounts: Record<Color, number> = {
+	const colorCounts: Record<BaseColor, number> = {
 		pink: ghostsPerColor,
 		green: ghostsPerColor,
 		blue: ghostsPerColor
