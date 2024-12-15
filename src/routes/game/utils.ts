@@ -60,7 +60,7 @@ function getUniquePosition(
 
 function calculateMaxGhosts(level: number): number {
 	const baseGhosts = 3;
-	const incrementPerLevel = 1;
+	const incrementPerLevel = 3;
 	const maxGhostsLimit = Math.floor(0.75 * CONFIG.rowsCount * CONFIG.colsCount);
 
 	return Math.min(baseGhosts + (level - 1) * incrementPerLevel, maxGhostsLimit);

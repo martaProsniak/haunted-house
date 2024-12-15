@@ -89,8 +89,9 @@ export const findNextMatchingItemDown: MatcherFn = (row, col, color, matchingIte
 export const findNextMatchingItemUp: MatcherFn = (row, col, color, matchingItems, hasGhost = false) =>
 	findNextMatchingItem(row, col, color, matchingItems, hasGhost, nextUp, (r, _) => isOutOfBoundsUp(r));
 
-export const findNextMatchingItemLeft: MatcherFn = (row, col, color, matchingItems, hasGhost = false) =>
-	findNextMatchingItem(row, col, color, matchingItems, hasGhost, nextLeft, (_, c) => isOutOfBoundsLeft(c));
+export const findNextMatchingItemLeft: MatcherFn = (row, col, color, matchingItems, hasGhost = false) => {
+	return findNextMatchingItem(row, col, color, matchingItems, hasGhost, nextLeft, (_, c) => isOutOfBoundsLeft(c));
+}
 
 export const findNextMatchingItemRight: MatcherFn = (row, col, color, matchingItems, hasGhost = false) =>
 	findNextMatchingItem(row, col, color, matchingItems, hasGhost, nextRight, (_, c) => isOutOfBoundsRight(c));
@@ -118,7 +119,6 @@ const handleRainbowVertical = (row: number, column: number, baseItem: MatrixItem
 			resultDown.hasGhost
 		);
 
-		// Dodajemy unikalne elementy do głównej tablicy
 		allMatchingItems = [
 			...allMatchingItems,
 			...resultAll.matchingItems.filter(
@@ -153,7 +153,6 @@ const handleRainbowHorizontal = (row: number, column: number, baseItem: MatrixIt
 			resultLeft.hasGhost
 		);
 
-		// Dodajemy unikalne elementy do głównej tablicy
 		allMatchingItems = [
 			...allMatchingItems,
 			...resultAll.matchingItems.filter(

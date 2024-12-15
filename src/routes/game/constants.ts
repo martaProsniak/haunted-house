@@ -20,8 +20,8 @@ import plasmaBlueGreen from '$lib/assets/flying-blue-green.png';
 import plasmaGreenPink from '$lib/assets/flying-green-pink.png';
 import plasmaGreenBlue from '$lib/assets/flying-green-blue.png';
 import plasmaGreenGreen from '$lib/assets/flying-green-green.png';
-import plasmaRainbow from '$lib/assets/right.png';
-import bulletRainbow from '$lib/assets/left.png';
+import plasmaRainbow from '$lib/assets/plasma-rainbow.png';
+import bulletRainbow from '$lib/assets/flying-rainbow.png';
 
 export const mapColorsToHex = {
 	pink: '#ec3597',
