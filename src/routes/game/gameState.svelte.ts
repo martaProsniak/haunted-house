@@ -16,6 +16,7 @@ export const nextPlasmaColors: Bullet = $state({
 
 export const rowsCount = 14;
 export const colsCount = 8;
+export const firstCol = 0;
 export const initialRow = 0;
 export const initialCol = (colsCount / 2) - 1;
 export const lastRow = rowsCount - 1;

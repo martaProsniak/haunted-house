@@ -1,7 +1,7 @@
 import type { Color, MatrixItem, Ghost, Plasma } from './types';
 import {
 	initialRow,
-	initialCol,
+	firstCol,
 	lastCol,
 	lastRow,
 	layers,
@@ -80,7 +80,7 @@ const nextRight = (row: number, col: number) => ({ row, col: col + 1 });
 
 const isOutOfBoundsDown = (row: number) => row > lastRow;
 const isOutOfBoundsUp = (row: number) => row < initialRow;
-const isOutOfBoundsLeft = (col: number) => col < initialCol;
+const isOutOfBoundsLeft = (col: number) => col < firstCol;
 const isOutOfBoundsRight = (col: number) => col > lastCol;
 
 export const findNextMatchingItemDown: MatcherFn = (row, col, color, matchingItems, hasGhost = false) =>
