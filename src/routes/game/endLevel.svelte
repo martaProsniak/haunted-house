@@ -43,7 +43,7 @@
             <EquipmentPerLevel />
         </div>
 
-        <button class="p-4 bg-violet-900 rounded-lg " {onclick}>Start next level</button>
+        <button class="p-4 bg-violet-900 rounded-lg" autofocus {onclick}>Start next level</button>
     </div>
 {/snippet}
 

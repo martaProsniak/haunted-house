@@ -7,7 +7,7 @@
     import EquipmentDisplay from './equipment.svelte'
 </script>
 
-<div class="space-y-8 text-xl font-luckiest tracking-wide text-violet-200  px-6 rounded-lg shadow-sm">
+<div class="space-y-6 text-lg font-luckiest tracking-wide text-violet-200  px-6 rounded-lg shadow-sm">
     <NextPlasma />
     <Score />
     <div class="space-y-2">

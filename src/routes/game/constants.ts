@@ -1,4 +1,4 @@
-import type {BaseColor, Color, Equipment, SpecialColor} from './types';
+import type {BaseColor, Color, Equipment, EquipmentItem, SpecialColor} from './types';
 import pinkPlasma from '$lib/assets/plasma-pink.png';
 import bluePlasma from '$lib/assets/plasma-blue.png';
 import greenPlasma from '$lib/assets/plasma-green.png';
@@ -22,8 +22,9 @@ import plasmaGreenBlue from '$lib/assets/flying-green-blue.png';
 import plasmaGreenGreen from '$lib/assets/flying-green-green.png';
 import plasmaRainbow from '$lib/assets/plasma-rainbow.png';
 import bulletRainbow from '$lib/assets/flying-rainbow.png';
+import {equipment, nextPlasmaColors} from "./gameState.svelte";
 
-export const mapColorsToHex = {
+export const mapColorsToHex: Record<Color, string> = {
 	pink: '#ec3597',
 	green: '#45e732',
 	blue: '#2398ec',
@@ -80,6 +81,13 @@ export const initialEquipment: Equipment = {
 		count: 0,
 		image: bulletRainbow,
 		type: 'rainbow',
-		color: 'rainbow'
+		color: 'rainbow',
+		key: 'c',
+		handler: () => {
+			if (equipment.rainbow.count === 0) return;
+			nextPlasmaColors.current = equipment.rainbow.type;
+			nextPlasmaColors.derived = equipment.rainbow.type;
+			equipment.rainbow.count--;
+		}
 	}
 }

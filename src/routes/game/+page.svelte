@@ -2,7 +2,15 @@
     import Game from './game.svelte';
     import Header from './header.svelte';
     import Footer from './footer.svelte';
+    import WelcomeModal from "./welcomeModal.svelte";
+    import {gameStatus} from "./gameState.svelte"
 
+    let showWelcomeModal = $state(true);
+
+    const startGame = () => {
+        showWelcomeModal = false;
+        $gameStatus = 'started';
+    }
 </script>
 
 <Header />
@@ -13,6 +21,9 @@
     <footer class="footer">
         <Footer />
     </footer>
+    {#if showWelcomeModal}
+        <WelcomeModal {startGame} />
+    {/if}
 </div>
 
 

@@ -8,6 +8,6 @@
         <div>
             <img class="w-full" src={kind.image} alt={kind.type}>
         </div>
-        <Badge count={kind.count} color={kind.color}/>
+        <Badge left={48} count={kind.count} color={kind.color}/>
     {/each}
 </div>

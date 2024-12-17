@@ -56,15 +56,12 @@ export interface EquipmentItem {
 	image: string,
 	type: SpecialColor,
 	color: SpecialColor,
+	key: string,
+	handler: () => void,
 }
 
 export interface Equipment {
-	rainbow: {
-		count: number;
-		image: string,
-		type: "rainbow",
-		color: "rainbow",
-	}
+	rainbow: EquipmentItem
 }
 
 export interface GameLayers {

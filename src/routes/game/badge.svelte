@@ -5,30 +5,32 @@
 
     interface Props {
         count: number;
-        color: string
+        color: string;
+        top?: number;
+        left?: number;
     }
 
-    const {count, color}: Props = $props();
+    const {count, color, top = 24, left = 24}: Props = $props();
     let boxShadowColor = $derived(mapColorsToHex[(color as Color)])
 </script>
 
 
 {#key count}
-    <div class="absolute bg-violet-200 text-stone-900 rounded-full  badge text-base font-luckiest"
+    <div class="absolute bg-violet-200 text-stone-900 rounded-full  badge text-base font-luckiest "
          transition:scale|local={{duration: 300}}
          style:box-shadow={`0 0 2px 2px ${boxShadowColor}`}
+         style:top={`${top}px`}
+         style:left={`${left}px`}
     >
-        <div>{count}</div>
+        <div class="h-min">{count}</div>
     </div>
 {/key}
 
 
 <style>
     .badge {
-        width: 32px;
+        min-width: 32px;
         height: 32px;
-        top: 24px;
-        left: 24px;
         display: flex;
         justify-content: center;
         align-items: center;

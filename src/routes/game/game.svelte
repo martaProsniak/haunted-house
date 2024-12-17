@@ -19,7 +19,7 @@
         rotation,
         totalGhosts,
         totalScore,
-        score, nextPlasmaColors, equipmentThisLevel
+        score, nextPlasmaColors, equipmentThisLevel, equipment,
     } from './gameState.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -42,6 +42,7 @@
     import {plasmaImages} from "./constants";
     import {fade} from "svelte/transition";
     import {onDestroy} from "svelte";
+    import {togglePause} from "./gameStateHandlers.svelte";
 
     interface LastPlasma {
         curr: Plasma;
@@ -296,8 +297,17 @@
             ev.preventDefault();
         }
 
+        if (ev.code === 'Space') {
+            ev.preventDefault();
+            togglePause();
+        }
+
         if ($gameStatus !== 'playing' || $isPaused) {
             return;
+        }
+
+        if (ev.key.toLowerCase() === 'c') {
+            equipment.rainbow.handler();
         }
 
         if (ev.key === 'ArrowLeft') {
@@ -335,9 +345,6 @@
         <GameInfo />
     </div>
     <EndLevel />
-    {#if showWelcomeModal}
-        <WelcomeModal {startGame} />
-    {/if}
 </div>
 
 <style>

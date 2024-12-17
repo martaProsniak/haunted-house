@@ -1,5 +1,6 @@
 <script lang="ts">
     import {gameStatus, isPaused, score, totalScore, level} from "./gameState.svelte.js";
+    import {togglePause} from "./gameStateHandlers.svelte";
 
     const startGame = () => {
         $gameStatus = 'started';
@@ -7,14 +8,6 @@
         $score = 0;
         $totalScore = 0;
         $level = 1;
-    }
-
-    const togglePause = () => {
-        if ($gameStatus === 'not-started') {
-            return;
-        }
-
-        $isPaused = !$isPaused;
     }
 
     const restartLevel = () => {
@@ -25,7 +18,10 @@
 </script>
 
 <div class="space-y-4 font-luckiest text-xl px-6 text-right">
-    <button class="p-4 shadow-sm shadow-violet-700 hover:bg-violet-700 focus:bg-violet-700 transition-colors rounded-lg w-52 mb-20" disabled={$gameStatus !== 'playing'} onclick={togglePause}>{!$isPaused ? 'Pause' : 'Play'}</button>
+    <button class="p-4 shadow-sm shadow-violet-700 hover:bg-violet-700 focus:bg-violet-700 transition-colors rounded-lg w-52 mb-20" disabled={$gameStatus !== 'playing'} onclick={togglePause}>
+        <span>{!$isPaused ? 'Pause' : 'Play'}</span>
+        <span class="">[Space]</span>
+    </button>
 
 
     <button class="p-4 shadow-sm shadow-violet-700 hover:bg-violet-700 focus:bg-violet-700 transition-colors rounded-lg w-52" onclick={startGame}>New game</button>
