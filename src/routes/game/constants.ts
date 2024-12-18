@@ -85,7 +85,7 @@ export const flyingPlasmaImages = {
 };
 export const initialEquipment: Equipment = {
 	rainbow: {
-		count: 0,
+		count: 3,
 		image: bulletRainbow,
 		type: 'rainbow',
 		color: 'rainbow',
@@ -98,7 +98,7 @@ export const initialEquipment: Equipment = {
 		}
 	},
 	bomb: {
-		count: 0,
+		count: 5,
 		image: bulletBomb,
 		type: 'bomb',
 		color: 'bomb',

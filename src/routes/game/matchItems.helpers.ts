@@ -11,7 +11,7 @@ import {
 } from './gameState.svelte.js';
 import { get } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import {colors} from "./constants";
+import {colors, plasmaImages} from "./constants";
 
 export const countCatchGhosts = (ghosts: Record<string, Ghost>) => {
 	Object.values(ghosts).forEach((ghost) => {
@@ -165,9 +165,12 @@ const handleRainbowHorizontal = (row: number, column: number, baseItem: MatrixIt
 };
 
 const handleBombHorizontal = (row: number, matchingItems: MatrixItem[]) => {
-	layers.matrix[row].forEach((item) => {
+	layers.matrix[row].forEach((item, index) => {
 		if (item) {
 			matchingItems.push(item)
+		}
+		if (!item) {
+			matchingItems.push(createBombItem(row, index));
 		}
 	})
 	return matchingItems;
@@ -181,7 +184,21 @@ const removeItem = (row: number, col: number, matchingItems: MatrixItem[]) => {
 	if (item) {
 		matchingItems.push(item)
 	}
+	if (!item) {
+		matchingItems.push(createBombItem(row, col));
+	}
 	return removeItem(row + 1, col, matchingItems);
+}
+
+const createBombItem = (row: number, col: number): Plasma => {
+	return {
+		id: uuidv4(),
+		row: row,
+		column: col,
+		imageUrl: plasmaImages.bomb,
+		color: 'bomb',
+		type: 'plasma'
+	}
 }
 
 const handleBombVertical = (col: number, matchingItems: MatrixItem[]) => {
@@ -259,10 +276,8 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
 		}
 	});
 
-	const removedPlasma: MatrixItem[] = layers.previousPlasma.filter(
-		(plasma) => plasmaToRemove[plasma.id]
-	);
-	const removedGhosts: MatrixItem[] = layers.ghosts.filter((ghost) => ghostsToRemove[ghost.id]);
+	const removedPlasma: MatrixItem[] = Object.values(plasmaToRemove);
+	const removedGhosts: MatrixItem[] = Object.values(ghostsToRemove);
 	const id = uuidv4();
 	layers.removedItems[id] = [...removedGhosts.concat(...removedPlasma)];
 	layers.previousPlasma = layers.previousPlasma.filter((plasma) => !plasmaToRemove[plasma.id]);
