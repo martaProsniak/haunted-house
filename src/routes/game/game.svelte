@@ -306,8 +306,12 @@
             return;
         }
 
-        if (ev.key.toLowerCase() === 'c') {
+        if (ev.key.toLowerCase() === equipment.rainbow.key) {
             equipment.rainbow.handler();
+        }
+
+        if (ev.key.toLowerCase() === equipment.bomb.key) {
+            equipment.bomb.handler();
         }
 
         if (ev.key === 'ArrowLeft') {

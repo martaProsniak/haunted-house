@@ -22,13 +22,16 @@ import plasmaGreenBlue from '$lib/assets/flying-green-blue.png';
 import plasmaGreenGreen from '$lib/assets/flying-green-green.png';
 import plasmaRainbow from '$lib/assets/plasma-rainbow.png';
 import bulletRainbow from '$lib/assets/flying-rainbow.png';
+import plasmaBomb from '$lib/assets/plasma-bomb.png';
+import bulletBomb from '$lib/assets/flying-bomb.png';
 import {equipment, nextPlasmaColors} from "./gameState.svelte";
 
 export const mapColorsToHex: Record<Color, string> = {
 	pink: '#ec3597',
 	green: '#45e732',
 	blue: '#2398ec',
-	rainbow: '#e9baff'
+	rainbow: '#e9baff',
+	bomb: '#ef0909',
 };
 export const colors: Record<string, BaseColor> = {
 	pink: 'pink',
@@ -39,7 +42,8 @@ export const plasmaImages: Record<Color, string> = {
 	pink: pinkPlasma,
 	blue: bluePlasma,
 	green: greenPlasma,
-	rainbow: plasmaRainbow
+	rainbow: plasmaRainbow,
+	bomb: plasmaBomb
 } as const;
 export const ghostsImages: Record<BaseColor, string> = {
 	pink: pinkGhost,
@@ -74,6 +78,9 @@ export const flyingPlasmaImages = {
 	},
 	rainbow: {
 		rainbow: bulletRainbow
+	},
+	bomb: {
+		bomb: bulletBomb
 	}
 };
 export const initialEquipment: Equipment = {
@@ -88,6 +95,20 @@ export const initialEquipment: Equipment = {
 			nextPlasmaColors.current = equipment.rainbow.type;
 			nextPlasmaColors.derived = equipment.rainbow.type;
 			equipment.rainbow.count--;
+		}
+	},
+	bomb: {
+		count: 0,
+		image: bulletBomb,
+		type: 'bomb',
+		color: 'bomb',
+		key: 'v',
+		handler: () => {
+			console.log('In handler')
+			if (equipment.bomb.count === 0) return;
+			nextPlasmaColors.current = equipment.bomb.type;
+			nextPlasmaColors.derived = equipment.bomb.type;
+			equipment.bomb.count--;
 		}
 	}
 }

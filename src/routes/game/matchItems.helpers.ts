@@ -164,6 +164,30 @@ const handleRainbowHorizontal = (row: number, column: number, baseItem: MatrixIt
 	return allMatchingItems;
 };
 
+const handleBombHorizontal = (row: number, matchingItems: MatrixItem[]) => {
+	layers.matrix[row].forEach((item) => {
+		if (item) {
+			matchingItems.push(item)
+		}
+	})
+	return matchingItems;
+}
+
+const removeItem = (row: number, col: number, matchingItems: MatrixItem[]) => {
+	console.log('Removing item', row, col, matchingItems);
+	if (row > lastRow) {
+		return matchingItems;
+	}
+	const item = layers.matrix[row][col];
+	if (item) {
+		matchingItems.push(item)
+	}
+	return removeItem(row + 1, col, matchingItems);
+}
+
+const handleBombVertical = (col: number, matchingItems: MatrixItem[]) => {
+	return removeItem(initialRow, col, matchingItems);
+}
 
 export const matchColorVertical = (row: number, column: number) => {
 	const itemInMatrix = layers.matrix[row][column];
@@ -173,6 +197,9 @@ export const matchColorVertical = (row: number, column: number) => {
 	const { color, type } = itemInMatrix; // base item to match
 	if (color === 'rainbow') {
 		return handleRainbowVertical(row, column, itemInMatrix);
+	}
+	if (color === 'bomb') {
+		return handleBombVertical(column, []);
 	}
 	let hasGhost = type === "ghost";
 	const matchingItems: MatrixItem[] = [itemInMatrix];
@@ -192,6 +219,9 @@ export const matchColorHorizontal = (row: number, column: number) => {
 	if (color === 'rainbow') {
 		return handleRainbowHorizontal(row, column, itemInMatrix);
 	}
+	if (color === 'bomb') {
+		return handleBombHorizontal(row, []);
+	}
 	let hasGhost = type === "ghost";
 	const matchingItems: MatrixItem[] = [itemInMatrix];
 
@@ -203,7 +233,8 @@ export const matchColorHorizontal = (row: number, column: number) => {
 
 
 export const clearItems = (matchingItems: MatrixItem[]) => {
-	if (matchingItems.length < 4) {
+
+	if (matchingItems.length < 4 && !matchingItems.some(item => item.color === 'bomb')) {
 		return;
 	}
 
@@ -251,6 +282,8 @@ export const checkResult = (noMoreMoves = false) => {
 		if (Object.keys(layers.catchGhosts).length === get(totalGhosts)) {
 			equipment.rainbow.count++;
 			equipmentThisLevel.rainbow.count++;
+			equipment.bomb.count++;
+			equipmentThisLevel.bomb.count++;
 		}
 	}
 	return result;

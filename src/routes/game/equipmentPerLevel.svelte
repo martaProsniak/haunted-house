@@ -3,11 +3,13 @@
     import Badge from "./badge.svelte";
 </script>
 
-<div class="h-14 flex gap-x-6 w-fit items-center relative">
+<div class="h-14 flex gap-x-6 w-fit items-center">
     {#each Object.values(equipmentThisLevel) as kind}
-        <div>
-            <img class="w-full" src={kind.image} alt={kind.type}>
+        <div class="relative">
+            <div>
+                <img class="w-full" src={kind.image} alt={kind.type}>
+            </div>
+            <Badge left={48} count={kind.count} color={kind.color}/>
         </div>
-        <Badge left={48} count={kind.count} color={kind.color}/>
     {/each}
 </div>

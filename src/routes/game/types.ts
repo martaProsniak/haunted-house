@@ -2,7 +2,7 @@ export type Rotation = 0 | 90 | 180 | 270;
 
 export type PillPosition = 'horizontal' | 'vertical' | 'verticalFlipped';
 
-export type SpecialColor = 'rainbow';
+export type SpecialColor = 'rainbow' | 'bomb';
 export type BaseColor = 'pink' | 'green' | 'blue'
 export type Color = BaseColor | SpecialColor;
 
@@ -61,7 +61,8 @@ export interface EquipmentItem {
 }
 
 export interface Equipment {
-	rainbow: EquipmentItem
+	rainbow: EquipmentItem,
+	bomb: EquipmentItem,
 }
 
 export interface GameLayers {
