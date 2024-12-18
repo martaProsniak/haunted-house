@@ -181,6 +181,7 @@
         layers.escapedGhosts = {};
         layers.removedItems = {};
         equipmentThisLevel.rainbow.count = 0;
+        equipmentThisLevel.bomb.count = 0;
         $score = 0;
     }
 

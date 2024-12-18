@@ -174,7 +174,6 @@ const handleBombHorizontal = (row: number, matchingItems: MatrixItem[]) => {
 }
 
 const removeItem = (row: number, col: number, matchingItems: MatrixItem[]) => {
-	console.log('Removing item', row, col, matchingItems);
 	if (row > lastRow) {
 		return matchingItems;
 	}
