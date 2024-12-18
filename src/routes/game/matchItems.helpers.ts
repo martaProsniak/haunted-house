@@ -167,6 +167,7 @@ const handleRainbowHorizontal = (row: number, column: number, baseItem: MatrixIt
 const handleBombHorizontal = (row: number, matchingItems: MatrixItem[]) => {
 	layers.matrix[row].forEach((item, index) => {
 		if (item) {
+			item.isBombed = true;
 			matchingItems.push(item)
 		}
 		if (!item) {
@@ -182,6 +183,7 @@ const removeItem = (row: number, col: number, matchingItems: MatrixItem[]) => {
 	}
 	const item = layers.matrix[row][col];
 	if (item) {
+		item.isBombed = true;
 		matchingItems.push(item)
 	}
 	if (!item) {
@@ -197,7 +199,8 @@ const createBombItem = (row: number, col: number): Plasma => {
 		column: col,
 		imageUrl: plasmaImages.bomb,
 		color: 'bomb',
-		type: 'plasma'
+		type: 'plasma',
+		isBombed: true,
 	}
 }
 

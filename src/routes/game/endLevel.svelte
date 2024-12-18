@@ -69,7 +69,7 @@
 
 <style>
     dialog {
-        z-index: 20;
+        z-index: 30;
         border: 4px black solid;
         border-radius: 8px;
     }
