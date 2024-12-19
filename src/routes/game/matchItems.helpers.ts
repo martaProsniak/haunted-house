@@ -275,6 +275,9 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
 				return;
 			}
 			plasmaToRemove[item.id] = item as Plasma;
+			if (item.imageUrl.includes('bomb')) {
+				return;
+			}
 			points += 20;
 		}
 	});
