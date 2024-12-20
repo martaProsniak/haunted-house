@@ -335,7 +335,7 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
-<div class="container h-full gap-x-20">
+<div class="container gap-x-4">
     <div class="ghosts">
         <Controls />
     </div>
@@ -355,9 +355,10 @@
 <style>
     .container {
         display: grid;
-        grid-template-columns: 300px minmax(396px, 1fr) 300px;
+        grid-template-columns: minmax(300px, 1fr) 396px minmax(300px, 1fr);
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';
+        max-width: 1200px;
 
         .ghosts {
             grid-area: ghosts;

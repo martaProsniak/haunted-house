@@ -13,9 +13,8 @@
     }
 </script>
 
-<Header />
-<div class="container max-h-screen grid gap-4 mx-auto ">
-    <div class="game rounded-xl">
+<div class="container grid gap-4 mx-auto">
+    <div class="game">
         <Game />
     </div>
     <footer class="footer">

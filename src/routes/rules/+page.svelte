@@ -1,1 +1,1 @@
-<div>Rules</div>
+<div class="self-start">Rules</div>
