@@ -51,7 +51,7 @@
     let animationFrameId: number | null = null;
     let lastFrameTime: number | null = null;
 
-    let showGame = $derived($gameStatus === 'started' || $gameStatus === 'playing');
+    let showGame = $derived($gameStatus !== 'not-started');
 
     $effect(() => {
         updateMatrix();
