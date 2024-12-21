@@ -21,6 +21,7 @@ export const initialRow = 0;
 export const initialCol = (colsCount / 2) - 1;
 export const lastRow = rowsCount - 1;
 export const lastCol = colsCount - 1;
+export const maxLives = 3;
 
 // Stores
 export const currentRow: Writable<number> = writable(initialRow);
@@ -34,6 +35,7 @@ export const totalScore: Writable<number> = writable(0);
 export const totalGhosts: Writable<number> = writable(0);
 export const equipment = $state(initialEquipment);
 export const equipmentThisLevel = $state(initialEquipment);
+export const lives: Writable<number> = writable(maxLives);
 
 export const derivedRow: Readable<number> = derived(
 	[rotation, currentRow],

@@ -7,7 +7,7 @@ import {
 	layers,
 	score,
 	totalGhosts,
-	equipment, equipmentThisLevel
+	equipment, equipmentThisLevel, maxLives
 } from './gameState.svelte.js';
 import { get } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -293,11 +293,13 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
 };
 
 export const checkResult = (noMoreMoves = false) => {
+	if (Object.keys(layers.escapedGhosts).length === maxLives) return 'failure';
+
 	if (layers.ghosts.length && !noMoreMoves) {
 		return;
 	}
 
-	const result = Object.keys(layers.catchGhosts).length >= get(totalGhosts) * 0.75 ? 'success' : 'failure';
+	const result = 'success';
 	if (result === 'success') {
 		if (Object.keys(layers.catchGhosts).length === get(totalGhosts)) {
 			equipment.rainbow.count++;

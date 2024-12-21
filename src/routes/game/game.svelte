@@ -172,7 +172,6 @@
         $gameStatus = 'playing';
         $isPaused = false;
         layers.catchGhosts = {};
-        layers.escapedGhosts = {};
         layers.removedItems = {};
         equipmentThisLevel.rainbow.count = 0;
         equipmentThisLevel.bomb.count = 0;

@@ -1,4 +1,4 @@
-import {gameStatus, isPaused} from "./gameState.svelte";
+import {gameStatus, isPaused, layers} from "./gameState.svelte";
 import {get} from "svelte/store";
 
 export const pauseGame = () => {
@@ -14,4 +14,5 @@ export const togglePause = () => {
 export const startGame = () => {
     console.log("Starting game");
     gameStatus.set('started');
+    layers.escapedGhosts = {};
 }
