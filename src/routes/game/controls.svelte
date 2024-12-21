@@ -1,6 +1,6 @@
 <script lang="ts">
     import {gameStatus, isPaused, score, totalScore, level} from "./gameState.svelte.js";
-    import {togglePause} from "./gameStateHandlers.svelte";
+    import {togglePause} from "./gameStateH.handlers.svelte.js";
     import Header from "./header.svelte";
 
     const startGame = () => {

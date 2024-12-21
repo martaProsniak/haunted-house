@@ -10,3 +10,8 @@ export const togglePause = () => {
     if (get(gameStatus) === 'not-started') return;
     isPaused.set(!get(isPaused))
 }
+
+export const startGame = () => {
+    console.log("Starting game");
+    gameStatus.set('started');
+}

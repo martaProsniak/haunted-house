@@ -1,6 +1,6 @@
 <script lang="ts">
     import {gameStatus, level, score, totalScore, layers} from "./gameState.svelte.js";
-    import {fade} from "svelte/transition";
+    import {fly} from "svelte/transition";
     import GhostsPerColor from "./ghostsPerColor.svelte";
     import EquipmentPerLevel from "./equipmentPerLevel.svelte";
 
@@ -43,7 +43,7 @@
             <EquipmentPerLevel />
         </div>
 
-        <button class="p-4 bg-violet-900 rounded-lg" autofocus {onclick}>Start next level</button>
+        <button class="p-4 bg-violet-900 rounded-lg" {onclick}>Start next level</button>
     </div>
 {/snippet}
 
@@ -56,8 +56,7 @@
 {/snippet}
 
 {#if open}
-    <dialog class="w-8/12 py-20 px-32  text-violet-200 bg-stone-950" open in:fade={{duration: 200}}
-            out:fade={{duration: 100}}>
+    <dialog class="py-20 px-32  text-violet-200 bg-stone-950 w-10/12 " open transition:fly={{duration: 500, y: -200, delay: 200}}>
         {#if $gameStatus === 'success'}
             {@render success()}
         {/if}

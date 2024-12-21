@@ -29,7 +29,6 @@
     import GameInfo from './gameInfo.svelte';
     import EndLevel from "./endLevel.svelte";
     import RemovedLayer from './removedItems.svelte';
-    import WelcomeModal from './welcomeModal.svelte';
     import {
         generateGhosts
     } from "./utils";
@@ -42,7 +41,7 @@
     import {plasmaImages} from "./constants";
     import {fade} from "svelte/transition";
     import {onDestroy} from "svelte";
-    import {togglePause} from "./gameStateHandlers.svelte";
+    import {togglePause} from "./gameStateH.handlers.svelte.js";
 
     interface LastPlasma {
         curr: Plasma;
@@ -60,12 +59,7 @@
     let animationFrameId: number | null = null;
     let lastFrameTime: number | null = null;
 
-    let showWelcomeModal = $state(true);
-
-    const startGame = () => {
-        showWelcomeModal = false;
-        $gameStatus = 'started';
-    }
+    let showGame = $derived($gameStatus === 'started' || $gameStatus === 'playing');
 
     $effect(() => {
         updateMatrix();
@@ -335,30 +329,39 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
-<div class="container gap-x-4">
-    <div class="ghosts">
-        <Controls />
-    </div>
-        <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board" in:fade={{duration: 200}}>
-            <Board />
-            <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol} />
-            <GhostsLayer {offset} />
-            <PlasmaLayer {offset}/>
-            <RemovedLayer {offset} />
+<div class="wrapper">
+    {#if showGame}
+        <div class="container gap-x-4" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
+            <div class="ghosts">
+                <Controls/>
+            </div>
+            <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board">
+                <Board/>
+                <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol}/>
+                <GhostsLayer {offset}/>
+                <PlasmaLayer {offset}/>
+                <RemovedLayer {offset}/>
+            </div>
+            <div class="score">
+                <GameInfo/>
+            </div>
+
         </div>
-    <div class="score">
-        <GameInfo />
-    </div>
-    <EndLevel />
+    {/if}
 </div>
 
 <style>
+    .wrapper {
+        max-width: 1200px;
+    }
+
     .container {
         display: grid;
+        background-color: rgba(12, 12, 13, 0.78);
         grid-template-columns: minmax(300px, 1fr) 396px minmax(300px, 1fr);
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';
-        max-width: 1200px;
+
 
         .ghosts {
             grid-area: ghosts;

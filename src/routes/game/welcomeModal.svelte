@@ -1,16 +1,31 @@
 <script lang="ts">
-    import {fly, fade} from "svelte/transition";
+    import {fly, fade, slide} from "svelte/transition";
+    import {onMount} from "svelte";
+    import {startGame} from "./gameStateH.handlers.svelte";
+    import {gameStatus} from "./gameState.svelte";
 
-    const {startGame} = $props();
+    let visible = $state(false);
+
+    onMount(() => {
+        if ($gameStatus !== 'not-started') return;
+        visible = true;
+    })
+
+    const handleStartGame = () => {
+        visible = false;
+        startGame();
+    }
 
 </script>
 
-<dialog transition:fly={{duration: 200}}
-        class="w-8/12 bg-black text-white text-center text-2xl rounded-lg p-10 space-y-4 z-30" open>
-    <p>Hello, ghostbuster apprentice!</p>
-    <p>Lorem ipsum</p>
-    <button class="p-4 bg-pink-500 rounded-lg w-52" onclick={startGame}>Start new game</button>
-</dialog>
+{#if visible}
+    <dialog transition:fly={{duration: 500, y: -200}}
+            class="w-10/12 bg-black text-white text-center text-2xl rounded-lg p-10 space-y-4 z-30" open>
+        <p>Hello, ghostbuster apprentice!</p>
+        <p>Lorem ipsum</p>
+        <button class="p-4 bg-pink-500 rounded-lg w-52" onclick={handleStartGame}>Start new game</button>
+    </dialog>
+{/if}
 
 <style>
 
