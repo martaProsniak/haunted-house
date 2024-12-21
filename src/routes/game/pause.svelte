@@ -1,6 +1,6 @@
 <script lang="ts">
    import {isPaused} from "./gameState.svelte";
-   import {togglePause} from "./gameStateH.handlers.svelte";
+   import {togglePause} from "./gameState.handlers.svelte.js";
    import {fly} from "svelte/transition";
 </script>
 

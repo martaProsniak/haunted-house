@@ -1,7 +1,7 @@
 <script lang="ts">
-    import {fly, fade, slide} from "svelte/transition";
+    import {fly} from "svelte/transition";
     import {onMount} from "svelte";
-    import {startGame} from "./gameStateH.handlers.svelte";
+    import {startGame} from "./gameState.handlers.svelte.js";
     import {gameStatus} from "./gameState.svelte";
 
     let visible = $state(false);

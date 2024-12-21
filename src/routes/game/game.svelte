@@ -9,18 +9,13 @@
         flyingPlasmaColors,
         gameStatus,
         initialCol,
-        initialMatrix,
         initialRow,
         isPaused,
         lastCol,
         lastRow,
         layers,
-        level,
         rotation,
-        totalGhosts,
-        lives, initialLives,
-        totalScore,
-        score, nextPlasmaColors, equipmentThisLevel, equipment,
+        equipment,
     } from './gameState.svelte.js'
     import PlasmaLayer from './plasmaLayer.svelte';
     import GhostsLayer from './ghostsLayer.svelte';
@@ -28,11 +23,7 @@
     import Board from './board.svelte';
     import Controls from './controls.svelte';
     import GameInfo from './gameInfo.svelte';
-    import EndLevel from "./endLevel.svelte";
     import RemovedLayer from './removedItems.svelte';
-    import {
-        generateGhosts
-    } from "./utils";
     import {
         checkResult,
         clearItems,
@@ -42,7 +33,7 @@
     import {plasmaImages} from "./constants";
     import {fade} from "svelte/transition";
     import {onDestroy} from "svelte";
-    import {togglePause} from "./gameStateH.handlers.svelte.js";
+    import {togglePause, prepareLevel, resetGame} from "./gameState.handlers.svelte.js";
 
     interface LastPlasma {
         curr: Plasma;
@@ -114,7 +105,6 @@
 
             const isBlocked = ($currentRow === initialRow || $derivedRow === initialRow) && (layers.matrix[initialRow + 1][initialCol] || layers.matrix[initialRow + 1][initialCol + 1]);
             if (isBlocked) {
-                console.log('Taken place!')
                 checkEndLevel(true);
             }
 
@@ -129,16 +119,6 @@
             animationFrameId = requestAnimationFrame(animateLevel);
         }
     };
-
-    const resetGame = () => {
-        layers.matrix = initialMatrix;
-        layers.ghosts = [];
-        $lives = initialLives;
-        layers.catchGhosts = {};
-        layers.removedItems = {};
-        $gameStatus = 'not-started';
-        $score = 0;
-    }
 
 
     const updateMatrix = () => {
@@ -163,31 +143,6 @@
         $currentRow = initialRow;
         $currentCol = initialCol;
         currentPlasma.reset();
-    }
-
-    const prepareLevel = () => {
-        prepareGhostsLayer();
-        preparePlasmaLayer();
-        $rotation = 0;
-        layers.matrix = initialMatrix;
-        $currentRow = initialRow;
-        $currentCol = initialCol;
-        $totalGhosts = layers.ghosts.length;
-        $gameStatus = 'playing';
-        $isPaused = false;
-        layers.catchGhosts = {};
-        layers.removedItems = {};
-        equipmentThisLevel.rainbow.count = 0;
-        equipmentThisLevel.bomb.count = 0;
-        $score = 0;
-    }
-
-    const prepareGhostsLayer = () => {
-        layers.ghosts = generateGhosts($level);
-    }
-
-    const preparePlasmaLayer = () => {
-        layers.previousPlasma = [];
     }
 
     const checkEndLevel = (noMoves = false) => {
