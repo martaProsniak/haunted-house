@@ -17,8 +17,13 @@ import {get} from "svelte/store";
 import {generateGhosts} from "./utils";
 
 export const pauseGame = () => {
-    if (get(gameStatus) === 'not-started') return;
+    if (get(gameStatus) !== 'playing') return;
     isPaused.set(true)
+}
+
+export const unpauseGame = () => {
+    if (get(gameStatus) !== 'playing') return;
+    isPaused.set(false)
 }
 
 export const togglePause = () => {

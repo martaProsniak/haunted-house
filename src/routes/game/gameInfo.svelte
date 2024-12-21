@@ -1,7 +1,7 @@
 <script lang="ts">
     import {layers} from "./gameState.svelte";
     import NextPlasma from "./nextPlasma.svelte";
-    import GhostsPerColor from "./ghostsPerColor.svelte";
+    import GhostsPerColor from "$lib/ghostsPerColor.svelte";
     import Score from './score.svelte'
     import Level from "./level.svelte";
     import EquipmentDisplay from './equipment.svelte'
