@@ -12,7 +12,7 @@
 <div class="flex gap-x-6 w-fit h-20">
     {#each Object.values(equipment) as kind}
         <div class="relative w-24">
-            <div class="outline-violet-800">
+            <div>
                 <img class="" src={kind.image} alt={kind.type}>
             </div>
             <Badge left={0} top={-6} count={kind.count} color={kind.color}/>

@@ -5,6 +5,7 @@
     import Score from './score.svelte'
     import Level from "./level.svelte";
     import EquipmentDisplay from './equipment.svelte'
+    import Lives from "./lives.svelte";
 </script>
 
 <div class="space-y-6 text-lg font-luckiest tracking-wide text-violet-200  px-6 rounded-lg shadow-sm">
@@ -19,8 +20,8 @@
         <GhostsPerColor ghosts={layers.catchGhosts} />
     </div>
     <div class="space-y-2">
-        <p>Escaped ghosts:</p>
-        <GhostsPerColor ghosts={layers.escapedGhosts} />
+        <p>Lives:</p>
+        <Lives />
     </div>
     <Level />
 </div>

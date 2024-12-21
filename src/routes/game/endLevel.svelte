@@ -1,14 +1,18 @@
 <script lang="ts">
-    import {gameStatus, level, score, totalScore, layers} from "./gameState.svelte.js";
+    import {gameStatus, level, score, totalScore, layers, lives, initialLives} from "./gameState.svelte.js";
     import {fly} from "svelte/transition";
     import GhostsPerColor from "./ghostsPerColor.svelte";
     import EquipmentPerLevel from "./equipmentPerLevel.svelte";
+    import Lives from "./lives.svelte";
 
     let open = $derived($gameStatus === 'success' || $gameStatus === 'failure');
 
     const onclick = () => {
         if ($gameStatus === 'success') {
             $level++;
+        }
+        if ($gameStatus === 'failure') {
+            $lives = initialLives;
         }
         $gameStatus = 'started';
     }
@@ -26,8 +30,8 @@
         <GhostsPerColor ghosts={layers.catchGhosts}/>
     </div>
     <div class="flex items-center justify-start gap-x-4">
-        <span class="w-52 text-right">Escaped ghosts:</span>
-        <GhostsPerColor ghosts={layers.escapedGhosts}/>
+        <span class="w-52 text-right">Lives:</span>
+        <Lives />
     </div>
 {/snippet}
 

@@ -18,6 +18,7 @@
         level,
         rotation,
         totalGhosts,
+        lives, initialLives,
         totalScore,
         score, nextPlasmaColors, equipmentThisLevel, equipment,
     } from './gameState.svelte.js'
@@ -110,7 +111,10 @@
         const delta = currentTime - lastFrameTime;
 
         if ($gameStatus === 'playing' && delta >= 1000) {
-            if (layers.matrix[initialRow + 1][initialCol] || layers.matrix[initialRow + 1][initialCol + 1]) {
+
+            const isBlocked = ($currentRow === initialRow || $derivedRow === initialRow) && (layers.matrix[initialRow + 1][initialCol] || layers.matrix[initialRow + 1][initialCol + 1]);
+            if (isBlocked) {
+                console.log('Taken place!')
                 checkEndLevel(true);
             }
 
@@ -129,7 +133,7 @@
     const resetGame = () => {
         layers.matrix = initialMatrix;
         layers.ghosts = [];
-        layers.escapedGhosts = {};
+        $lives = initialLives;
         layers.catchGhosts = {};
         layers.removedItems = {};
         $gameStatus = 'not-started';
@@ -172,7 +176,6 @@
         $gameStatus = 'playing';
         $isPaused = false;
         layers.catchGhosts = {};
-        layers.escapedGhosts = {};
         layers.removedItems = {};
         equipmentThisLevel.rainbow.count = 0;
         equipmentThisLevel.bomb.count = 0;

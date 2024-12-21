@@ -7,7 +7,7 @@ import {
 	layers,
 	score,
 	totalGhosts,
-	equipment, equipmentThisLevel
+	equipment, equipmentThisLevel, initialLives, lives
 } from './gameState.svelte.js';
 import { get } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -293,18 +293,25 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
 };
 
 export const checkResult = (noMoreMoves = false) => {
+	if (get(lives) === 0) {
+		return 'failure';
+	}
+
 	if (layers.ghosts.length && !noMoreMoves) {
 		return;
 	}
 
-	const result = Object.keys(layers.catchGhosts).length >= get(totalGhosts) * 0.75 ? 'success' : 'failure';
-	if (result === 'success') {
-		if (Object.keys(layers.catchGhosts).length === get(totalGhosts)) {
-			equipment.rainbow.count++;
-			equipmentThisLevel.rainbow.count++;
-			equipment.bomb.count++;
-			equipmentThisLevel.bomb.count++;
-		}
+	const catchCount = Object.keys(layers.catchGhosts).length;
+
+	if (!catchCount) return 'failure';
+
+	const gotAll = catchCount === get(totalGhosts);
+
+	if (gotAll) {
+		equipment.rainbow.count++;
+		equipmentThisLevel.rainbow.count++;
+		equipment.bomb.count++;
+		equipmentThisLevel.bomb.count++;
 	}
-	return result;
+	return 'success';
 };

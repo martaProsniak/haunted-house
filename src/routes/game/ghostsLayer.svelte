@@ -8,7 +8,8 @@
         currentRow,
         rotation,
         derivedRow,
-        lastCol
+        lastCol,
+        lives
     } from "./gameState.svelte.js";
     import GhostSprite from './ghost.svelte'
     import type {Ghost} from "./types";
@@ -22,15 +23,16 @@
     const moveCount = 1;
     let ghostsToMove: Ghost[] = [];
     let animationFrameId: number;
-    let lastFrameTime: number | null = null; // Poprawna inicjalizacja
+    let lastFrameTime: number | null = null;
+    let frequency = $state(300);
 
     const scheduleMovement = () => {
         const animateMovement = (timestamp: number) => {
             if (lastFrameTime === null) {
-                lastFrameTime = timestamp; // Ustawienie przy pierwszym wywołaniu
+                lastFrameTime = timestamp;
             }
 
-            if (timestamp - lastFrameTime >= 2000) { // 2000ms delay
+            if (timestamp - lastFrameTime >= frequency) {
                 lastFrameTime = timestamp;
                 ghostsToMove.forEach((ghost) => {
                     ghost.imageUrl = ghostsGifs[ghost.color];
@@ -75,7 +77,7 @@
         const {row, column, id} = ghost;
 
         if (row === initialRow) {
-            layers.escapedGhosts[ghost.id] = ghost;
+            $lives--;
             layers.ghosts = layers.ghosts.filter((ghost) => ghost.id !== id);
             checkResultAfterMove();
             return;
