@@ -31,7 +31,7 @@ export const startGame = () => {
     isPaused.set(false);
     lives.set(initialLives);
     score.set(0);
-    level.set(15);
+    level.set(1);
     totalScore.set(0);
 }
 
