@@ -12,7 +12,7 @@
     <h1 class="text-3xl w-full min-h-[200px]">Welcome to
         {#if mounted}
                 <span in:fade={{duration:1000}}
-                      class="font-bold block text-5xl md:text-7xl xl:text-9xl mt-2 mb-8 font-creepster"
+                      class="font-bold block text-5xl md:text-7xl xl:text-9xl mt-2 mb-8 font-creepster logo"
                 >Haunted House</span>
         {/if}
     </h1>
@@ -22,3 +22,9 @@
         <a class="cursor-pointer" href="/guide">Guide</a>
     </div>
 </main>
+
+<style>
+    .logo {
+        text-shadow: 1px 1px 0.2em #ec3597, 0 1px 0.4em #2398ec, 0 1px 0.1em #45e732;
+    }
+</style>
