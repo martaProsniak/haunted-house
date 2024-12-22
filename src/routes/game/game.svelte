@@ -33,7 +33,7 @@
     import {plasmaImages} from "./constants";
     import {fade} from "svelte/transition";
     import {onDestroy} from "svelte";
-    import {togglePause, prepareLevel, resetGame} from "./gameState.handlers.svelte.js";
+    import {togglePause, prepareLevel, resetGame} from "./gameState.helpers.svelte.js";
 
     interface LastPlasma {
         curr: Plasma;

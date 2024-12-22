@@ -1,9 +1,9 @@
 <script lang="ts">
     import {gameStatus, isPaused} from "./gameState.svelte.js";
-    import {togglePause, startGame, restartLevel, unpauseGame} from "./gameState.handlers.svelte.js";
+    import {togglePause, startGame, restartLevel, unpauseGame} from "./gameState.helpers.svelte.js";
     import Header from "./header.svelte";
     import ControlsModal from "./controlsModal.svelte"
-    import {pauseGame} from "./gameState.handlers.svelte.js";
+    import {pauseGame} from "./gameState.helpers.svelte.js";
 
     let showControlsModal = $state(false);
 

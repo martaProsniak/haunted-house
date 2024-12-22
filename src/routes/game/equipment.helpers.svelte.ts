@@ -1,0 +1,1 @@
+// TODO handle drawing equipment item after catching ghost
