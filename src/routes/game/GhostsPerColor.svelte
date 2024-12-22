@@ -14,7 +14,7 @@
 </script>
 
 {#if $gameStatus !== 'not-started'}
-    <div class="h-14" in:fade={{duration: 200}}>
+    <div  in:fade={{duration: 200}}>
         <div class="flex gap-x-8 w-fit items-center">
             {#key count}
                     <div class="w-5" transition:fade|local={{duration: 300}}>{count}</div>

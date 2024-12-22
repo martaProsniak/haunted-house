@@ -60,7 +60,7 @@
 {/snippet}
 
 {#if open}
-    <dialog class="py-20 px-32  text-violet-200 bg-stone-950 w-10/12 " open in:fly={{duration: 500, y: -200, delay: 600}} out:fly={{duration: 500, y: -200, delay: 200}}>
+    <dialog class="max-w-[1200px] py-24 px-16  text-violet-200 bg-stone-950 w-10/12" open in:fly={{duration: 500, y: -200, delay: 600}} out:fly={{duration: 500, y: -200, delay: 200}}>
         {#if $gameStatus === 'success'}
             {@render success()}
         {/if}

@@ -289,7 +289,7 @@
 
 <div class="wrapper">
     {#if showGame}
-        <div class="container gap-x-4 py-6" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
+        <div class="container gap-x-4 py-10" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
             <div class="ghosts">
                 <Controls/>
             </div>
