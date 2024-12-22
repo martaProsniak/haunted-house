@@ -289,7 +289,7 @@
 
 <div class="wrapper">
     {#if showGame}
-        <div class="container gap-x-4" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
+        <div class="container gap-x-4 py-6" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
             <div class="ghosts">
                 <Controls/>
             </div>
@@ -315,7 +315,7 @@
 
     .container {
         display: grid;
-        background-color: rgba(12, 12, 13, 0.78);
+        background-color: black;
         grid-template-columns: minmax(300px, 1fr) 396px minmax(300px, 1fr);
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';
