@@ -31,7 +31,6 @@
     let left = $state(initialLeft);
     let topCorrection = $state(0);
     let top = $derived(initialTop + (offset * $currentRow) - topCorrection);
-    let hidden = $derived($gameStatus !== 'playing' && !$isPaused);
 
     const itemBelowHelper = {
         0: () => layers.matrix[$currentRow + 1][$currentCol] || layers.matrix[$derivedRow + 1][$derivedCol],
@@ -171,7 +170,6 @@
         style:left={`${left}px`}
         style:transform="{`rotate(${$rotation}deg`}"
         class="pill"
-        class:hidden
         style:background-image={`url("${flyingPlasmaImages[flyingPlasmaColors.current][flyingPlasmaColors.derived]}")`}>
 </div>
 
@@ -187,9 +185,5 @@
         box-sizing: border-box;
         font-size: 12px;
         transition: transform 0.1s linear;
-    }
-
-    .hidden {
-        display: none;
     }
 </style>

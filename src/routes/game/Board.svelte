@@ -5,6 +5,7 @@
     import pumpkinImage from '$lib/assets/pumpkin.png';
     import webImage from '$lib/assets/web.png';
     import PauseModal from "./PauseModal.svelte";
+    import EndLevelModal from "./EndLevelModal.svelte";
 
     const getCellBgImg = (row:number, col: number) => {
         if ((row === 0 || row === lastRow) && (col === 0 || col === lastCol)) {
@@ -29,6 +30,7 @@
     </div>
 {/each}
 <PauseModal />
+<EndLevelModal />
 
 
 <style>

@@ -6,7 +6,6 @@
 
 
 <WelcomeModal />
-<EndLevelModal />
 <div class="container mx-auto">
     <Game />
 </div>

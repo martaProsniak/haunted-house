@@ -11,7 +11,7 @@ import {
     totalGhosts,
     score,
     equipmentThisLevel,
-    initialRow, initialCol, initialMatrix, totalScore
+    initialRow, initialCol, initialMatrix, totalScore, equipment
 } from "./gameState.svelte";
 import {get} from "svelte/store";
 import {generateGhosts} from "./utils";
@@ -38,6 +38,8 @@ export const startGame = () => {
     score.set(0);
     level.set(1);
     totalScore.set(0);
+    equipment.rainbow.count = 1;
+    equipment.bomb.count = 1;
 }
 
 const prepareGhostsLayer = () => {

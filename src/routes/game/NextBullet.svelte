@@ -2,8 +2,13 @@
     import {nextPlasmaColors, gameStatus, isPaused} from "./gameState.svelte.js"
     import {flyingPlasmaImages} from "./constants";
     import {scale} from "svelte/transition";
+    import {onMount} from "svelte";
 
-    let hidden = $derived($gameStatus !== 'playing' && !$isPaused);
+    let hidden = $state(true);
+
+    onMount(() => {
+        hidden = false;
+    })
 
 </script>
 

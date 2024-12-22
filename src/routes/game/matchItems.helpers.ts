@@ -305,13 +305,9 @@ export const checkResult = (noMoreMoves = false) => {
 
 	if (!catchCount) return 'failure';
 
-	const gotAll = catchCount === get(totalGhosts);
-
-	if (gotAll) {
-		equipment.rainbow.count++;
-		equipmentThisLevel.rainbow.count++;
-		equipment.bomb.count++;
-		equipmentThisLevel.bomb.count++;
-	}
+	equipment.rainbow.count++;
+	equipmentThisLevel.rainbow.count++;
+	equipment.bomb.count++;
+	equipmentThisLevel.bomb.count++;
 	return 'success';
 };

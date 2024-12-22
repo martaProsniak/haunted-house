@@ -86,7 +86,7 @@ export const flyingPlasmaImages = {
 };
 export const initialEquipment: Equipment = {
 	rainbow: {
-		count: 3,
+		count: 0,
 		image: bulletRainbow,
 		type: 'rainbow',
 		color: 'rainbow',
@@ -94,13 +94,14 @@ export const initialEquipment: Equipment = {
 		handler: () => {
 			if (get(isPaused)) return;
 			if (equipment.rainbow.count === 0) return;
+			if (nextPlasmaColors.current === 'rainbow') return;
 			nextPlasmaColors.current = equipment.rainbow.type;
 			nextPlasmaColors.derived = equipment.rainbow.type;
 			equipment.rainbow.count--;
 		}
 	},
 	bomb: {
-		count: 5,
+		count: 0,
 		image: bulletBomb,
 		type: 'bomb',
 		color: 'bomb',
@@ -108,6 +109,7 @@ export const initialEquipment: Equipment = {
 		handler: () => {
 			if (get(isPaused)) return;
 			if (equipment.bomb.count === 0) return;
+			if (nextPlasmaColors.current === 'bomb') return;
 			nextPlasmaColors.current = equipment.bomb.type;
 			nextPlasmaColors.derived = equipment.bomb.type;
 			equipment.bomb.count--;
