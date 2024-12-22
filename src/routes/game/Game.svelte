@@ -17,13 +17,13 @@
         rotation,
         equipment,
     } from './gameState.svelte.js'
-    import PlasmaLayer from './plasmaLayer.svelte';
-    import GhostsLayer from './ghostsLayer.svelte';
-    import FlyingPlasma from './flyingPlasma.svelte';
-    import Board from './board.svelte';
-    import Controls from './controls.svelte';
-    import GameInfo from './gameInfo.svelte';
-    import RemovedLayer from './removedItems.svelte';
+    import PlasmaLayer from './PlasmaLayer.svelte';
+    import GhostsLayer from './GhostsLayer.svelte';
+    import FlyingPlasma from './FlyingBullet.svelte';
+    import Board from './Board.svelte';
+    import Controls from './Controls.svelte';
+    import GameInfo from './GameInfo.svelte';
+    import RemovedLayer from './RemovedItemsLayer.svelte';
     import {
         checkResult,
         clearItems,

@@ -1,6 +1,6 @@
 <script lang="ts">
     import {equipment} from "./gameState.svelte";
-    import Badge from "./badge.svelte";
+    import Badge from "./Badge.svelte";
     import type {EquipmentItem} from "./types";
     import {mapColorsToHex} from "./constants";
 

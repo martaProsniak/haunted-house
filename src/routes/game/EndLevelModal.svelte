@@ -1,9 +1,9 @@
 <script lang="ts">
     import {gameStatus, level, score, totalScore, layers, lives, initialLives} from "./gameState.svelte.js";
     import {fly} from "svelte/transition";
-    import GhostsPerColor from "$lib/ghostsPerColor.svelte";
-    import EquipmentPerLevel from "./equipmentPerLevel.svelte";
-    import Lives from "./lives.svelte";
+    import GhostsPerColor from "./GhostsPerColor.svelte";
+    import EquipmentPerLevel from "./EquipmentPerLevel.svelte";
+    import Lives from "./Lives.svelte";
 
     let open = $derived($gameStatus === 'success' || $gameStatus === 'failure');
 

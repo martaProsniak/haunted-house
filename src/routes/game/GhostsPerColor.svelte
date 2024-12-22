@@ -1,7 +1,7 @@
 <script lang="ts">
-    import {gameStatus} from "../routes/game/gameState.svelte.js";
+    import {gameStatus} from "./gameState.svelte.js";
     import {fade} from 'svelte/transition'
-    import type {GhostSummary} from "../routes/game/types";
+    import type {GhostSummary} from "./types";
 
     interface Props {
         ghosts: GhostSummary

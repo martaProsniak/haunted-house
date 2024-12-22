@@ -1,14 +1,12 @@
 <script>
-    import Game from './game.svelte';
-    import WelcomeModal from "./welcomeModal.svelte";
-    import EndLevel from "./endLevel.svelte";
-    import Pause from "./pause.svelte";
+    import Game from './Game.svelte';
+    import WelcomeModal from "./WelcomeModal.svelte";
+    import EndLevelModal from "./EndLevelModal.svelte";
 </script>
 
 
 <WelcomeModal />
-<EndLevel />
-<Pause />
+<EndLevelModal />
 <div class="container mx-auto">
     <Game />
 </div>

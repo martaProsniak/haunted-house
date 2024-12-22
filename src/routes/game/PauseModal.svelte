@@ -5,13 +5,14 @@
 </script>
 
 {#if $isPaused}
-    <dialog class="px-40 bg-stone-950 h-2/3 text-white font-luckiest flex items-center" open transition:fly={{duration: 300, y: -200}}>
-        <button onclick={togglePause}>Play [space]</button>
+    <dialog class="py-20 px-36 text-violet-200  font-luckiest flex items-center justify-center h-full w-full" open transition:fly={{duration: 300, y: -200}}>
+        <button onclick={togglePause}>Resume [space]</button>
     </dialog>
 {/if}
 
 <style>
     dialog {
         z-index: 40;
+        background-color: rgba(1, 1, 2, 0.74);
     }
 </style>

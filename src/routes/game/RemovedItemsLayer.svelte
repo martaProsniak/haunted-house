@@ -1,6 +1,6 @@
 <script lang="ts">
     import {layers} from "./gameState.svelte";
-    import RemovedItem from "./removedItem.svelte";
+    import RemovedItem from "./RemovedItem.svelte";
 
     const {offset} = $props();
 

@@ -11,7 +11,7 @@
         lastCol,
         lives
     } from "./gameState.svelte.js";
-    import GhostSprite from './ghost.svelte'
+    import GhostSprite from './Ghost.svelte'
     import type {Ghost} from "./types";
     import {checkResult, clearItems, matchColorHorizontal, matchColorVertical} from "./matchItems.helpers";
     import {ghostsGifs, ghostsImages} from "./constants";

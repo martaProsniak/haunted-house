@@ -24,7 +24,8 @@ import plasmaRainbow from '$lib/assets/plasma-rainbow.png';
 import bulletRainbow from '$lib/assets/flying-rainbow.png';
 import plasmaBomb from '$lib/assets/plasma-bomb.png';
 import bulletBomb from '$lib/assets/flying-bomb.png';
-import {equipment, nextPlasmaColors} from "./gameState.svelte";
+import {equipment, nextPlasmaColors, isPaused} from "./gameState.svelte";
+import {get} from "svelte/store";
 
 export const mapColorsToHex: Record<Color, string> = {
 	pink: '#ec3597',
@@ -91,6 +92,7 @@ export const initialEquipment: Equipment = {
 		color: 'rainbow',
 		key: 'c',
 		handler: () => {
+			if (get(isPaused)) return;
 			if (equipment.rainbow.count === 0) return;
 			nextPlasmaColors.current = equipment.rainbow.type;
 			nextPlasmaColors.derived = equipment.rainbow.type;
@@ -104,7 +106,7 @@ export const initialEquipment: Equipment = {
 		color: 'bomb',
 		key: 'v',
 		handler: () => {
-			console.log('In handler')
+			if (get(isPaused)) return;
 			if (equipment.bomb.count === 0) return;
 			nextPlasmaColors.current = equipment.bomb.type;
 			nextPlasmaColors.derived = equipment.bomb.type;

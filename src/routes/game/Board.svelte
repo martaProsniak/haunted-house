@@ -4,6 +4,7 @@
     import candleImage from '$lib/assets/candle.png'
     import pumpkinImage from '$lib/assets/pumpkin.png';
     import webImage from '$lib/assets/web.png';
+    import PauseModal from "./PauseModal.svelte";
 
     const getCellBgImg = (row:number, col: number) => {
         if ((row === 0 || row === lastRow) && (col === 0 || col === lastCol)) {
@@ -27,6 +28,8 @@
         {/each}
     </div>
 {/each}
+<PauseModal />
+
 
 <style>
     .cell {
