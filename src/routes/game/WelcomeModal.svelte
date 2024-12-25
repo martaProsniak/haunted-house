@@ -4,23 +4,23 @@
     import {startGame} from "./gameState.helpers.svelte.js";
     import {gameStatus} from "./gameState.svelte";
 
-    let visible = $state(false);
+    let open = $state(false);
 
     onMount(() => {
         if ($gameStatus !== 'not-started') return;
-        visible = true;
+        open = true;
     })
 
     const handleStartGame = () => {
-        visible = false;
+        open = false;
         startGame();
     }
 
 </script>
 
-{#if visible}
+{#if open}
     <dialog transition:fly={{duration: 500, y: -200}}
-            class="w-10/12 max-w-[1200px] bg-black text-white text-center text-2xl rounded-lg p-10 space-y-4 z-30" open>
+            class="w-10/12 max-w-[1200px] bg-black text-white text-center text-2xl rounded-lg p-10 space-y-4 z-30" {open}>
         <p>Hello, ghostbuster apprentice!</p>
         <p>Lorem ipsum</p>
         <button class="p-4 bg-pink-500 rounded-lg w-52" onclick={handleStartGame}>Start new game</button>
