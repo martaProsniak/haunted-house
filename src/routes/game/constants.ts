@@ -38,29 +38,29 @@ export const colors: Record<string, BaseColor> = {
 	pink: 'pink',
 	blue: 'blue',
 	green: 'green'
-} as const;
+};
 export const plasmaImages: Record<Color, string> = {
 	pink: pinkPlasma,
 	blue: bluePlasma,
 	green: greenPlasma,
 	rainbow: plasmaRainbow,
 	bomb: plasmaBomb
-} as const;
+};
 export const ghostsImages: Record<BaseColor, string> = {
 	pink: pinkGhost,
 	blue: blueGhost,
 	green: greenGhost
-} as const;
+};
 export const ghostsImagesGlued: Record<BaseColor, string> = {
 	pink: pinkGhostGlued,
 	blue: blueGhostGlued,
 	green: greenGhostGlued
-} as const;
+};
 export const ghostsGifs: Record<BaseColor, string> = {
 	pink: pinkGhostGif,
 	blue: blueGhostGif,
 	green: greenGhostGif
-} as const;
+};
 export const flyingPlasmaImages = {
 	pink: {
 		pink: plasmaPinkPink,

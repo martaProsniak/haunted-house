@@ -126,9 +126,10 @@ export function generateGhosts(level: number): Ghost[] {
 	return shuffleArray(ghosts);
 }
 
-export const groupGhostsPerColor = (ghosts: GhostSummary) => {
-	return Object.values(ghosts).reduce((acc, ghost) => {
-		acc[ghost.color]++;
-		return acc;
+export const groupGhostsPerColor = (ghosts: Ghost[]) => {
+	return ghosts.reduce((summary, ghost) => {
+		summary[ghost.color]++;
+		return summary;
+
 	}, {pink: 0, blue: 0, green: 0})
 }

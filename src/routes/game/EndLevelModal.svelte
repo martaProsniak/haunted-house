@@ -1,7 +1,7 @@
 <script lang="ts">
     import {gameStatus, level, score, totalScore, layers, lives, initialLives} from "./gameState.svelte.js";
     import {fly} from "svelte/transition";
-    import GhostsPerColor from "./GhostsPerColor.svelte";
+    import GhostsPerColor from "./RemainingGhosts.svelte";
     import EquipmentPerLevel from "./EquipmentPerLevel.svelte";
     import Lives from "./Lives.svelte";
 

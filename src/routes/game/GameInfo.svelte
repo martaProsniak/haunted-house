@@ -1,7 +1,7 @@
 <script lang="ts">
     import {layers} from "./gameState.svelte";
     import NextPlasma from "./NextBullet.svelte";
-    import GhostsPerColor from "./GhostsPerColor.svelte";
+    import RemainingGhosts from "./RemainingGhosts.svelte";
     import Score from './Score.svelte'
     import Level from "./Level.svelte";
     import EquipmentDisplay from './Equipment.svelte'
@@ -16,8 +16,8 @@
         <EquipmentDisplay />
     </div>
     <div class="space-y-2">
-        <p>Catch ghosts:</p>
-        <GhostsPerColor ghosts={layers.catchGhosts} />
+        <p>Ghosts remaining:</p>
+        <RemainingGhosts ghosts={layers.ghosts} />
     </div>
     <div class="space-y-2">
         <p>Lives:</p>
