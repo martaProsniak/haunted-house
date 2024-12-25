@@ -46,14 +46,14 @@
             <EquipmentPerLevel />
         </div>
 
-        <button class="p-4 bg-violet-900 rounded-lg" {onclick}>Start next level</button>
+        <button class="p-4 bg-violet-900 rounded-lg" {onclick}>Next floor</button>
     </div>
 {/snippet}
 
 {#snippet failure()}
     <div class="space-y-20 w-fit mx-auto text-center font-creepster text-3xl">
         <p>You lost!</p>
-        <button class="p-4 bg-violet-900 rounded-lg w-52" {onclick}>Restart level {$level}</button>
+        <button class="p-4 bg-violet-900 rounded-lg w-52" {onclick}>Restart floor {$level}</button>
     </div>
 {/snippet}
 
