@@ -15,6 +15,7 @@ import {
 } from "./gameState.svelte";
 import {get} from "svelte/store";
 import {generateGhosts} from "./utils";
+import {clearEquipmentThisLevel, increaseEquipment} from "./equipment.helpers.svelte";
 
 export const pauseGame = () => {
     if (get(gameStatus) !== 'playing') return;
@@ -59,8 +60,8 @@ export const prepareLevel = () => {
     layers.matrix = initialMatrix;
     layers.catchGhosts = {};
     layers.removedItems = {};
-    equipmentThisLevel.rainbow.count = 0;
-    equipmentThisLevel.bomb.count = 0;
+    increaseEquipment();
+    clearEquipmentThisLevel();
     gameStatus.set('playing');
     isPaused.set(false);
 }

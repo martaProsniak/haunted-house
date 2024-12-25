@@ -6,12 +6,12 @@ import {
 	lastRow,
 	layers,
 	score,
-	totalGhosts,
-	equipment, equipmentThisLevel, initialLives, lives
+	lives
 } from './gameState.svelte.js';
 import { get } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import {colors, plasmaImages} from "./constants";
+import {increaseEquipmentThisLevel} from "./equipment.helpers.svelte";
 
 export const countCatchGhosts = (ghosts: Record<string, Ghost>) => {
 	Object.values(ghosts).forEach((ghost) => {
@@ -305,9 +305,6 @@ export const checkResult = (noMoreMoves = false) => {
 
 	if (!catchCount) return 'failure';
 
-	equipment.rainbow.count++;
-	equipmentThisLevel.rainbow.count++;
-	equipment.bomb.count++;
-	equipmentThisLevel.bomb.count++;
+	increaseEquipmentThisLevel();
 	return 'success';
 };
