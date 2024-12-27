@@ -310,7 +310,7 @@
 
     .container {
         display: grid;
-        background-color: black;
+        background-color: rgba(0, 0, 0, 0.95);
         grid-template-columns: minmax(300px, 1fr) 396px minmax(300px, 1fr);
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';

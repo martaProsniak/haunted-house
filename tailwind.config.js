@@ -10,6 +10,7 @@ export default {
         creepster: ['"Creepster"', ...defaultTheme.fontFamily.serif],
         luckiest: ["Luckiest Guy", ...defaultTheme.fontFamily.sans],
         indieFlower: ["Indie Flower", ...defaultTheme.fontFamily.serif],
+        cherryBomb: ["Cherry Bomb One", ...defaultTheme.fontFamily.serif],
       }
     },
   },

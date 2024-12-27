@@ -14,7 +14,7 @@
 
 <div class="space-y-2">
     {#if !hidden}
-        <p class="font-luckiest">Next plasma bullet:</p>
+        <p>Next plasma bullet:</p>
         <div    transition:scale={{duration: 300}}
                 class="pill"
                 style:background-image={`url("${flyingPlasmaImages[nextPlasmaColors.current][nextPlasmaColors.derived]}")`}>

@@ -20,7 +20,7 @@
 
 {#if open}
     <main transition:fade={{duration: 500}}
-          class="py-8 px-16 semi-transparent w-5-6 md:w-1/2 max-h-full overflow-y-scroll rounded-lg space-y-8 text-2xl">
+          class="p-16 semi-transparent max-h-full rounded-lg space-y-8 text-xl">
         <div class="space-y-2 text-center">
             <p>Haunted house, haunted walls</p>
             <p>They know lot of stories</p>
@@ -33,8 +33,10 @@
             <p>In the night, start the fight</p>
             <p>Feel the eerie thrills!</p>
         </div>
-        <div class="w-full text-center font-luckiest">
-            <button class="px-4 py-3 bg-pink-500 rounded-lg text-xl" onclick={handleStartGame}>Enter house</button>
+        <div class="w-full text-center font-creepster">
+            <button class="px-4 py-2 rounded-lg text-3xl" onclick={handleStartGame}>
+                <span class="shadow">Enter house</span>
+            </button>
         </div>
     </main>
 {/if}
@@ -44,26 +46,7 @@
         background-color: rgba(11, 7, 22, 0.75);
     }
 
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: rgba(11, 7, 22, 0.75);
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-color: black;
-        border-radius: 10px;
-        border: 3px solid rgba(11, 7, 22, 0.75);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: black;
-    }
-
-    main {
-        scrollbar-width: thin;
-        scrollbar-color: black rgba(11, 7, 22, 0.75);
+    .shadow {
+        text-shadow: 0 2px 0.1em #ec3597, 0 2px 0.2em #2398ec, 0 0 0.1em #45e732;
     }
 </style>

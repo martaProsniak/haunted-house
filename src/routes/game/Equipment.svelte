@@ -21,7 +21,7 @@
                     disabled={kind.count < 1}
                     onclick={() => kind.handler()}
             >
-                <span class="mt-1 inline-block">Use [{kind.key}]</span>
+                <span class="mt-1 inline-block">USE [{kind.key.toUpperCase()}]</span>
             </button>
         </div>
     {/each}

@@ -1,9 +1,7 @@
 <script lang="ts">
-    import {gameStatus, level, score, totalScore, layers, lives, initialLives} from "./gameState.svelte.js";
+    import {gameStatus, level, lives, initialLives} from "./gameState.svelte.js";
     import {fly} from "svelte/transition";
-    import GhostsPerColor from "./RemainingGhosts.svelte";
     import EquipmentPerLevel from "./EquipmentPerLevel.svelte";
-    import Lives from "./Lives.svelte";
 
     let open = $derived($gameStatus === 'success' || $gameStatus === 'failure');
 
@@ -18,47 +16,32 @@
     }
 </script>
 
-{#snippet info()}
-    <div class="space-y-4">
-        <p>Points: {$score}</p>
-        {#if $totalScore}
-            <p>Total score: {$totalScore}</p>
-        {/if}
-    </div>
-    <div class="flex items-center justify-start gap-x-4">
-        <span class="w-52 text-right">Catch ghosts:</span>
-        <GhostsPerColor ghosts={layers.catchGhosts}/>
-    </div>
-    <div class="flex items-center justify-start gap-x-4">
-        <span class="w-52 text-right">Lives:</span>
-        <Lives />
-    </div>
-{/snippet}
-
 {#snippet success()}
-    <div class="space-y-20 w-fit mx-auto text-center font-luckiest tracking-wide text-2xl">
+    <div class="space-y-12 w-fit mx-auto text-center text-2xl">
         <div class="space-y-4">
             <p>Job well done!</p>
-            <p>You completed {$level}. level!</p>
+            <p>You cleared {$level}. floor!</p>
         </div>
-        <div class="flex items-center justify-start gap-x-4 ">
-            <span class="w-52">Bonuses:</span>
-            <EquipmentPerLevel />
+        <div class=" gap-x-4 ">
+            <span>You found special bullet!</span>
+            <div class="mx-auto w-fit">
+                <EquipmentPerLevel />
+            </div>
         </div>
 
-        <button class="p-4 bg-violet-900 rounded-lg" {onclick}>Next floor</button>
+        <button class="px-4 py-3 bg-violet-900 rounded-lg font-cherryBomb" {onclick}>Next floor</button>
     </div>
 {/snippet}
 
 {#snippet failure()}
-    <div class="space-y-20 w-fit mx-auto text-center font-creepster text-3xl">
+    <div class="space-y-12 w-fit mx-auto text-center text-2xl">
         <p>You lost!</p>
-        <button class="p-4 bg-violet-900 rounded-lg w-52" {onclick}>Restart floor {$level}</button>
+        <button class="px-4 py-3 bg-violet-900 rounded-lg font-creepster" {onclick}>Restart floor {$level}</button>
     </div>
 {/snippet}
 
 {#if open}
-    <dialog class="p-6 text-violet-200 bg-stone-950 w-full h-full" {open} in:fly={{duration: 500, y: -200, delay: 600}} out:fly={{duration: 500, y: -200, delay: 200}}>
+    <dialog class="p-6 text-violet-200 bg-stone-950 w-full h-full flex items-center" {open} in:fly={{duration: 500, y: -200, delay: 600}} out:fly={{duration: 500, y: -200, delay: 200}}>
         {#if $gameStatus === 'success'}
             {@render success()}
         {/if}
