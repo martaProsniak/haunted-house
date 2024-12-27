@@ -301,6 +301,10 @@ export const checkResult = (noMoreMoves = false) => {
 		return;
 	}
 
+	if (layers.ghosts.length && noMoreMoves) {
+		return 'failure';
+	}
+
 	const catchCount = Object.keys(layers.catchGhosts).length;
 
 	if (!catchCount) return 'failure';
