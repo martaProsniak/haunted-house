@@ -9,7 +9,7 @@ export default {
         nunito: ["Nunito", ...defaultTheme.fontFamily.sans],
         creepster: ['"Creepster"', ...defaultTheme.fontFamily.serif],
         luckiest: ["Luckiest Guy", ...defaultTheme.fontFamily.sans],
-
+        indieFlower: ["Indie Flower", ...defaultTheme.fontFamily.serif],
       }
     },
   },

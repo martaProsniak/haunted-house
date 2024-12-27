@@ -17,9 +17,9 @@
         {/if}
     </h1>
     <div class="w-full text-2xl xl:text-3xl">
-        <a class="cursor-pointer" href="/game">Play</a>
+        <a class="cursor-pointer hover:text-violet-400 transition-colors" href="/game">Play</a>
         |
-        <a class="cursor-pointer" href="/guide">Guide</a>
+        <a class="cursor-pointer hover:text-violet-400 transition-colors" href="/guide">Guide</a>
     </div>
 </main>
 

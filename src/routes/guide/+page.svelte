@@ -1,17 +1,18 @@
 <script lang="ts">
 </script>
 
-<main class="place-self-start py-8 px-16 semi-transparent w-2/3 max-h-full overflow-y-scroll rounded-lg space-y-6 text-base">
-    <h1 class="text-2xl text-center">Ghosthunters guide</h1>
+<main class="place-self-start py-8 px-16 semi-transparent w-2/3 max-h-full overflow-y-scroll rounded-lg space-y-6 text-xl">
     <div class="space-y-2">
-        <h2 class="text-xl">How to catch a ghost?</h2>
+        <h1 class="text-4xl">Tips for brave daredevils!</h1>
+    </div>
+    <div class="space-y-2">
+        <h2 class="text-3xl text-violet-300">How to catch a ghost?</h2>
         <p>There are three kind of ghosts: pink, blue and green. You need to match them with at least 3
             plasma with the same color.</p>
         <p>But be careful! Ghosts are trying to escape!</p>
-
     </div>
     <div class="space-y-2">
-        <h2 class="text-xl">What? Escape?</h2>
+        <h2 class="text-3xl text-violet-300">What? Escape?</h2>
         <p>Yeah, did you think they will just wait until you catch them? Oh no, not these ones.</p>
         <p>But don't worry, we figured them out!</p>
         <p>They move one by one. Their primary direction is always up, unless you block their way with a plasma. In that
@@ -24,14 +25,14 @@
             veeery sticky.</p>
     </div>
     <div class="space-y-2">
-        <h2 class="text-xl">Your weapon</h2>
+        <h2 class="text-3xl text-violet-300">Your weapon</h2>
         <p>You will be provided with special Spooky Plasma Shooter! It's filled with two-cell plasma bullets. Released
             bullet will move down in interval. If the bullet will collide with an obstacle, it will break in half and leave two plasmas
             on the floor.</p>
         <p>Watch out! As plasma is immaterial, every loose molecule will go down until it'll hit the obstacle.</p>
     </div>
     <div class="space-y-2">
-        <h2 class="text-xl">Steering bullets</h2>
+        <h2 class="text-3xl text-violet-300">Steering bullets</h2>
         <p>You steer bullets with keyboard (Spooky Plasma Shooter is compatible with any keyboard!). Use arrows to move
             the bullets across the house.</p>
     </div>

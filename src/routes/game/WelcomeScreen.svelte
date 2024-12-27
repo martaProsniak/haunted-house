@@ -19,7 +19,8 @@
 </script>
 
 {#if open}
-    <main transition:fade={{duration: 500}} class="py-8 px-16 semi-transparent w-5-6 md:w-1/2 max-h-full overflow-y-scroll rounded-lg space-y-8 text-lg">
+    <main transition:fade={{duration: 500}}
+          class="py-8 px-16 semi-transparent w-5-6 md:w-1/2 max-h-full overflow-y-scroll rounded-lg space-y-8 text-2xl">
         <div class="space-y-2 text-center">
             <p>Haunted house, haunted walls</p>
             <p>They know lot of stories</p>
@@ -32,7 +33,7 @@
             <p>In the night, start the fight</p>
             <p>Feel the eerie thrills!</p>
         </div>
-        <div class="w-full text-center">
+        <div class="w-full text-center font-luckiest">
             <button class="px-4 py-3 bg-pink-500 rounded-lg text-xl" onclick={handleStartGame}>Enter house</button>
         </div>
     </main>
