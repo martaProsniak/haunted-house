@@ -35,7 +35,6 @@
     import {fade} from "svelte/transition";
     import {onDestroy} from "svelte";
     import {togglePause, prepareLevel, resetGame} from "./gameState.helpers.svelte.js";
-    import FastLevel from "./FastLevel.svelte";
 
     interface LastPlasma {
         curr: Plasma;
