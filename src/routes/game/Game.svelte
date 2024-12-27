@@ -16,6 +16,7 @@
         layers,
         rotation,
         equipment,
+        speed
     } from './gameState.svelte.js'
     import PlasmaLayer from './PlasmaLayer.svelte';
     import GhostsLayer from './GhostsLayer.svelte';
@@ -99,7 +100,7 @@
 
         const delta = currentTime - lastFrameTime;
 
-        if ($gameStatus === 'playing' && delta >= 1000) {
+        if ($gameStatus === 'playing' && delta >= $speed) {
 
             const isBlocked = ($currentRow === initialRow || $derivedRow === initialRow) && (layers.matrix[initialRow + 1][initialCol] || layers.matrix[initialRow + 1][initialCol + 1]);
             if (isBlocked) {

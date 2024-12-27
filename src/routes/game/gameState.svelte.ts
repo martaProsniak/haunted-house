@@ -33,9 +33,10 @@ export const isPaused: Writable<boolean> = writable(false);
 export const score: Writable<number> = writable(0);
 export const totalScore: Writable<number> = writable(0);
 export const totalGhosts: Writable<number> = writable(0);
-export const equipment = $state(initialEquipment);
-export const equipmentThisLevel = $state(initialEquipment);
 export const lives: Writable<number> = writable(initialLives);
+export const speed: Readable<number> = derived(
+	[level],
+	([$level]) => $level % 3 !== 0 ? 1000 : 500);
 
 export const derivedRow: Readable<number> = derived(
 	[rotation, currentRow],
@@ -66,8 +67,10 @@ export const derivedCol: Readable<number> = derived(
 );
 
 // State
-export const initialMatrix = Array.from(Array(rowsCount).keys()).map(() => Array.from(Array(colsCount).keys()).map(() => null));
+export const equipment = $state(initialEquipment);
+export const equipmentThisLevel = $state(initialEquipment);
 
+export const initialMatrix = Array.from(Array(rowsCount).keys()).map(() => Array.from(Array(colsCount).keys()).map(() => null));
 
 export const layers: GameLayers = $state({
 	matrix: initialMatrix,

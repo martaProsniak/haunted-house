@@ -13,7 +13,7 @@
 
     let animationFrame: number;
     let lastTime: number | null = null;
-    const moveInterval = 500;
+    const moveInterval = 200;
     let isRainbow = $derived(plasma.color === 'rainbow');
 
     let neighbors = $derived.by(() => {
