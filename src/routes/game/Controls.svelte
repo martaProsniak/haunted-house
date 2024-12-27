@@ -1,7 +1,7 @@
 <script lang="ts">
     import {gameStatus, isPaused} from "./gameState.svelte.js";
     import {togglePause, startGame, restartLevel, unpauseGame} from "./gameState.helpers.svelte.js";
-    import Header from "./Logo.svelte";
+    import Logo from "./Logo.svelte";
     import ControlsModal from "./ControlsModal.svelte"
     import {pauseGame} from "./gameState.helpers.svelte.js";
 
@@ -36,7 +36,7 @@
 
 <ControlsModal open={showControlsModal} handleClose={closeModal}/>
 <div class="space-y-20 font-cherryBomb text-xl px-6 text-center">
-    <Header/>
+    <Logo/>
     <div class="space-y-6">
         <button class="p-3 shadow-sm shadow-violet-700 hover:bg-violet-700 focus:bg-violet-700 transition-colors rounded-lg w-52 mb-20"
                 disabled={$gameStatus !== 'playing'} onclick={togglePause}>

@@ -6,6 +6,7 @@
     import webImage from '$lib/assets/web.png';
     import PauseModal from "./PauseModal.svelte";
     import EndLevelModal from "./EndLevelModal.svelte";
+    import FastLevel from "./FastLevel.svelte";
 
     const getCellBgImg = (row:number, col: number) => {
         if ((row === 0 || row === lastRow) && (col === 0 || col === lastCol)) {
@@ -21,6 +22,7 @@
     }
 </script>
 
+<FastLevel />
 {#each layers.matrix as row, rowIndex}
     <div class="w-fit flex flex-row flex-nowrap gap-1">
         {#each row as cell, cellIndex}
@@ -31,7 +33,6 @@
 {/each}
 <PauseModal />
 <EndLevelModal />
-
 
 <style>
     .cell {
