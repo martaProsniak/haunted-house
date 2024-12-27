@@ -6,8 +6,7 @@ import {
 	lastRow,
 	layers,
 	score,
-	lives,
-	totalGhosts
+	lives
 } from './gameState.svelte.js';
 import { get } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -300,10 +299,6 @@ export const checkResult = (noMoreMoves = false) => {
 
 	if (layers.ghosts.length && !noMoreMoves) {
 		return;
-	}
-
-	if (layers.ghosts.length && noMoreMoves) {
-		return 'failure';
 	}
 
 	const catchCount = Object.keys(layers.catchGhosts).length;

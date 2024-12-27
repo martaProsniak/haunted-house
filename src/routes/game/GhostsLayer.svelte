@@ -2,14 +2,14 @@
     import {
         layers,
         gameStatus,
+        level,
         isPaused,
         initialRow,
         currentRow,
         rotation,
         derivedRow,
         lastCol,
-        lives,
-        speed
+        lives
     } from "./gameState.svelte.js";
     import GhostSprite from './Ghost.svelte'
     import type {Ghost} from "./types";
@@ -24,9 +24,7 @@
     let ghostsToMove: Ghost[] = [];
     let animationFrameId: number;
     let lastFrameTime: number | null = null;
-    const frequency = $derived($speed * 2);
-
-    console.log(frequency);
+    let frequency = $state(2000);
 
     const scheduleMovement = () => {
         const animateMovement = (timestamp: number) => {

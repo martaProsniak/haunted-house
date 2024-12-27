@@ -8,7 +8,9 @@ import {
     rotation,
     currentRow,
     currentCol,
+    totalGhosts,
     score,
+    equipmentThisLevel,
     initialRow, initialCol, initialMatrix, totalScore, equipment
 } from "./gameState.svelte";
 import {get} from "svelte/store";
