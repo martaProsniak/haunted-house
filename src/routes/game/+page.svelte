@@ -1,17 +1,14 @@
-<script>
+<script lang="ts">
     import Game from './Game.svelte';
-    import WelcomeModal from "./WelcomeModal.svelte";
+    import WelcomeModal from "./WelcomeScreen.svelte";
+    import {gameStatus} from "./gameState.svelte";
+
+    let showGame = $derived($gameStatus !== 'not-started');
 </script>
 
-<WelcomeModal />
-<div class="container mx-auto">
-    <Game />
-</div>
 
-
-
-<style>
-    .container {
-        width: fit-content;
-    }
-</style>
+{#if showGame}
+    <Game/>
+{:else}
+    <WelcomeModal/>
+{/if}

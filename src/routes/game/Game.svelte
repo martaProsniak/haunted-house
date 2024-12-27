@@ -51,8 +51,6 @@
     let animationFrameId: number | null = null;
     let lastFrameTime: number | null = null;
 
-    let showGame = $derived($gameStatus !== 'not-started');
-
     $effect(() => {
         updateMatrix();
     });
@@ -287,25 +285,22 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
-<div class="wrapper">
-    {#if showGame}
-        <div class="container gap-x-4 py-10" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
-            <div class="ghosts">
-                <Controls/>
-            </div>
-            <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board">
-                <Board/>
-                <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol}/>
-                <GhostsLayer {offset}/>
-                <PlasmaLayer {offset}/>
-                <RemovedLayer {offset}/>
-            </div>
-            <div class="score">
-                <GameInfo/>
-            </div>
-
+<div class="wrapper mx-auto">
+    <div class="container gap-x-4 py-10" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
+        <div class="ghosts">
+            <Controls/>
         </div>
-    {/if}
+        <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board">
+            <Board/>
+            <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol}/>
+            <GhostsLayer {offset}/>
+            <PlasmaLayer {offset}/>
+            <RemovedLayer {offset}/>
+        </div>
+        <div class="score">
+            <GameInfo/>
+        </div>
+    </div>
 </div>
 
 <style>

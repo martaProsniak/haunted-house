@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Plasma} from "./types";
     import { scale} from 'svelte/transition'
-    import {currentRow, gameStatus, isPaused, lastCol, lastRow, layers} from "./gameState.svelte.js";
+    import {currentRow, gameStatus, isPaused, lastCol, lastRow, layers} from "./gameState.svelte";
     import {checkResult, clearItems, matchColorHorizontal, matchColorVertical} from "./matchItems.helpers";
 
     interface Props {
