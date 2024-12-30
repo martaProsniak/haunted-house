@@ -1,38 +1,31 @@
-# sv
+# Haunted House
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+PvE game where you explore a haunted mansion full of ghosts. Use plasma bullets to get rid of the creatures. #SvelteHack2024
 
-## Creating a project
+[Live demo](https://hauntedhousegame.netlify.app/) | [Source](https://github.com/martaProsniak/haunted-house)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Features
 
-```bash
-# create a new project in the current directory
-npx sv create
+- Enemies - colorful ghosts, which attempt to escape!
+- Weapon - plasma bullets, which you can control with keyboard
+- Equipment - special bullets, which speed up your work
+- HP
+- Levels
+- [Game guide](https://hauntedhousegame.netlify.app/guide)
 
-# create a new project in my-app
-npx sv create my-app
-```
+## Technologies
 
-## Developing
+- [SvelteKit](https://svelte.dev/)
+- [Tailwind.css](https://tailwindcss.com/)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Screenshots
 
-```bash
-npm run dev
+<div align="center">
+    <img src="static/gameplay.png" height="300" alt="Gameplay">
+    <img src="static/match.png" height="300" alt="Match">
+</div>
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Run locally
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- `git clone https://github.com/martaProsniak/haunted-house.git && cd haunted-house`
+- `npm install && npm run dev`
