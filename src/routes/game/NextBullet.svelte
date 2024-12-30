@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {nextPlasmaColors, gameStatus, isPaused} from "./gameState.svelte.js"
+    import {nextPlasmaColors} from "./gameState.svelte.js"
     import {flyingPlasmaImages} from "./constants";
     import {scale} from "svelte/transition";
     import {onMount} from "svelte";
@@ -14,7 +14,7 @@
 
 <div class="space-y-2">
     {#if !hidden}
-        <p>Next plasma bullet:</p>
+        <p>Next bullet:</p>
         <div    transition:scale={{duration: 300}}
                 class="pill"
                 style:background-image={`url("${flyingPlasmaImages[nextPlasmaColors.current][nextPlasmaColors.derived]}")`}>

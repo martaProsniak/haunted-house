@@ -19,7 +19,7 @@
     } from './gameState.svelte.js'
     import PlasmaLayer from './PlasmaLayer.svelte';
     import GhostsLayer from './GhostsLayer.svelte';
-    import FlyingPlasma from './FlyingBullet.svelte';
+    import FlyingBullet from './FlyingBullet.svelte';
     import Board from './Board.svelte';
     import Controls from './Controls.svelte';
     import GameInfo from './GameInfo.svelte';
@@ -34,6 +34,7 @@
     import {fade} from "svelte/transition";
     import {onDestroy} from "svelte";
     import {togglePause, prepareLevel, resetGame} from "./gameState.helpers.svelte.js";
+    import music from '$lib/assets/game.mp3';
 
     interface LastPlasma {
         curr: Plasma;
@@ -45,11 +46,19 @@
     const initialTop = gap;
     const initialLeft = gap + (initialCol * offset);
 
-    let lastPlasma: LastPlasma | null = $state(null);
-    let currentPlasma: FlyingPlasma;
+    let lastBullet: LastPlasma | null = $state(null);
+    let currentBullet: FlyingBullet;
 
     let animationFrameId: number | null = null;
     let lastFrameTime: number | null = null;
+
+    const audio = new Audio(music);
+    audio.loop = true;
+
+    const stopAudio = () => {
+        audio.pause();
+        audio.currentTime = 0;
+    }
 
     $effect(() => {
         updateMatrix();
@@ -58,6 +67,7 @@
     $effect(() => {
         if ($gameStatus === 'started') {
             prepareLevel();
+            audio.play();
         }
 
         if ($gameStatus === 'playing') {
@@ -67,6 +77,7 @@
         }
 
         if ($gameStatus === 'success' || $gameStatus === 'failure') {
+            stopAudio();
             if (animationFrameId !== null) {
                 cancelAnimation();
             }
@@ -80,6 +91,7 @@
     });
 
     onDestroy(() => {
+        stopAudio();
         resetGame();
     })
 
@@ -140,7 +152,7 @@
     const resetPlasma = () => {
         $currentRow = initialRow;
         $currentCol = initialCol;
-        currentPlasma.reset();
+        currentBullet.reset();
     }
 
     const checkEndLevel = (noMoves = false) => {
@@ -169,15 +181,15 @@
             imageUrl: plasmaImages[flyingPlasmaColors.derived]
         };
 
-        lastPlasma = {curr: currentPlasma, der: derivedPlasma};
+        lastBullet = {curr: currentPlasma, der: derivedPlasma};
 
-        return lastPlasma;
+        return lastBullet;
     }
 
     const updatePreviousPlasma = () => {
-        lastPlasma = createLastPlasma();
+        lastBullet = createLastPlasma();
 
-        layers.previousPlasma.push(lastPlasma.curr, lastPlasma.der);
+        layers.previousPlasma.push(lastBullet.curr, lastBullet.der);
 
         layers.previousPlasma.forEach((plasma) => {
             layers.matrix[plasma.row][plasma.column] = plasma;
@@ -223,21 +235,21 @@
     const plasmaEnded = () => {
         updatePreviousPlasma();
         resetPlasma();
-        matchItemsPerRotation[$rotation](lastPlasma!);
+        matchItemsPerRotation[$rotation](lastBullet!);
         checkEndLevel();
 
     }
 
     const moveDown = () => {
 
-        if (!currentPlasma.canMoveDown()) {
+        if (!currentBullet.canMoveDown()) {
             plasmaEnded();
             return;
         }
 
-        currentPlasma.moveDown();
+        currentBullet.moveDown();
 
-        if (!currentPlasma.canMoveDown()) {
+        if (!currentBullet.canMoveDown()) {
             plasmaEnded();
             return;
         }
@@ -266,11 +278,11 @@
         }
 
         if (ev.key === 'ArrowLeft') {
-            currentPlasma.moveLeft();
+            currentBullet.moveLeft();
         }
 
         if (ev.key === 'ArrowRight') {
-            currentPlasma.moveRight();
+            currentBullet.moveRight();
         }
 
         if (ev.key === 'ArrowDown') {
@@ -278,7 +290,7 @@
         }
 
         if (ev.key === 'ArrowUp') {
-            currentPlasma.rotate();
+            currentBullet.rotate();
         }
     }
 </script>
@@ -292,7 +304,7 @@
         </div>
         <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board">
             <Board/>
-            <FlyingPlasma bind:this={currentPlasma} {initialTop} {initialLeft} {lastRow} {lastCol}/>
+            <FlyingBullet bind:this={currentBullet} {initialTop} {initialLeft} {lastRow} {lastCol}/>
             <GhostsLayer {offset}/>
             <PlasmaLayer {offset}/>
             <RemovedLayer {offset}/>
