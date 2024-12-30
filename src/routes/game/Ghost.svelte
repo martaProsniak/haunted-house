@@ -9,7 +9,6 @@
         layers,
         rotation
     } from "./gameState.svelte.js";
-    import {scale} from 'svelte/transition'
     import type {Ghost} from "./types";
     import {ghostsImages, ghostsImagesGlued, mapColorsToHex} from "./constants";
 
@@ -32,7 +31,7 @@
         return Object.values(neighbors).some((neighbour) => ((neighbour?.color === ghost.color && neighbour.type === 'plasma') || neighbour?.color === 'rainbow'))
     })
 
-    let willMove = $derived(ghost.imageUrl.endsWith('gif'))
+    let willMove = $derived(ghost.imageUrl.endsWith('gif'));
 
     let hasPillAbove = $derived.by(() => {
         if ($rotation === 270) {
@@ -63,7 +62,6 @@
         style:left={`${ghost.column * offset}px`}
         style:box-shadow={ghost.isGlued || willMove ? `0 0 0 1px ${mapColorsToHex[ghost.color]}` : ''}
         style:background-color={ghost.isGlued ? `${mapColorsToHex[ghost.color]}` : `${mapColorsToHex[ghost.color]}` + '55'}
-        in:scale={{duration: 200}} out:scale={{duration: 100}}
 ></div>
 
 <style>

@@ -26,7 +26,7 @@
             style:background-image={`url("${item.imageUrl}")`}
             style:top={`${item.row * offset}px`}
             style:left={`${item.column * offset}px`}
-            style:box-shadow={`0 0 0 1px ${mapColorsToHex[item.color]}`}
+            style:box-shadow={!item.isBombed ? `0 0 0 1px ${mapColorsToHex[item.color]}` : ''}
             class="item-removed"
             out:scale={{ duration: 200}}
             onoutroend={() => handleRemove() }
