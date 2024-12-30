@@ -36,7 +36,7 @@
     import {togglePause, prepareLevel, resetGame} from "./gameState.helpers.svelte.js";
     import music from '$lib/assets/game.mp3';
 
-    interface LastPlasma {
+    interface LastBullet {
         curr: Plasma;
         der: Plasma;
     }
@@ -46,7 +46,7 @@
     const initialTop = gap;
     const initialLeft = gap + (initialCol * offset);
 
-    let lastBullet: LastPlasma | null = $state(null);
+    let lastBullet: LastBullet | null = $state(null);
     let currentBullet: FlyingBullet;
 
     let animationFrameId: number | null = null;
@@ -149,7 +149,7 @@
         })
     }
 
-    const resetPlasma = () => {
+    const resetBullet = () => {
         $currentRow = initialRow;
         $currentCol = initialCol;
         currentBullet.reset();
@@ -197,8 +197,8 @@
     }
 
     const matchItemsPerRotation = {
-        0: (plasma: LastPlasma) => matchItemsHorizontal(plasma),
-        90: (plasma: LastPlasma) => {
+        0: (plasma: LastBullet) => matchItemsHorizontal(plasma),
+        90: (plasma: LastBullet) => {
             const matchingDerivedColorVertical = matchColorVertical(plasma.der.row, plasma.der.column);
             const matchingCurrentColorHorizontal = matchColorHorizontal(plasma.curr.row, plasma.curr.column);
             const matchingDerivedColorHorizontal = matchColorHorizontal(plasma.der.row, plasma.der.column);
@@ -207,8 +207,8 @@
             clearItems(matchingCurrentColorHorizontal);
             clearItems(matchingDerivedColorHorizontal);
         },
-        180: (plasma: LastPlasma) => matchItemsHorizontal(plasma),
-        270: (plasma: LastPlasma) => {
+        180: (plasma: LastBullet) => matchItemsHorizontal(plasma),
+        270: (plasma: LastBullet) => {
             const matchingCurrentColorVertical = matchColorVertical(plasma.curr.row, plasma.curr.column);
             const matchingCurrentColorHorizontal = matchColorHorizontal(plasma.curr.row, plasma.curr.column);
             const matchingDerivedColorHorizontal = matchColorHorizontal(plasma.der.row, plasma.der.column);
@@ -219,7 +219,7 @@
         }
     }
 
-    const matchItemsHorizontal = (plasma: LastPlasma) => {
+    const matchItemsHorizontal = (plasma: LastBullet) => {
         const matchingCurrentColorVertical = matchColorVertical(plasma.curr.row, plasma.curr.column);
         const matchingDerivedColorVertical = matchColorVertical(plasma.der.row, plasma.der.column);
 
@@ -234,7 +234,7 @@
 
     const plasmaEnded = () => {
         updatePreviousPlasma();
-        resetPlasma();
+        resetBullet();
         matchItemsPerRotation[$rotation](lastBullet!);
         checkEndLevel();
 
@@ -271,26 +271,32 @@
 
         if (ev.key.toLowerCase() === equipment.rainbow.key) {
             equipment.rainbow.handler();
+            return;
         }
 
         if (ev.key.toLowerCase() === equipment.bomb.key) {
             equipment.bomb.handler();
+            return;
         }
 
         if (ev.key === 'ArrowLeft') {
             currentBullet.moveLeft();
+            return;
         }
 
         if (ev.key === 'ArrowRight') {
             currentBullet.moveRight();
+            return;
         }
 
         if (ev.key === 'ArrowDown') {
             moveDown();
+            return;
         }
 
         if (ev.key === 'ArrowUp') {
             currentBullet.rotate();
+            return;
         }
     }
 </script>

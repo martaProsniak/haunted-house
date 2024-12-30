@@ -14,6 +14,12 @@
         }
         $gameStatus = 'started';
     }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+            onclick();
+        }
+    }
 </script>
 
 {#snippet success()}
@@ -29,16 +35,18 @@
             </div>
         </div>
 
-        <button class="px-4 py-3 bg-violet-900 rounded-lg font-cherryBomb" {onclick}>Next floor</button>
+        <button class="px-4 py-3 bg-violet-900 rounded-lg font-cherryBomb" {onclick}>Next floor [Enter]</button>
     </div>
 {/snippet}
 
 {#snippet failure()}
     <div class="space-y-12 w-fit mx-auto text-center text-2xl">
         <p>You lost!</p>
-        <button class="px-4 py-3 bg-violet-900 rounded-lg font-creepster" {onclick}>Restart floor {$level}</button>
+        <button class="px-4 py-3 bg-violet-900 rounded-lg font-creepster" {onclick}>Restart floor {$level}  [Enter]</button>
     </div>
 {/snippet}
+
+<svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 {#if open}
     <dialog class="p-6 text-violet-200 bg-stone-950 w-full h-full flex items-center" {open} in:fly={{duration: 500, y: -200, delay: 600}} out:fly={{duration: 500, y: -200, delay: 200}}>
