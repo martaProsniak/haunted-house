@@ -47,7 +47,7 @@
 
 {#snippet renderKey(key: Key)}
     <li class="flex items-center gap-x-2" title={`${key.name} - ${key.description}`}>
-        <img class="w-10 h-10 inline" src={key.image} alt={key.name}/>
+        <img class="inline" src={key.image} alt={key.name}/>
         <span>{key.description}</span>
     </li>
 {/snippet}
