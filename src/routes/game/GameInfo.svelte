@@ -20,7 +20,7 @@
         <RemainingGhosts ghosts={layers.ghosts} />
     </div>
     <div class="space-y-2">
-        <p>Lives:</p>
+        <p>HP:</p>
         <Lives />
     </div>
     <Level />
