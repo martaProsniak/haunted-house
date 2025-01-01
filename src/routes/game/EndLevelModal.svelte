@@ -29,7 +29,7 @@
             <p>You cleared {$level}. floor!</p>
         </div>
         <div class=" gap-x-4 ">
-            <span>You found special bullet!</span>
+            <span>Nice! Ghosts dropped something!</span>
             <div class="mx-auto w-fit">
                 <EquipmentPerLevel />
             </div>

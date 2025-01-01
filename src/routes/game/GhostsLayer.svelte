@@ -24,7 +24,7 @@
     let ghostsToMove: Ghost[] = [];
     let animationFrameId: number;
     let lastFrameTime: number | null = null;
-    let frequency = $state(2000);
+    let frequency = $derived($level < 6 ? 2000 : $level < 11 ? 1500 : 1000);
 
     const scheduleMovement = () => {
         const animateMovement = (timestamp: number) => {

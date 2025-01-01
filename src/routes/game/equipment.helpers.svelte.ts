@@ -2,6 +2,11 @@ import {equipment, equipmentThisLevel, level} from "./gameState.svelte";
 import {get} from "svelte/store";
 
 export const increaseEquipmentThisLevel = () => {
+    if (get(level) % 5 === 0) {
+        equipmentThisLevel.rainbow.count++;
+        equipmentThisLevel.bomb.count++;
+        return;
+    }
     if (get(level) % 3 !== 0) {
         equipmentThisLevel.rainbow.count++;
         return;
