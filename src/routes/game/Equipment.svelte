@@ -16,17 +16,28 @@
                 <img class="" src={kind.image} alt={kind.type}>
             </div>
             <Badge left={0} top={-6} count={kind.count} color={kind.color}/>
-            <button class="absolute bg-violet-200 text-stone-900 rounded-lg w-20 top-11 left-0 text-base cursor-pointer"
+            <button class="absolute bg-violet-200 text-stone-900 rounded-lg w-20 top-11 left-0 text-base cursor-pointer py-1"
                     style:box-shadow={`0 0 2px 2px ${getColor(kind)}`}
+                    class:scale={kind.count > 0}
                     disabled={kind.count < 1}
                     onclick={() => kind.handler()}
             >
-                <span class="mt-1 inline-block">USE [{kind.key.toUpperCase()}]</span>
+                <span>USE [{kind.key.toUpperCase()}]</span>
             </button>
         </div>
     {/each}
 </div>
 
 <style>
+    @keyframes scale {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
 
+    .scale {
+        animation-name: scale;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+    }
 </style>
