@@ -1,6 +1,6 @@
 # Haunted House
 
-PvE game where you explore a haunted mansion full of ghosts. Use plasma bullets to get rid of the creatures. #SvelteHack2024
+PvE game where you explore a haunted mansion full of ghosts. Use plasma bullets to catch them. #SvelteHack2024
 
 [Live demo](https://hauntedhousegame.netlify.app/) | [Source](https://github.com/martaProsniak/haunted-house)
 
