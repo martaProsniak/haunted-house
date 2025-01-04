@@ -1,7 +1,7 @@
 <script lang="ts">
     import {gameStatus, isPaused} from "./gameState.svelte.js";
     import {togglePause, unpauseGame} from "./gameState.helpers.svelte.js";
-    import Header from "./Logo.svelte";
+    import Header from "$lib/components/Logo.svelte";
     import ControlsModal from "./ControlsModal.svelte"
     import {pauseGame} from "./gameState.helpers.svelte.js";
 
