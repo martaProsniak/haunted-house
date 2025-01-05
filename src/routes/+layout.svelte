@@ -18,6 +18,10 @@
             background-color: var(--bg-color-semi-transparent);
         }
 
+        .text-gradient {
+            @apply text-transparent bg-clip-text inline-block bg-gradient-to-r from-ghostPink via-ghostBlue to-ghostGreen
+        }
+
         ::-webkit-scrollbar {
             width: 10px;
         }
