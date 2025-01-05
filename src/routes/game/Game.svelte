@@ -304,7 +304,7 @@
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 <div class="wrapper mx-auto overflow-auto">
-    <div class="container px-10 gap-x-4 p-10 overflow-auto" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
+    <div class="container px-4 gap-x-4 py-10 overflow-auto" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
         <div class="ghosts">
             <Controls/>
         </div>
@@ -329,7 +329,7 @@
     .container {
         display: grid;
         background-color: rgba(0, 0, 0, 0.95);
-        grid-template-columns: minmax(300px, 1fr) 396px minmax(300px, 1fr);
+        grid-template-columns: minmax(260px, 1fr) 396px minmax(300px, 1fr);
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';
 

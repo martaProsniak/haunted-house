@@ -139,9 +139,9 @@
 
 <main class="py-8 px-16 semi-transparent w-full max-h-full min-h-1/2 overflow-hidden rounded-lg space-y-8 text-lg max-w-[1000px]">
     <Logo/>
-    <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between">
+    <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between pb-4">
         {#each sections as section}
-            <li class="w-full">
+            <li class="w-full min-w-32">
                 <Button onclick={() => changeActiveSection(section.id)} text={section.title} />
             </li>
         {/each}
