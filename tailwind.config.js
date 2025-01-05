@@ -11,6 +11,11 @@ export default {
         luckiest: ["Luckiest Guy", ...defaultTheme.fontFamily.sans],
         indieFlower: ["Indie Flower", ...defaultTheme.fontFamily.serif],
         cherryBomb: ["Cherry Bomb One", ...defaultTheme.fontFamily.serif],
+      },
+      colors: {
+        ghostPink: "#ec3597",
+        ghostBlue: "#2398ec",
+        ghostGreen: "#45e732"
       }
     },
   },

@@ -52,7 +52,7 @@
 </script>
 
 {#snippet basics()}
-    <Header text="How to catch a ghost?" />
+    <Header text="How to catch a ghost?"/>
     <p>There are three kind of ghosts: pink, blue and green. You need to match every ghost with at least 3
         plasma with the same color.</p>
     <div class="flex items-center gap-x-6">
@@ -75,28 +75,29 @@
 {/snippet}
 
 {#snippet escape()}
-    <Header text="Ghosts try to escape!" />
+    <Header text="Ghosts try to escape!"/>
     <p>They move up one by one. If something blocks their way, they will try to go around the obstacle.</p>
-    <p>You can tell which ghost will move next by watching them. They start to stomp on the spot right before they move.</p>
+    <p>You can tell which ghost will move next by watching them. They start to stomp on the spot right before they
+        move.</p>
     <div class="space-x-4">
         <img class="inline" src={pinkGhostGif} alt="pink ghost stomping">
         <img class="inline" src={blueGhostGif} alt="blue ghost stomping">
         <img class="inline" src={greenGhostGif} alt="green ghost stomping">
     </div>
-    <p>Here's some good news - <b>if you place plasma in their color anywhere next to them, they will loose ability to move!</b>
-        Plasma is
-        veeery sticky.</p>
+    <p>Here's some good news - if you place plasma in their color anywhere next to them, they will loose ability to
+        move! Plasma is veeery sticky.</p>
+    <p>Try to glue the ghosts in the first place! If you allow three ghosts to escape, they will warn all other ghosts
+        and you'll have to start over the next evening.</p>
+    <p>Besides, they make quite funny faces:</p>
     <div class="space-x-4">
         <img class="inline" src={pinkGhostGlued} alt="pink ghost glued">
         <img class="inline" src={blueGhostGlued} alt="blue ghost glued">
         <img class="inline" src={greenGhostGlued} alt="green ghost glued">
     </div>
-    <p>Try to glue the ghosts in the first place!</p>
-    <p>If you allow three ghosts to escape, they will warn all other ghosts and you'll have to start over the next evening.</p>
 {/snippet}
 
 {#snippet weapon()}
-    <Header text="Your weapon" />
+    <Header text="Your weapon"/>
     <p>You will be provided with special Spooky Plasma Shooter! It's filled with two-cell plasma bullets. Released
         bullet will move down in interval. If the bullet will collide with an obstacle, it will break in half and
         leave two plasmas
@@ -114,14 +115,14 @@
 {/snippet}
 
 {#snippet controls()}
-    <Header text="Steering bullets" />
+    <Header text="Steering bullets"/>
     <p>You steer bullets with keyboard (Spooky Plasma Shooter is compatible with any keyboard!). Use arrows to move
         the bullets across the house.</p>
     <KeyboardManual/>
 {/snippet}
 
 {#snippet equipment()}
-    <Header text="Special bullets" />
+    <Header text="Special bullets"/>
     <p>There are two kinds of special bullets which will speed up your work. Try them out!</p>
     <p class="flex items-center gap-x-2">
         <img src={bulletRainbow} alt="rainbow bullet">
@@ -138,9 +139,9 @@
 <main class="py-8 px-16 semi-transparent w-full max-h-full overflow-y-scroll rounded-lg space-y-10 text-xl max-w-[1000px]">
 
     <div class="space-y-2 flex items-center justify-between">
-        <Logo />
+        <Logo/>
         <div class="text-right">
-            <a class="inline-block text-center font-cherryBomb p-3 bg-violet-900 hover:bg-violet-600 focus:bg-violet-600 transition-colors rounded-lg w-52"
+            <a class="inline-block text-center font-cherryBomb p-3 transition-colors rounded-lg w-52 text-ghostBlue"
                href="/game">Start adventure!</a>
         </div>
     </div>
@@ -148,7 +149,8 @@
     <ul class="flex justify-between gap-x-2">
         {#each sections as section}
             <li class="px-2">
-                <button onclick={() => changeActiveSection(section.id)} class:active={section.id === activeSection}>{section.title}</button>
+                <button onclick={() => changeActiveSection(section.id)}
+                        class:active={section.id === activeSection}>{section.title}</button>
             </li>
         {/each}
     </ul>
