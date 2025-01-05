@@ -9,7 +9,7 @@
     const {text, onclick, disabled, shadow, classes = ''}: Props = $props();
 </script>
 
-<button class={`p-3 shadow-sm shadow-violet-700 hover:bg-violet-700 focus:bg-violet-700 transition-colors rounded-lg ${classes}`}
+<button class={`p-3 shadow-sm shadow-violet-700 hover:bg-violet-700 focus:bg-violet-700 transition-colors rounded-lg font-luckiest text-lg ${classes}`}
         disabled={disabled} onclick={onclick}>
     <span class:shadow>{text}</span>
 </button>

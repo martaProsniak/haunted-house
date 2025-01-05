@@ -136,16 +136,8 @@
     </p>
 {/snippet}
 
-<main class="py-8 px-16 semi-transparent w-full max-h-full overflow-y-scroll rounded-lg space-y-10 text-xl max-w-[1000px]">
-
-    <div class="space-y-2 flex items-center justify-between">
-        <Logo/>
-        <div class="text-right">
-            <a class="inline-block text-center font-cherryBomb p-3 transition-colors rounded-lg w-52 text-ghostBlue"
-               href="/game">Start adventure!</a>
-        </div>
-    </div>
-    <h1 class="text-3xl">Tips for brave daredevils!</h1>
+<main class="py-8 px-16 semi-transparent w-full max-h-full overflow-hidden rounded-lg space-y-8 text-lg max-w-[1000px]">
+    <Logo />
     <ul class="flex justify-between gap-x-2">
         {#each sections as section}
             <li class="px-2">
@@ -155,7 +147,7 @@
         {/each}
     </ul>
     {#key activeSection}
-        <div class="space-y-4 w-full min-h-[448px]" in:fade={{duration:500}}>
+        <div class="space-y-4 w-full h-[200px] overflow-y-auto" in:fade={{duration:500}}>
             {#if activeSection === 1}
                 {@render basics()}
             {:else if activeSection === 2}
@@ -169,14 +161,13 @@
             {/if}
         </div>
     {/key}
+    <div class="text-right">
+        <a class="inline-block text-center text-3xl shadow font-bold"
+           href="/game">Start adventure!</a>
+    </div>
 </main>
 
 <style>
-    main {
-        scrollbar-width: thin;
-        scrollbar-color: black var(--bg-color-semi-transparent);
-    }
-
     .active {
         color: var(--color-pink);
     }

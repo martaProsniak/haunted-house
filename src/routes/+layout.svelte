@@ -4,7 +4,7 @@
     const {children} = $props();
 </script>
 
-<div class="text-violet-200 h-screen w-screen font-indieFlower flex items-center justify-center py-16 max-h-screen overflow-hidden">
+<div class="text-violet-200 h-screen w-screen font-candy flex items-center justify-center py-16 max-h-screen overflow-hidden">
     {@render children()}
 </div>
 
@@ -23,7 +23,7 @@
         }
 
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -31,9 +31,9 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background-color: black;
-            border-radius: 10px;
-            border: 3px solid var(--bg-color-semi-transparent);
+            background: linear-gradient(var(--color-pink), var(--color-blue), var(--color-green));
+            border-radius: 12px;
+            border: 2px solid var(--bg-color-semi-transparent);
         }
 
         ::-webkit-scrollbar-thumb:hover {

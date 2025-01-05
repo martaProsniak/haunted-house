@@ -5,8 +5,8 @@
 </script>
 
 {#if $isPaused}
-    <dialog class="py-20 px-36 text-violet-200  font-cherryBomb flex items-center justify-center h-full w-full text-xl" open={$isPaused} transition:fly={{duration: 300, y: -200}}>
-        <button onclick={togglePause}>Resume [space]</button>
+    <dialog class="py-20 px-36 text-violet-200 flex items-center justify-center h-full w-full text-xl" open={$isPaused} transition:fly={{duration: 300, y: -200}}>
+        <button onclick={togglePause}>Resume [ space ]</button>
     </dialog>
 {/if}
 

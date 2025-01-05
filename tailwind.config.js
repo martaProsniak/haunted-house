@@ -11,6 +11,8 @@ export default {
         luckiest: ["Luckiest Guy", ...defaultTheme.fontFamily.sans],
         indieFlower: ["Indie Flower", ...defaultTheme.fontFamily.serif],
         cherryBomb: ["Cherry Bomb One", ...defaultTheme.fontFamily.serif],
+        candy: ["Emilys Candy", ...defaultTheme.fontFamily.serif],
+        jersey: ["Jersey 15", ...defaultTheme.fontFamily.serif],
       },
       colors: {
         ghostPink: "#ec3597",

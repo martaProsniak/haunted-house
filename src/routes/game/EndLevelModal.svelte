@@ -24,7 +24,7 @@
 </script>
 
 {#snippet success()}
-    <div class="space-y-12 w-fit mx-auto text-center text-2xl">
+    <div class="space-y-12 w-fit mx-auto text-center">
         <div class="space-y-4">
             <p>Job well done!</p>
             <p>You cleared {$level}. floor!</p>
@@ -36,21 +36,21 @@
             </div>
         </div>
 
-        <Button text="Next floor [Enter]" {onclick} classes="font-cherryBomb"/>
+        <Button text="Next floor [ enter ]" {onclick}/>
     </div>
 {/snippet}
 
 {#snippet failure()}
-    <div class="space-y-12 w-fit mx-auto text-center text-2xl">
+    <div class="space-y-12 w-fit mx-auto text-center">
         <p>You lost!</p>
-        <Button text={`Restart floor ${$level} [Enter]`} {onclick} classes="font-creepster"/>
+        <Button text={`Restart floor ${$level} [ enter ]`} {onclick} classes="font-creepster"/>
     </div>
 {/snippet}
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 {#if open}
-    <dialog class="p-6 text-violet-200 bg-stone-950 w-full h-full flex items-center" {open} in:fly={{duration: 500, y: -200, delay: 600}} out:fly={{duration: 500, y: -200, delay: 200}}>
+    <dialog class="p-6 text-violet-200 bg-stone-950 w-full h-full flex items-center text-xl" {open} in:fly={{duration: 500, y: -200, delay: 600}} out:fly={{duration: 500, y: -200, delay: 200}}>
         {#if $gameStatus === 'success'}
             {@render success()}
         {/if}
