@@ -20,6 +20,7 @@
 
     import Logo from '$lib/components/Logo.svelte';
     import Header from "$lib/components/Header.svelte";
+    import Button from "$lib/components/Button.svelte";
 
     const sections = [
         {
@@ -137,14 +138,11 @@
 {/snippet}
 
 <main class="py-8 px-16 semi-transparent w-full max-h-full min-h-1/2 overflow-hidden rounded-lg space-y-8 text-lg max-w-[1000px]">
-    <Logo />
-    <ul class="flex gap-x-2 flex-row overflow-x-auto">
+    <Logo/>
+    <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between">
         {#each sections as section}
-            <li class="text-2xl  w-full text-center rounded-full transition-all bg-black border-solid border-2 border-violet-700 hover:bg-violet-800">
-                <button class="w-full h-full p-2 rounded-full"
-                        class:bg-violet-500={section.id === activeSection}
-
-                        onclick={() => changeActiveSection(section.id)}>{section.title}</button>
+            <li class="w-full">
+                <Button onclick={() => changeActiveSection(section.id)} text={section.title} />
             </li>
         {/each}
     </ul>

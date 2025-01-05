@@ -24,12 +24,12 @@
 </script>
 
 {#snippet success()}
-    <div class="space-y-12 w-fit mx-auto text-center">
+    <div class="space-y-12 px-14 w-full text-center">
         <div class="space-y-4">
             <p>Job well done!</p>
             <p>You cleared {$level}. floor!</p>
         </div>
-        <div class=" gap-x-4 ">
+        <div class="">
             <span>Nice! Ghosts dropped something!</span>
             <div class="mx-auto w-fit">
                 <EquipmentPerLevel />
@@ -41,9 +41,9 @@
 {/snippet}
 
 {#snippet failure()}
-    <div class="space-y-12 w-fit mx-auto text-center">
+    <div class="space-y-12 px-14 w-full text-center">
         <p>You lost!</p>
-        <Button text={`Restart floor ${$level} [ enter ]`} {onclick} classes="font-creepster"/>
+        <Button text={`Restart [ enter ]`} {onclick} classes="font-creepster"/>
     </div>
 {/snippet}
 

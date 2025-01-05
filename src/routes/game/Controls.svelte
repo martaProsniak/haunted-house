@@ -36,9 +36,9 @@
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 <ControlsModal open={showControlsModal} handleClose={closeModal}/>
-<div class="space-y-20 text-xl px-6 text-center">
+<div class="space-y-20 text-xl text-center">
     <Header/>
-    <div class="space-y-6">
+    <div class="space-y-6 w-3/4 mx-auto px-2">
         <Button text={`${!$isPaused ? 'Pause' : 'Play'} [ space ]`} onclick={togglePause} disabled={$gameStatus !== 'playing'} classes="w-52" />
         <Button onclick={toggleControlsModal} text={`${showControlsModal ? 'Hide controls' : 'Show controls'} [ x ]`} classes="w-52" />
     </div>
