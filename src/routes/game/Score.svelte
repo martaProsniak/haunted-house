@@ -12,7 +12,7 @@
 <div class="">
     <div>Score:
         {#key $score}
-            <p class="text-3xl">{Math.trunc($currentScore)}</p>
+            <p>{Math.trunc($currentScore)}</p>
         {/key}
     </div>
 </div>

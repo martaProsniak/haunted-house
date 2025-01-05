@@ -12,7 +12,7 @@ export default {
         indieFlower: ["Indie Flower", ...defaultTheme.fontFamily.serif],
         cherryBomb: ["Cherry Bomb One", ...defaultTheme.fontFamily.serif],
         candy: ["Emilys Candy", ...defaultTheme.fontFamily.serif],
-        jersey: ["Jersey 15", ...defaultTheme.fontFamily.serif],
+        dynaPuff: ["DynaPuff", ...defaultTheme.fontFamily.serif],
       },
       colors: {
         ghostPink: "#ec3597",

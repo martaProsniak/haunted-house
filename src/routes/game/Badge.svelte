@@ -16,7 +16,7 @@
 
 
 {#key count}
-    <div class="absolute text-center font-luckiest bg-violet-200 text-stone-900 rounded-full badge text-sm h-8 leading-9 font-bold"
+    <div class="absolute text-center font-dynaPuff bg-violet-200 text-stone-900 rounded-full badge text-sm h-8 leading-8 font-bold"
          transition:scale|local={{duration: 300}}
          style:box-shadow={`0 0 2px 2px ${boxShadowColor}`}
          style:top={`${top}px`}
