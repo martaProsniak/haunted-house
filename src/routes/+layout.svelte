@@ -7,3 +7,33 @@
 <div class="text-violet-200 h-screen w-screen font-indieFlower flex items-center justify-center py-16 max-h-screen overflow-hidden">
     {@render children()}
 </div>
+
+<style>
+    :global {
+        .shadow {
+            text-shadow: 0 2px 0.1em var(--color-pink), 0 2px 0.2em var(--color-blue), 0 0 0.1em var(--color-green);
+        }
+
+        .semi-transparent {
+            background-color: var(--bg-color-semi-transparent);
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color-semi-transparent);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: black;
+            border-radius: 10px;
+            border: 3px solid var(--bg-color-semi-transparent);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: black;
+        }
+    }
+</style>

@@ -1,4 +1,6 @@
 <script lang="ts">
+    import {fade} from "svelte/transition";
+
     import KeyboardManual from "../game/KeyboardManual.svelte";
     import pinkPlasma from '$lib/assets/plasma-pink.png';
     import bluePlasma from '$lib/assets/plasma-blue.png';
@@ -9,8 +11,15 @@
     import plasmaPinkGreen from '$lib/assets/flying-pink-green.png';
     import bulletBomb from '$lib/assets/flying-bomb.png';
     import bulletRainbow from '$lib/assets/flying-rainbow.png';
+    import greenGhostGif from "$lib/assets/ghost-green.gif";
+    import blueGhostGif from "$lib/assets/ghost-blue.gif";
+    import pinkGhostGif from "$lib/assets/ghost-pink.gif";
+    import pinkGhostGlued from "$lib/assets/ghost-pink-glued.png";
+    import blueGhostGlued from "$lib/assets/ghost-blue-glued.png";
+    import greenGhostGlued from "$lib/assets/ghost-green-glued.png";
 
     import Logo from '$lib/components/Logo.svelte';
+    import Header from "$lib/components/Header.svelte";
 
     const sections = [
         {
@@ -18,11 +27,11 @@
             id: 1
         },
         {
-            title: 'Prevent escaping!',
+            title: 'Weapon',
             id: 2
         },
         {
-            title: 'Weapon',
+            title: 'Prevent escaping!',
             id: 3
         },
         {
@@ -43,7 +52,7 @@
 </script>
 
 {#snippet basics()}
-    <h2 class="text-2xl text-violet-300 font-bold">How to catch a ghost?</h2>
+    <Header text="How to catch a ghost?" />
     <p>There are three kind of ghosts: pink, blue and green. You need to match every ghost with at least 3
         plasma with the same color.</p>
     <div class="flex items-center gap-x-6">
@@ -63,23 +72,31 @@
             <img class="inline" src={greenPlasma} alt="green plasma">
         </div>
     </div>
-    <p>But be careful! Ghosts are trying to escape!</p>
 {/snippet}
 
 {#snippet escape()}
-    <h2 class="text-2xl text-violet-300 font-bold">What? Escape?</h2>
-    <p>Yeah, did you think they will just wait until you catch them? Oh no, not these ones.</p>
-    <p>But don't worry, we figured them out!</p>
+    <Header text="Ghosts try to escape!" />
     <p>They move up one by one. If something blocks their way, they will try to go around the obstacle.</p>
+    <p>You can tell which ghost will move next by watching them. They start to stomp on the spot right before they move.</p>
+    <div class="space-x-4">
+        <img class="inline" src={pinkGhostGif} alt="pink ghost stomping">
+        <img class="inline" src={blueGhostGif} alt="blue ghost stomping">
+        <img class="inline" src={greenGhostGif} alt="green ghost stomping">
+    </div>
     <p>Here's some good news - <b>if you place plasma in their color anywhere next to them, they will loose ability to move!</b>
         Plasma is
         veeery sticky.</p>
+    <div class="space-x-4">
+        <img class="inline" src={pinkGhostGlued} alt="pink ghost glued">
+        <img class="inline" src={blueGhostGlued} alt="blue ghost glued">
+        <img class="inline" src={greenGhostGlued} alt="green ghost glued">
+    </div>
     <p>Try to glue the ghosts in the first place!</p>
     <p>If you allow three ghosts to escape, they will warn all other ghosts and you'll have to start over the next evening.</p>
 {/snippet}
 
 {#snippet weapon()}
-    <h2 class="text-2xl text-violet-300 font-bold">Your weapon</h2>
+    <Header text="Your weapon" />
     <p>You will be provided with special Spooky Plasma Shooter! It's filled with two-cell plasma bullets. Released
         bullet will move down in interval. If the bullet will collide with an obstacle, it will break in half and
         leave two plasmas
@@ -97,14 +114,14 @@
 {/snippet}
 
 {#snippet controls()}
-    <h2 class="text-2xl text-violet-300 font-bold">Steering bullets</h2>
+    <Header text="Steering bullets" />
     <p>You steer bullets with keyboard (Spooky Plasma Shooter is compatible with any keyboard!). Use arrows to move
         the bullets across the house.</p>
     <KeyboardManual/>
 {/snippet}
 
 {#snippet equipment()}
-    <h2 class="text-2xl text-violet-300 font-bold">Special bullets</h2>
+    <Header text="Special bullets" />
     <p>There are two kinds of special bullets which will speed up your work. Try them out!</p>
     <p class="flex items-center gap-x-2">
         <img src={bulletRainbow} alt="rainbow bullet">
@@ -114,11 +131,11 @@
     <p class="flex items-center gap-x-2">
         <img src={bulletBomb} alt="bomb bullet">
         <span>-</span>
-        <span>does big boom boom!</span>
+        <span>creates big explosion, clearing whole rows where it was detonated</span>
     </p>
 {/snippet}
 
-<main class="place-self-start py-8 px-16 semi-transparent w-full h-full max-h-full overflow-y-scroll rounded-lg space-y-10 text-xl max-w-[1000px]">
+<main class="py-8 px-16 semi-transparent w-full max-h-full overflow-y-scroll rounded-lg space-y-10 text-xl max-w-[1000px]">
 
     <div class="space-y-2 flex items-center justify-between">
         <Logo />
@@ -131,50 +148,34 @@
     <ul class="flex justify-between gap-x-2">
         {#each sections as section}
             <li class="px-2">
-                <button onclick={() => changeActiveSection(section.id)}>{section.title}</button>
+                <button onclick={() => changeActiveSection(section.id)} class:active={section.id === activeSection}>{section.title}</button>
             </li>
         {/each}
     </ul>
-    <div class="space-y-4 w-full">
-        {#if activeSection === 1}
-            {@render basics()}
-        {:else if activeSection === 2}
-            {@render escape()}
-        {:else if activeSection === 3}
-            {@render weapon()}
-        {:else if activeSection === 4}
-            {@render controls()}
-        {:else}
-            {@render equipment()}
-        {/if}
-    </div>
+    {#key activeSection}
+        <div class="space-y-4 w-full min-h-[448px]" in:fade={{duration:500}}>
+            {#if activeSection === 1}
+                {@render basics()}
+            {:else if activeSection === 2}
+                {@render weapon()}
+            {:else if activeSection === 3}
+                {@render escape()}
+            {:else if activeSection === 4}
+                {@render controls()}
+            {:else}
+                {@render equipment()}
+            {/if}
+        </div>
+    {/key}
 </main>
 
 <style>
-    .semi-transparent {
-        background-color: rgba(11, 7, 22, 0.75);
-    }
-
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: rgba(11, 7, 22, 0.75);
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-color: black;
-        border-radius: 10px;
-        border: 3px solid rgba(11, 7, 22, 0.75);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: black;
-    }
-
     main {
         scrollbar-width: thin;
-        scrollbar-color: black rgba(11, 7, 22, 0.75);
+        scrollbar-color: black var(--bg-color-semi-transparent);
+    }
+
+    .active {
+        color: var(--color-pink);
     }
 </style>

@@ -2,6 +2,7 @@
     import {gameStatus, level, lives, initialLives} from "./gameState.svelte.js";
     import {fly} from "svelte/transition";
     import EquipmentPerLevel from "./EquipmentPerLevel.svelte";
+    import Button from "$lib/components/Button.svelte";
 
     let open = $derived($gameStatus === 'success' || $gameStatus === 'failure');
 
@@ -35,14 +36,14 @@
             </div>
         </div>
 
-        <button class="px-4 py-3 bg-violet-900 rounded-lg font-cherryBomb" {onclick}>Next floor [Enter]</button>
+        <Button text="Next floor [Enter]" {onclick} classes="font-cherryBomb"/>
     </div>
 {/snippet}
 
 {#snippet failure()}
     <div class="space-y-12 w-fit mx-auto text-center text-2xl">
         <p>You lost!</p>
-        <button class="px-4 py-3 bg-violet-900 rounded-lg font-creepster" {onclick}>Restart floor {$level}  [Enter]</button>
+        <Button text={`Restart floor ${$level} [Enter]`} {onclick} classes="font-creepster"/>
     </div>
 {/snippet}
 

@@ -40,13 +40,3 @@
         </div>
     </main>
 {/if}
-
-<style>
-    .semi-transparent {
-        background-color: rgba(11, 7, 22, 0.75);
-    }
-
-    .shadow {
-        text-shadow: 0 2px 0.1em #ec3597, 0 2px 0.2em #2398ec, 0 0 0.1em #45e732;
-    }
-</style>
