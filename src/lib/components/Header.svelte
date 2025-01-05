@@ -2,4 +2,6 @@
     const {text} = $props();
 </script>
 
-<h2 class="text-2xl text-gradient font-bold">{text}</h2>
+<div class="w-fit">
+    <h2 class="text-2xl font-bold text-violet-400">{text}</h2>
+</div>

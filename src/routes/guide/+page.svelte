@@ -23,7 +23,7 @@
 
     const sections = [
         {
-            title: 'How does it work?',
+            title: 'Ghosts',
             id: 1
         },
         {
@@ -31,11 +31,11 @@
             id: 2
         },
         {
-            title: 'Prevent escaping!',
+            title: 'Gotchas!',
             id: 3
         },
         {
-            title: 'Controlling bullets',
+            title: 'Steering',
             id: 4
         },
         {
@@ -136,18 +136,20 @@
     </p>
 {/snippet}
 
-<main class="py-8 px-16 semi-transparent w-full max-h-full overflow-hidden rounded-lg space-y-8 text-lg max-w-[1000px]">
+<main class="py-8 px-16 semi-transparent w-full max-h-full min-h-1/2 overflow-hidden rounded-lg space-y-8 text-lg max-w-[1000px]">
     <Logo />
-    <ul class="flex justify-between gap-x-2">
+    <ul class="flex gap-x-2 flex-row overflow-x-auto">
         {#each sections as section}
-            <li class="px-2">
-                <button onclick={() => changeActiveSection(section.id)}
-                        class:active={section.id === activeSection}>{section.title}</button>
+            <li class="text-2xl  w-full text-center rounded-full transition-all bg-black border-solid border-2 border-violet-700 hover:bg-violet-800">
+                <button class="w-full h-full p-2 rounded-full"
+                        class:bg-violet-500={section.id === activeSection}
+
+                        onclick={() => changeActiveSection(section.id)}>{section.title}</button>
             </li>
         {/each}
     </ul>
     {#key activeSection}
-        <div class="space-y-4 w-full h-[200px] overflow-y-auto" in:fade={{duration:500}}>
+        <div class="space-y-4 w-full h-[300px] overflow-y-auto" in:fade={{duration:500}}>
             {#if activeSection === 1}
                 {@render basics()}
             {:else if activeSection === 2}
@@ -168,7 +170,5 @@
 </main>
 
 <style>
-    .active {
-        color: var(--color-pink);
-    }
+
 </style>

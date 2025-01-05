@@ -22,8 +22,13 @@
             @apply text-transparent bg-clip-text inline-block bg-gradient-to-r from-ghostPink via-ghostBlue to-ghostGreen
         }
 
+        .bg-gradient {
+            @apply bg-gradient-to-r from-ghostPink via-ghostBlue to-ghostGreen
+        }
+
         ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
