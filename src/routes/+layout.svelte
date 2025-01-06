@@ -31,8 +31,8 @@
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 4px;
+            height: 4px;
         }
 
         ::-webkit-scrollbar-track {
@@ -40,9 +40,9 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--color-light), var(--color-medium), var(--color-dark));
+            background: linear-gradient(var(--color-pink), var(--color-medium), var(--color-dark));
             border-radius: 12px;
-            border: 2px solid var(--bg-color-semi-transparent);
+            border: 1px solid var(--bg-color-semi-transparent);
         }
 
         ::-webkit-scrollbar-thumb:hover {

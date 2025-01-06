@@ -70,7 +70,6 @@
 
 <ControlsModal open={showControlsModal} handleClose={closeModal}/>
 <div class="space-y-20 text-xl text-center">
-    <Header/>
     <div class="space-y-6 w-36 mx-auto px-4">
         <Button onclick={togglePause} disabled={$gameStatus !== 'playing'} classes="">
             <div class="flex flex-col items-center gap-y-0.25 w-fit mx-auto">

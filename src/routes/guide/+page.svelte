@@ -138,7 +138,6 @@
 {/snippet}
 
 <main class="py-8 px-16 semi-transparent w-full max-h-full min-h-1/2 overflow-hidden rounded-lg space-y-6 text-lg max-w-[1000px]">
-    <Logo/>
     <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between p-2">
         {#each sections as section}
             <li class="w-1/6 min-w-32">
@@ -163,8 +162,10 @@
             {/if}
         </div>
     {/key}
-    <div class="text-right">
-        <a class="inline-block text-center text-3xl shadow font-bold text-violet-300 hover:text-black transition-colors"
+    <div class="flex justify-evenly items-center flex-row flex-wrap gap-y-4 gap-x-4">
+        <a class="w-full order-2 md:order-1 md:w-5/12 inline-block text-center text-2xl font-bold text-violet-300 hover:text-violet-400  transition-colors"
+           href="/">Go home</a>
+        <a class="w-full order-1 md:order-2 md:w-5/12 inline-block text-center text-3xl shadow font-bold text-violet-300 hover:text-black transition-colors"
            href="/game">Start adventure!</a>
     </div>
 </main>
