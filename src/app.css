@@ -7,6 +7,9 @@ html {
     --color-light: #a78bfa;
     --color-medium: #7c3aed;
     --color-dark: #4c1d95;
+    --color-pink: #ec3597;
+    --color-blue: #2398ec;
+    --color-green: #e9baff;
     --bg-color-semi-transparent: rgba(11, 7, 22, 0.9);
 
     background-color: #0b0716;

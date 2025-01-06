@@ -142,7 +142,9 @@
     <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between p-2">
         {#each sections as section}
             <li class="w-1/6 min-w-32">
-                <Button onclick={() => changeActiveSection(section.id)} text={section.title} active={section.id === activeSection} />
+                <Button onclick={() => changeActiveSection(section.id)} active={section.id === activeSection}>
+                    {section.title}
+                </Button>
             </li>
         {/each}
     </ul>
@@ -162,7 +164,7 @@
         </div>
     {/key}
     <div class="text-right">
-        <a class="inline-block text-center text-3xl shadow font-bold"
+        <a class="inline-block text-center text-3xl shadow font-bold text-violet-300 hover:text-black transition-colors"
            href="/game">Start adventure!</a>
     </div>
 </main>

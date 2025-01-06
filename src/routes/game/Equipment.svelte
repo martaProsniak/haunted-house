@@ -16,7 +16,7 @@
                 <img class="" src={kind.image} alt={kind.type}>
             </div>
             <Badge left={-4} top={28} count={kind.count} color={kind.color}/>
-            <button class="absolute font-dynaPuff  bg-violet-200 text-stone-900 rounded-lg w-16 top-8 left-11 text-sm cursor-pointer py-1"
+            <button class="absolute font-dynaPuff  bg-violet-200 text-stone-900 rounded-lg w-16 top-8 left-11 text-sm cursor-pointer py-1 enabled:hover:bg-violet-300 transition-colors"
                     style:box-shadow={`0 0 2px 2px ${getColor(kind)}`}
                     class:bounce={kind.count > 0}
                     disabled={kind.count < 1}

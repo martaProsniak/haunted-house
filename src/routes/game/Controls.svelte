@@ -39,8 +39,12 @@
 <div class="space-y-20 text-xl text-center">
     <Header/>
     <div class="space-y-6 w-44 mx-auto px-4">
-        <Button text={`${!$isPaused ? 'Pause' : 'Play'} [space]`} onclick={togglePause} disabled={$gameStatus !== 'playing'} classes="w-52" />
-        <Button onclick={toggleControlsModal} text="Controls [x]" classes="w-52" />
+        <Button onclick={togglePause} disabled={$gameStatus !== 'playing'} classes="w-52">
+            {!$isPaused ? 'Pause' : 'Play'} [space]
+        </Button>
+        <Button onclick={toggleControlsModal} classes="w-52">
+            Controls [x]
+        </Button>
     </div>
 </div>
 

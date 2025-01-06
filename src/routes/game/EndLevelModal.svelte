@@ -36,14 +36,18 @@
             </div>
         </div>
 
-        <Button text="Next floor [ enter ]" {onclick}/>
+        <Button {onclick}>
+            Next floor [ enter ]
+        </Button>
     </div>
 {/snippet}
 
 {#snippet failure()}
     <div class="space-y-12 px-14 w-full text-center">
         <p>You lost!</p>
-        <Button text={`Restart [ enter ]`} {onclick} classes="font-creepster"/>
+        <Button {onclick} classes="font-creepster">
+            Restart [ enter ]
+        </Button>
     </div>
 {/snippet}
 
