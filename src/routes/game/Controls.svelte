@@ -47,9 +47,9 @@
 
 <ControlsModal open={showControlsModal} handleClose={closeModal}/>
 <div class="text-xl flex flex-col items-center justify-start gap-y-6 min-h-full">
-    <ActionButton onclick={togglePause} disabled={$gameStatus !== 'playing'} text={!$isPaused ? 'Pause' : 'Play'}
+    <ActionButton onclick={togglePause} disabled={$gameStatus !== 'playing'} text={!$isPaused ? 'Pause' : 'Resume'}
                   mainIcon={!$isPaused ? 'pause' : 'play'} secondaryIcon="space"/>
-    <ActionButton onclick={toggleSound} text={!$volume ? 'Enable' : 'Mute'}
+    <ActionButton onclick={toggleSound} text={!$volume ? 'Listen' : 'Mute'}
                   mainIcon={!$volume ? 'soundOn' : 'soundOff'} secondaryIcon="z"/>
     <ActionButton onclick={toggleControlsModal} text="Controls" mainIcon="pad" secondaryIcon="x"/>
     <div class="grow flex flex-col justify-end">

@@ -4,7 +4,7 @@ import Button from "$lib/components/Button.svelte";
 import PauseIcon from "$lib/components/icons/PauseIcon.svelte";
 import PlayIcon from "$lib/components/icons/PlayIcon.svelte";
 import SpaceBarIcon from "$lib/components/icons/SpaceBarIcon.svelte";
-import PadIcon from "$lib/components/icons/PadIcon.svelte";
+import KeyboardIcon from "$lib/components/icons/KeyboardIcon.svelte";
 import SoundOffIcon from "$lib/components/icons/SoundOffIcon.svelte";
 import SoundOnIcon from "$lib/components/icons/SoundOnIcon.svelte";
 import home from '$lib/assets/home.png';
@@ -22,8 +22,8 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 </script>
 
 {#snippet iconInBrackets(text: string, icon: string)}
-    <div class="flex items-center justify-start flex-wrap gap-x-0 text-base">
-        <span class="inline-block w-full text-start">{text}</span>
+    <div class="flex items-center justify-start gap-x-0 text-base">
+        <span class="inline-block mr-2">{text}</span>
         <span>[</span>
         {#if icon === 'space'}
             <SpaceBarIcon/>
@@ -40,7 +40,7 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
     {:else if icon === 'pause'}
         <PauseIcon/>
     {:else if icon === 'pad'}
-        <PadIcon/>
+        <KeyboardIcon/>
     {:else if icon === 'soundOff'}
         <SoundOffIcon/>
     {:else if icon === 'soundOn'}
@@ -51,7 +51,7 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
     {@render iconInBrackets(text, secondaryIcon)}
 {/snippet}
 
-<div class="w-36">
+<div class="w-52">
     <Button {onclick} {disabled} classes="">
         <div class="wrapper">
             {@render content(mainIcon)}
