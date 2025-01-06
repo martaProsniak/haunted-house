@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {goto} from "$app/navigation";
     import {gameStatus, isPaused, volume} from "./gameState.svelte";
     import {togglePause, unpauseGame, toggleSound} from "./gameState.helpers.svelte";
     import ControlsModal from "./ControlsModal.svelte"
@@ -25,6 +26,10 @@
         closeModal();
     }
 
+    const navigateHome = () => {
+        goto("/");
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key.toLowerCase() === "x") {
             toggleControlsModal();
@@ -32,18 +37,24 @@
         if (e.key.toLowerCase() === "z") {
             toggleSound();
         }
+        if (e.key.toLowerCase() === "a") {
+            navigateHome();
+        }
     }
 </script>
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 <ControlsModal open={showControlsModal} handleClose={closeModal}/>
-<div class="text-xl flex flex-col items-center justify-evenly gap-y-4">
+<div class="text-xl flex flex-col items-center justify-start gap-y-6 min-h-full">
     <ActionButton onclick={togglePause} disabled={$gameStatus !== 'playing'} text={!$isPaused ? 'Pause' : 'Play'}
                   mainIcon={!$isPaused ? 'pause' : 'play'} secondaryIcon="space"/>
-    <ActionButton onclick={toggleControlsModal} text="Controls" mainIcon="pad" secondaryIcon="x"/>
     <ActionButton onclick={toggleSound} text={!$volume ? 'Enable' : 'Mute'}
                   mainIcon={!$volume ? 'soundOn' : 'soundOff'} secondaryIcon="z"/>
+    <ActionButton onclick={toggleControlsModal} text="Controls" mainIcon="pad" secondaryIcon="x"/>
+    <div class="grow flex flex-col justify-end">
+        <ActionButton onclick={navigateHome} text="Home" mainIcon="home" secondaryIcon="a" />
+    </div>
 </div>
 
 <style>

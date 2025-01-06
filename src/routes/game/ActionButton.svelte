@@ -7,13 +7,14 @@ import SpaceBarIcon from "$lib/components/icons/SpaceBarIcon.svelte";
 import PadIcon from "$lib/components/icons/PadIcon.svelte";
 import SoundOffIcon from "$lib/components/icons/SoundOffIcon.svelte";
 import SoundOnIcon from "$lib/components/icons/SoundOnIcon.svelte";
+import home from '$lib/assets/home.png';
 
 interface Props {
     onclick: () => void;
     disabled?: boolean;
     text: string;
-    mainIcon: 'play' | 'pause' | 'pad' | 'soundOff' | 'soundOn';
-    secondaryIcon: 'space' | 'x' | 'z';
+    mainIcon: string;
+    secondaryIcon: string;
 }
 
 const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
@@ -44,6 +45,8 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
         <SoundOffIcon/>
     {:else if icon === 'soundOn'}
         <SoundOnIcon/>
+    {:else if icon === 'home'}
+        <img src={home} alt="home icon" class="w-10 h-10" />
     {/if}
     {@render iconInBrackets(text, secondaryIcon)}
 {/snippet}
