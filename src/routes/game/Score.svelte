@@ -14,7 +14,7 @@
     <div>
         <Header text="Score" shadow />
         {#key $score}
-            <p>{Math.trunc($currentScore)}</p>
+            <p class="text-violet-300">{Math.trunc($currentScore)}</p>
         {/key}
     </div>
 </div>
