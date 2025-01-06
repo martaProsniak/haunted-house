@@ -33,9 +33,9 @@
             <p>In the night, start the fight</p>
             <p>Feel the eerie thrills!</p>
         </div>
-        <div class="w-full text-center font-creepster">
-            <button class="px-4 py-2 rounded-lg text-3xl" onclick={handleStartGame}>
-                <span class="shadow">Enter house</span>
+        <div class="w-full text-center">
+            <button class="px-4 py-2 rounded-lg text-2xl" onclick={handleStartGame}>
+                <span class="shadow text-3xl font-bold">Enter house</span>
             </button>
         </div>
     </main>

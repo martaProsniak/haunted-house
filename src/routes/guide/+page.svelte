@@ -139,15 +139,15 @@
 
 <main class="py-8 px-16 semi-transparent w-full max-h-full min-h-1/2 overflow-hidden rounded-lg space-y-8 text-lg max-w-[1000px]">
     <Logo/>
-    <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between pb-4">
+    <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between pb-2">
         {#each sections as section}
-            <li class="w-full min-w-32">
-                <Button onclick={() => changeActiveSection(section.id)} text={section.title} />
+            <li class="w-1/6 min-w-32">
+                <Button onclick={() => changeActiveSection(section.id)} text={section.title} active={section.id === activeSection} />
             </li>
         {/each}
     </ul>
     {#key activeSection}
-        <div class="space-y-4 w-full h-[300px] overflow-y-auto" in:fade={{duration:500}}>
+        <div class="space-y-4 w-full h-[300px] overflow-y-auto px-2" in:fade={{duration:500}}>
             {#if activeSection === 1}
                 {@render basics()}
             {:else if activeSection === 2}

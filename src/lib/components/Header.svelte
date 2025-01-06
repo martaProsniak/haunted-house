@@ -3,5 +3,5 @@
 </script>
 
 <div class="w-fit">
-    <h2 class="text-2xl font-bold shadow">{text}</h2>
+    <h2 class="text-xl font-bold shadow">{text}</h2>
 </div>

@@ -11,7 +11,7 @@
 <style>
     :global {
         .shadow {
-            text-shadow: 0 2px 0.1em var(--color-pink), 0 2px 0.2em var(--color-blue), 0 0 0.1em var(--color-green);
+            text-shadow: 0 2px 0.1em var(--color-light), 0 2px 0.2em var(--color-medium), 0 0 0.1em var(--color-dark);
         }
 
         .semi-transparent {
@@ -19,11 +19,11 @@
         }
 
         .text-gradient {
-            @apply text-transparent bg-clip-text inline-block bg-gradient-to-r from-ghostPink via-ghostBlue to-ghostGreen
+            @apply text-transparent bg-clip-text inline-block bg-gradient-to-b from-violet-400 via-violet-600 to-violet-900
         }
 
         .bg-gradient {
-            @apply bg-gradient-to-r from-ghostPink via-ghostBlue to-ghostGreen
+            @apply bg-gradient-to-b from-violet-400 via-violet-600 to-violet-900
         }
 
         ::-webkit-scrollbar {
@@ -36,7 +36,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--color-pink), var(--color-blue), var(--color-green));
+            background: linear-gradient(var(--color-light), var(--color-medium), var(--color-dark));
             border-radius: 12px;
             border: 2px solid var(--bg-color-semi-transparent);
         }
