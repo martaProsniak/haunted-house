@@ -6,21 +6,22 @@
     import Level from "./Level.svelte";
     import EquipmentDisplay from './Equipment.svelte'
     import Lives from "./Lives.svelte";
+    import Header from "$lib/components/Header.svelte";
 </script>
 
 <div class="space-y-6 text-xl px-6 rounded-lg shadow-sm">
     <NextPlasma />
     <Score />
     <div class="space-y-3">
-        <p>Equipment</p>
+        <Header text="Equipment" />
         <EquipmentDisplay />
     </div>
     <div class="space-y-2">
-        <p>Ghosts remaining</p>
+        <Header text="Ghosts remaining" />
         <RemainingGhosts ghosts={layers.ghosts} />
     </div>
     <div class="space-y-2">
-        <p>HP</p>
+        <Header text="HP" />
         <Lives />
     </div>
     <Level />

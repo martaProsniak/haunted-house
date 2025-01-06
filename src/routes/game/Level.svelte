@@ -1,10 +1,12 @@
 <script lang="ts">
     import {level} from "./gameState.svelte";
     import { scale} from "svelte/transition";
+    import Header from "$lib/components/Header.svelte";
 </script>
 
 <div class="">
-    <div>Floor
+    <div>
+        <Header text="Floor" />
         {#key $level}
             <p in:scale={{duration: 400}}>{$level}</p>
         {/key}
