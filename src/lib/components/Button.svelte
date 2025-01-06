@@ -6,7 +6,7 @@
         disabled?: boolean,
         classes?: string,
         active?: boolean,
-        children: Snippet<[]>
+        children: any
     }
     const {children, onclick, disabled, classes = '', active}: Props = $props();
 </script>
