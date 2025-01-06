@@ -4,7 +4,7 @@
 </script>
 
 <div class="">
-    <div>Floor:
+    <div>Floor
         {#key $level}
             <p in:scale={{duration: 400}}>{$level}</p>
         {/key}

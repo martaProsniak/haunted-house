@@ -9,10 +9,10 @@
 </script>
 
 <main class="w-8/12 mx-auto">
-    <h1 class="text-4xl w-full h-32">
+    <h1 class="text-4xl w-full h-40">
         {#if mounted}
                 <span in:fade={{duration:1000}}
-                      class="font-bold block text-5xl md:text-8xl mt-2 shadow"
+                      class="font-bold block text-5xl md:text-8xl mt-2 shadow font-creepster"
                 >Haunted House</span>
         {/if}
     </h1>

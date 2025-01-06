@@ -1,3 +1,3 @@
 <header class="text-3xl">
-    <a class="shadow font-bold" href="/">Hounted House</a>
+    <a class="shadow font-bold font-creepster" href="/">Hounted House</a>
 </header>

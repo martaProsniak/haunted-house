@@ -10,7 +10,7 @@
 </script>
 
 <div class="">
-    <div>Score:
+    <div>Score
         {#key $score}
             <p>{Math.trunc($currentScore)}</p>
         {/key}

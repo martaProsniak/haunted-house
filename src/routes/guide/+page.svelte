@@ -137,9 +137,9 @@
     </p>
 {/snippet}
 
-<main class="py-8 px-16 semi-transparent w-full max-h-full min-h-1/2 overflow-hidden rounded-lg space-y-8 text-lg max-w-[1000px]">
+<main class="py-8 px-16 semi-transparent w-full max-h-full min-h-1/2 overflow-hidden rounded-lg space-y-6 text-lg max-w-[1000px]">
     <Logo/>
-    <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between pb-2">
+    <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between p-2">
         {#each sections as section}
             <li class="w-1/6 min-w-32">
                 <Button onclick={() => changeActiveSection(section.id)} text={section.title} active={section.id === activeSection} />
