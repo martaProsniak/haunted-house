@@ -8,10 +8,9 @@ import {
     rotation,
     currentRow,
     currentCol,
-    totalGhosts,
     score,
-    equipmentThisLevel,
-    initialRow, initialCol, initialMatrix, totalScore, equipment
+    initialRow, initialCol, initialMatrix, totalScore, equipment,
+    volume,
 } from "./gameState.svelte";
 import {get} from "svelte/store";
 import {generateGhosts} from "./utils";
@@ -19,17 +18,25 @@ import {clearEquipmentThisLevel, increaseEquipment} from "./equipment.helpers.sv
 
 export const pauseGame = () => {
     if (get(gameStatus) !== 'playing') return;
-    isPaused.set(true)
+    isPaused.set(true);
+    if (get(volume) === 0) return;
+    volume.set(0.3);
 }
 
 export const unpauseGame = () => {
     if (get(gameStatus) !== 'playing') return;
-    isPaused.set(false)
+    isPaused.set(false);
+    if (get(volume) === 0) return;
+    volume.set(1);
 }
 
 export const togglePause = () => {
     if (get(gameStatus) === 'not-started') return;
-    isPaused.set(!get(isPaused))
+    if (get(isPaused)) {
+        unpauseGame();
+        return;
+    }
+    pauseGame();
 }
 
 export const startGame = () => {
@@ -81,4 +88,16 @@ export const restartLevel = () => {
     gameStatus.set('started');
     isPaused.set(false);
     score.set(0);
+}
+
+export const muteAudio = () => {
+    volume.set(0);
+}
+
+export const enableAudio = () => {
+    volume.set(1);
+}
+
+export const toggleSound = () => {
+    get(volume) > 0 ? muteAudio() : enableAudio();
 }

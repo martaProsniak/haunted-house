@@ -16,6 +16,7 @@
         layers,
         rotation,
         equipment,
+        volume
     } from './gameState.svelte.js'
     import PlasmaLayer from './PlasmaLayer.svelte';
     import GhostsLayer from './GhostsLayer.svelte';
@@ -54,11 +55,16 @@
 
     const audio = new Audio(music);
     audio.loop = true;
+    audio.volume = $volume;
 
     const stopAudio = () => {
         audio.pause();
         audio.currentTime = 0;
     }
+
+    $effect(() => {
+        audio.volume = $volume;
+    })
 
     $effect(() => {
         updateMatrix();

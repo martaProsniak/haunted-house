@@ -36,6 +36,7 @@ export const totalGhosts: Writable<number> = writable(0);
 export const equipment = $state(initialEquipment);
 export const equipmentThisLevel = $state(initialEquipment);
 export const lives: Writable<number> = writable(initialLives);
+export const volume: Writable<number> =  writable(1);
 
 export const derivedRow: Readable<number> = derived(
 	[rotation, currentRow],
