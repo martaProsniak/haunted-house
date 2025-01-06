@@ -1,7 +1,7 @@
 <script lang="ts">
-    const {text} = $props();
+    const {text, shadow = false} = $props();
 </script>
 
 <div class="w-fit">
-    <h2 class="text-xl font-bold text-violet-300">{text}</h2>
+    <h2 class="text-xl font-bold text-violet-200" class:shadow={shadow} class:text-violet-300={!shadow}>{text}</h2>
 </div>

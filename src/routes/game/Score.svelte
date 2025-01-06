@@ -1,6 +1,7 @@
 <script lang="ts">
     import {score} from "./gameState.svelte";
     import { tweened } from 'svelte/motion'
+    import Header from "$lib/components/Header.svelte";
 
     let currentScore = tweened($score)
 
@@ -10,7 +11,8 @@
 </script>
 
 <div class="">
-    <div>Score
+    <div>
+        <Header text="Score" shadow />
         {#key $score}
             <p>{Math.trunc($currentScore)}</p>
         {/key}

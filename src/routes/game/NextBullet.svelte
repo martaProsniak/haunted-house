@@ -3,6 +3,7 @@
     import {flyingPlasmaImages} from "./constants";
     import {scale} from "svelte/transition";
     import {onMount} from "svelte";
+    import Header from "$lib/components/Header.svelte";
 
     let hidden = $state(true);
 
@@ -14,7 +15,7 @@
 
 <div class="space-y-2">
     {#if !hidden}
-        <p>Next bullet</p>
+        <Header text="Next bullet" shadow />
         <div    transition:scale={{duration: 300}}
                 class="pill"
                 style:background-image={`url("${flyingPlasmaImages[nextPlasmaColors.current][nextPlasmaColors.derived]}")`}>
