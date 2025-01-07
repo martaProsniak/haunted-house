@@ -4,7 +4,7 @@
     import {startGame} from "./gameState.helpers.svelte.js";
     import {gameStatus, volume} from "./gameState.svelte";
     import intro from '$lib/assets/intro.mp3';
-    import {GameAudio} from "./sound.utils.svelte";
+    import {GameAudio} from "./GameAudio.svelte.js";
 
     let open = $state(false);
     let audio: GameAudio;

@@ -51,8 +51,8 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
     {@render iconInBrackets(text, secondaryIcon)}
 {/snippet}
 
-<div class="w-52">
-    <Button {onclick} {disabled} classes="">
+<div class="w-48">
+    <Button {onclick} {disabled}>
         <div class="wrapper">
             {@render content(mainIcon)}
         </div>

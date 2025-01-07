@@ -66,7 +66,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--color-pink), var(--color-medium), var(--color-dark));
+            background: linear-gradient(var(--color-light), var(--color-medium), var(--color-dark));
             border-radius: 12px;
             border: 1px solid var(--bg-color-semi-transparent);
         }

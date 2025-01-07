@@ -13,7 +13,8 @@ export default {
       colors: {
         ghostPink: "#ec3597",
         ghostBlue: "#2398ec",
-        ghostGreen: "#45e732"
+        ghostGreen: "#45e732",
+        darkViolet: "#0b0716"
       }
     },
   },

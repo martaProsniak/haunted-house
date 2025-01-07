@@ -141,7 +141,7 @@
     <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between p-2">
         {#each sections as section}
             <li class="w-1/6 min-w-32">
-                <Button onclick={() => changeActiveSection(section.id)} active={section.id === activeSection}>
+                <Button onclick={() => changeActiveSection(section.id)} active={section.id === activeSection} classes="bg-darkViolet">
                     {section.title}
                 </Button>
             </li>

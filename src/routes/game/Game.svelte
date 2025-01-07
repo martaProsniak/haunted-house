@@ -36,7 +36,7 @@
     import {onDestroy} from "svelte";
     import {togglePause, prepareLevel, resetGame} from "./gameState.helpers.svelte.js";
     import music from '$lib/assets/game.mp3';
-    import {GameAudio} from "./sound.utils.svelte";
+    import {GameAudio} from "./GameAudio.svelte.js";
 
     interface LastBullet {
         curr: Plasma;
