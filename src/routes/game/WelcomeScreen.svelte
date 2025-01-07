@@ -49,7 +49,7 @@
         </div>
         <div class="w-full text-center">
             <button class="px-4 py-2 rounded-lg text-2xl" onclick={handleStartGame}>
-                <span class="shadow text-3xl font-bold hover:text-black transition-colors">Enter</span>
+                <span class="text-spooky text-3xl font-bold">Enter</span>
             </button>
         </div>
     </main>

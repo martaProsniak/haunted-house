@@ -12,31 +12,15 @@
 </script>
 
 
-<div class="animated-text">
+<div class="inline-flex">
     {#each text.split('') as letter, i}
         {#if mounted}
     <span
-            class="letter"
-            in:fly="{{ y: 80, x: 0, duration: 1000, delay: 500 + (i * 100), easing: backOut  }}"
+            class="inline-block"
+            in:fly="{{ y: 40, x: 0 , duration: 1500, delay:  (i * 150), easing: backOut  }}"
     >
       {letter === ' ' ? '\u00A0' : letter}
     </span>
         {/if}
     {/each}
 </div>
-
-
-<style>
-    .animated-text {
-        display: inline-flex;
-    }
-
-    .letter {
-        display: inline-block;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .letter:hover {
-        transform: scale(1.2) rotate(-10deg);
-    }
-</style>

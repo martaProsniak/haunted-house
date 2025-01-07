@@ -14,8 +14,34 @@
             text-shadow: 0 0 0.3em var(--color-light), 0 2px 0.5em var(--color-medium), 0 0 0.5em var(--color-dark);
         }
 
+        @keyframes animate {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            33% {
+                transform: translateY(2px) rotate(2.5deg);
+            }
+            66% {
+                transform: translateY(-2px) rotate(-2.5deg);
+            }
+        }
+
+        .move-on-hover:hover {
+            animation: animate 0.5s linear infinite;
+        }
+
+        .text-spooky {
+            text-shadow: 0 0 0.3em var(--color-light), 0 2px 0.5em var(--color-medium), 0 0 0.5em var(--color-dark);
+            @apply text-violet-200 transition-colors inline-block;
+
+            &:hover {
+                animation: animate 0.5s linear infinite;
+                color: black;
+            }
+        }
+
         .shadow-ghost {
-            text-shadow: 0 2px 0.1em var(--color-pink), 0 2px 0.2em var(--color-blue), 0 0 0.1em var(--color-green);
+            text-shadow: 0 2px 0.1em var(--color-pink), 0 2px 0.1em var(--color-medium), 0 2px 0.2em var(--color-blue), 0 0 0.1em var(--color-green);
         }
 
         .semi-transparent {

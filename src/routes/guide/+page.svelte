@@ -165,7 +165,7 @@
     <div class="flex justify-evenly items-center flex-row flex-wrap gap-y-4 gap-x-4">
         <a class="w-full order-2 md:order-1 md:w-5/12 inline-block text-center text-2xl font-bold text-violet-300 hover:text-violet-400  transition-colors"
            href="/">Go home</a>
-        <a class="w-full order-1 md:order-2 md:w-5/12 inline-block text-center text-3xl shadow font-bold text-violet-300 hover:text-black transition-colors"
+        <a class="w-full order-1 md:order-2 md:w-5/12 text-center text-3xl font-bold text-spooky"
            href="/game">Start adventure!</a>
     </div>
 </main>
