@@ -26,9 +26,20 @@
             }
         }
 
-        .move-on-hover:hover {
+        .move {
             animation: animate 0.5s linear infinite;
         }
+
+        .text-outline {
+            color: black;
+            font-weight: bold;
+            text-shadow:
+                    1px -1px 0 var(--color-light),
+                    -1px 1px 1px var(--color-blue),
+                    -1px -1px 1px var(--color-blue),
+                    1px 1px 1px var(--color-light);
+        }
+
 
         .text-spooky {
             text-shadow: 0 0 0.3em var(--color-light), 0 2px 0.5em var(--color-medium), 0 0 0.5em var(--color-dark);

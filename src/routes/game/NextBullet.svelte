@@ -15,7 +15,7 @@
 
 <div class="space-y-2">
     {#if !hidden}
-        <Header text="Next bullet" shadow />
+        <Header text="Next bullet" />
         <div    transition:scale={{duration: 300}}
                 class="pill"
                 style:background-image={`url("${flyingPlasmaImages[nextPlasmaColors.current][nextPlasmaColors.derived]}")`}>

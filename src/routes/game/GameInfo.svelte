@@ -13,15 +13,15 @@
     <NextPlasma />
     <Score />
     <div class="space-y-3">
-        <Header text="Equipment" shadow />
+        <Header text="Equipment" />
         <EquipmentDisplay />
     </div>
     <div class="space-y-2">
-        <Header text="Ghosts remaining" shadow />
+        <Header text="Ghosts remaining" />
         <RemainingGhosts ghosts={layers.ghosts} />
     </div>
     <div class="space-y-2">
-        <Header text="HP" shadow />
+        <Header text="HP" />
         <Lives />
     </div>
     <Level />
