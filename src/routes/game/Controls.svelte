@@ -45,17 +45,28 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
+{#snippet divider()}
+    <div class="w-48 h-[1px] bg-transparent divider"></div>
+{/snippet}
+
 <ControlsModal open={showControlsModal} handleClose={closeModal}/>
-<div class="text-xl flex flex-col items-center justify-start gap-y-6 min-h-full">
+<div class="text-xl flex flex-col items-center justify-between gap-y-8 min-h-full">
     <ActionButton onclick={togglePause} disabled={$gameStatus !== 'playing'} text={!$isPaused ? 'Pause' : 'Resume'}
                   mainIcon={!$isPaused ? 'pause' : 'play'} secondaryIcon="space"/>
+    {@render divider()}
     <ActionButton onclick={toggleSound} text={!$volume ? 'Listen' : 'Mute'}
                   mainIcon={!$volume ? 'soundOn' : 'soundOff'} secondaryIcon="z"/>
+    {@render divider()}
     <ActionButton onclick={toggleControlsModal} text="Controls" mainIcon="pad" secondaryIcon="x"/>
-    <div class="grow flex flex-col justify-end">
-        <ActionButton onclick={navigateHome} text="Home" mainIcon="home" secondaryIcon="a" />
-    </div>
+    {@render divider()}
+    <ActionButton onclick={navigateHome} text="Home" mainIcon="home" secondaryIcon="a" />
 </div>
 
 <style>
+    .divider {
+        box-shadow: 0 0 0.2em 2px var(--color-medium), 0 0 0.1em 1px var(--color-medium), 0 0 0.1em 1px var(--color-dark);
+        transition: all .2s ease-in;
+        border-radius: 12px;
+        opacity: 0.5;
+    }
 </style>

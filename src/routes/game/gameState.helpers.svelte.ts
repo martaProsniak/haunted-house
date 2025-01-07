@@ -88,6 +88,7 @@ export const restartLevel = () => {
     gameStatus.set('started');
     isPaused.set(false);
     score.set(0);
+    lives.set(initialLives);
 }
 
 export const muteAudio = () => {
