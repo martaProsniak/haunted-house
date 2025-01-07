@@ -36,6 +36,7 @@
     import {onDestroy} from "svelte";
     import {togglePause, prepareLevel, resetGame} from "./gameState.helpers.svelte.js";
     import music from '$lib/assets/game.mp3';
+    import {GameAudio} from "./sound.utils.svelte";
 
     interface LastBullet {
         curr: Plasma;
@@ -53,17 +54,14 @@
     let animationFrameId: number | null = null;
     let lastFrameTime: number | null = null;
 
-    const audio = new Audio(music);
-    audio.loop = true;
-    audio.volume = $volume;
+    const audio = new GameAudio(music, true);
 
     const stopAudio = () => {
-        audio.pause();
-        audio.currentTime = 0;
+        audio?.reset();
     }
 
     $effect(() => {
-        audio.volume = $volume;
+        audio.setVolume($volume);
     })
 
     $effect(() => {
@@ -73,7 +71,7 @@
     $effect(() => {
         if ($gameStatus === 'started') {
             prepareLevel();
-            audio.play();
+            audio?.start();
         }
 
         if ($gameStatus === 'playing') {

@@ -95,6 +95,10 @@ export const muteAudio = () => {
 }
 
 export const enableAudio = () => {
+    if (get(isPaused)) {
+        volume.set(0.5);
+        return;
+    }
     volume.set(1);
 }
 

@@ -1,20 +1,34 @@
 <script lang="ts">
     import {fade} from "svelte/transition";
-    import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import {startGame} from "./gameState.helpers.svelte.js";
-    import {gameStatus} from "./gameState.svelte";
+    import {gameStatus, volume} from "./gameState.svelte";
+    import intro from '$lib/assets/intro.mp3';
+    import {GameAudio} from "./sound.utils.svelte";
 
     let open = $state(false);
+    let audio: GameAudio;
 
     onMount(() => {
         if ($gameStatus !== 'not-started') return;
         open = true;
+        audio = new GameAudio(intro);
+        audio.start();
+    })
+
+    $effect(() => {
+        audio.setVolume($volume);
     })
 
     const handleStartGame = () => {
         open = false;
+        audio?.reset();
         startGame();
     }
+
+    onDestroy(() => {
+        audio?.reset();
+    })
 
 </script>
 
