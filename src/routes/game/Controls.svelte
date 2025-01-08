@@ -46,11 +46,11 @@
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 {#snippet divider()}
-    <hr class="w-24 h-[1px] inline-block bg-violet-200 divider" />
+    <div class="w-10 h-[1px] rounded-full inline-block bg-violet-200 border-none divider"></div>
 {/snippet}
 
 <ControlsModal open={showControlsModal} handleClose={closeModal}/>
-<div class="text-xl flex flex-col items-center justify-between gap-y-8 min-h-full">
+<div class="text-xl flex flex-col items-center justify-center gap-y-8 min-h-full">
     <ActionButton onclick={togglePause} disabled={$gameStatus !== 'playing'} text={!$isPaused ? 'Pause' : 'Resume'}
                   mainIcon={!$isPaused ? 'pause' : 'play'} secondaryIcon="space"/>
     {@render divider()}

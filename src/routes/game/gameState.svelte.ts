@@ -32,11 +32,12 @@ export const level: Writable<number> = writable(1);
 export const isPaused: Writable<boolean> = writable(false);
 export const score: Writable<number> = writable(0);
 export const totalScore: Writable<number> = writable(0);
-export const totalGhosts: Writable<number> = writable(0);
 export const equipment = $state(initialEquipment);
 export const equipmentThisLevel = $state(initialEquipment);
 export const lives: Writable<number> = writable(initialLives);
 export const volume: Writable<number> =  writable(1);
+export const bestScore: Writable<number> = writable(0);
+export const maxFloor: Writable<number> = writable(1);
 
 export const derivedRow: Readable<number> = derived(
 	[rotation, currentRow],

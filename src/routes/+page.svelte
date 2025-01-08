@@ -4,6 +4,12 @@
     import {onMount} from "svelte";
 
     let mounted = false;
+
+    const getLocalData = () => {
+        const bestScore = localStorage.getItem("bestScore");
+        const maxFloor = localStorage.getItem("maxFloor");
+    }
+
     onMount(() => {
         mounted = true;
     });

@@ -22,7 +22,7 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 </script>
 
 {#snippet iconInBrackets(text: string, icon: string)}
-    <div class="flex items-center justify-start gap-x-0 text-base">
+    <div class="flex items-center justify-start gap-x-0 text-lg">
         <span class="inline-block mr-2">{text}</span>
         <span>[</span>
         {#if icon === 'space'}
@@ -53,7 +53,7 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 
 <div class="w-48">
     <Button {onclick} {disabled} ghost={true}>
-        <div class="wrapper py-7 shadow">
+        <div class="wrapper py-3 shadow">
             {@render content(mainIcon)}
         </div>
     </Button>
