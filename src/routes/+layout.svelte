@@ -45,7 +45,7 @@
                     1px -1px 0 var(--color-pink),
                     -1px 1px 1px var(--color-blue),
                     -1px -1px 1px var(--color-blue),
-                    1px 1px 1px var(--color-dark);
+                    1px 1px 1px var(--color-green);
 
             &:hover {
                 animation: animate 0.5s linear infinite;
