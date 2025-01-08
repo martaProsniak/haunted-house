@@ -15,14 +15,14 @@
         <div>
             <Header text="Score" />
             {#key $score}
-                <p class="shadow">{Math.trunc($currentScore)}</p>
+                <p class="shadow-ghost">{Math.trunc($currentScore)}</p>
             {/key}
         </div>
-        <div class="w-[4px] h-[4px] rounded-full inline-block bg-violet-200 border-none shadow-gradient-light"></div>
+        <div class="w-[4px] h-[4px] rounded-full inline-block bg-gradient border-none"></div>
         <div>
             <Header text="Best" />
             {#key $score}
-                <p class="shadow">{Math.trunc($currentScore)}</p>
+                <p class="shadow-ghost">{Math.trunc($currentScore)}</p>
             {/key}
         </div>
     </div>

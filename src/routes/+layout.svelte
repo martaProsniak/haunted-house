@@ -36,7 +36,7 @@
         }
 
         .bg-gradient {
-            @apply bg-gradient-to-r to-ghostBlue via-violet-600 from-ghostPink
+            @apply bg-gradient-to-r to-ghostGreen via-ghostBlue from-ghostPink
         }
 
         .text-spooky {
@@ -58,15 +58,11 @@
         }
 
         .shadow-ghost {
-            text-shadow: 0 2px 0.1em var(--color-pink), 0 2px 0.1em var(--color-medium), 0 2px 0.2em var(--color-blue), 0 0 0.1em var(--color-green);
+            text-shadow: 0 2px 0.1em var(--color-pink), 0 -2px 0.1em var(--color-blue), 0 0 0.1em var(--color-green);
         }
 
         .semi-transparent {
             background-color: var(--bg-color-semi-transparent);
-        }
-
-        svg {
-            filter: drop-shadow(0 0 3px var(--color-pink));
         }
 
         .text-gradient {
@@ -79,7 +75,7 @@
         }
 
         .shadow-gradient-light {
-            box-shadow: 1px 1px 1px 0 var(--color-pink), 0 0 1px 1px var(--color-medium), 0 0 2px 1px var(--color-blue);
+            box-shadow: 1px -1px 1px 0 var(--color-pink), 1px 1px 1px 0 var(--color-blue), -1px 1px 1px 0 var(--color-green);
         }
 
         ::-webkit-scrollbar {
@@ -92,7 +88,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--color-pink), var(--color-medium), var(--color-blue));
+            background: linear-gradient(var(--color-pink), var(--color-blue), var(--color-green));
             border-radius: 12px;
             border: 1px solid var(--bg-color-semi-transparent);
         }

@@ -13,7 +13,7 @@
 
 
 {#key count}
-    <div class="absolute text-center shadow bg-black text-violet-100 shadow-gradient rounded-full badge text-sm h-8 leading-8 font-bold"
+    <div class="absolute text-center  bg-black text-violet-100 shadow-gradient-light rounded-full badge text-sm h-8 leading-8 font-bold"
          transition:scale|local={{duration: 300}}
          style:top={`${top}px`}
          style:left={`${left}px`}

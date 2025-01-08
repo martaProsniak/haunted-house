@@ -27,7 +27,7 @@
         box-shadow: 1px -1px 1px 0 black;
         transform: scale(1.05) rotate(-2.5deg);
         background: rgb(236, 53, 151);
-        background: radial-gradient(circle at 85% 15%, white 1px, var(--color-pink) 3%, var(--color-medium) 60%, var(--color-blue) 100%);
+        background: radial-gradient(circle at 85% 15%, white 1px, var(--color-pink) 3%, var(--color-blue) 50%, var(--color-green) 97%);
     }
 
     .active {
@@ -35,7 +35,7 @@
         box-shadow: 1px -1px 1px 0 black;
         transform: scale(1.05) rotate(2.5deg);
         background: rgb(35, 152, 236);
-        background: radial-gradient(circle at 85% 15%, white 1px, var(--color-blue) 3%, var(--color-medium) 60%, var(--color-pink) 100%);
+        background: radial-gradient(circle at 85% 15%, white 1px, var(--color-green) 3%, var(--color-blue) 60%, var(--color-pink) 100%);
     }
 
 

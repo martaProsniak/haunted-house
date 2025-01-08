@@ -10,7 +10,7 @@
                 <img class="" src={kind.image} alt={kind.type}>
             </div>
             <Badge left={-4} top={28} count={kind.count} color={kind.color}/>
-            <button class="absolute  bg-black  shadow shadow-gradient text-violet-100 rounded-lg w-16 top-8 left-11 text-sm cursor-pointer py-1"
+            <button class="absolute  bg-black  shadow-gradient-light text-violet-100 rounded-lg w-16 top-8 left-11 text-sm cursor-pointer py-1"
                     class:bounce={kind.count > 0}
                     disabled={kind.count < 1}
                     onclick={() => kind.handler()}

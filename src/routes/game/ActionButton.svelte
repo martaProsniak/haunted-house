@@ -53,7 +53,7 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 
 <div class="w-48">
     <Button {onclick} {disabled} ghost={true}>
-        <div class="wrapper py-3 shadow">
+        <div class="wrapper py-3">
             {@render content(mainIcon)}
         </div>
     </Button>
@@ -62,5 +62,8 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 <style>
     .wrapper {
         @apply flex items-center justify-start w-fit px-4 gap-x-3
+    }
+    .wrapper:hover svg {
+        @apply fill-black !important;
     }
 </style>
