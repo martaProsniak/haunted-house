@@ -35,6 +35,10 @@
                     1px 1px 1px var(--color-dark);
         }
 
+        .bg-gradient {
+            @apply bg-gradient-to-r to-ghostBlue via-violet-600 from-ghostPink
+        }
+
         .text-spooky {
             @apply text-violet-200 transition-colors inline-block;
             text-shadow:
@@ -45,12 +49,11 @@
 
             &:hover {
                 animation: animate 0.5s linear infinite;
-                color: black;
                 text-shadow:
-                        1px -1px 0 var(--color-light),
-                        -1px 1px 1px var(--color-blue),
-                        -1px -1px 1px var(--color-light),
-                        1px 1px 1px var(--color-pink);
+                        0 0 1px var(--color-blue)
+                        -1px 1px 3px var(--color-blue),
+                        1px 1px 3px var(--color-pink);
+                    @apply text-transparent bg-clip-text bg-gradient-to-b from-ghostPink via-ghostBlue to-ghostGreen
             }
         }
 
@@ -66,22 +69,17 @@
             filter: drop-shadow(0 0 3px var(--color-pink));
         }
 
-        .divider {
-            box-shadow: 0 0 0 1px var(--color-blue), 0 0 4px 2px  var(--color-medium), 0 0 5px 2px var(--color-pink);
-            border-radius: 12px;
-            border: none;
-        }
-
         .text-gradient {
             @apply text-transparent bg-clip-text inline-block bg-gradient-to-b from-ghostPink via-violet-600 to-ghostBlue
         }
 
-        .shadow-gradient {
-            box-shadow: 0 0 0.1em 0 var(--color-pink), 0 0 0.3em 0.1em var(--color-medium), 0 0 0.2em 0.1em var(--color-blue);
+        .circle-gradient {
+            background: rgb(236, 53, 151);
+            background: radial-gradient(circle at 85% 15%, white 1px, var(--color-pink) 3%, var(--color-medium) 60%, var(--color-blue) 100%);
         }
 
-        .bg-gradient {
-            @apply bg-gradient-to-r to-ghostBlue via-violet-600 from-ghostPink
+        .shadow-gradient-light {
+            box-shadow: 1px 1px 1px 0 var(--color-pink), 0 0 1px 1px var(--color-medium), 0 0 2px 1px var(--color-blue);
         }
 
         ::-webkit-scrollbar {

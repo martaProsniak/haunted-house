@@ -11,10 +11,19 @@
 </script>
 
 <div class="">
-    <div>
-        <Header text="Score" />
-        {#key $score}
-            <p class="shadow">{Math.trunc($currentScore)}</p>
-        {/key}
+    <div class="flex items-center gap-x-10">
+        <div>
+            <Header text="Score" />
+            {#key $score}
+                <p class="shadow">{Math.trunc($currentScore)}</p>
+            {/key}
+        </div>
+        <div class="w-[4px] h-[4px] rounded-full inline-block bg-violet-200 border-none shadow-gradient-light"></div>
+        <div>
+            <Header text="Best" />
+            {#key $score}
+                <p class="shadow">{Math.trunc($currentScore)}</p>
+            {/key}
+        </div>
     </div>
 </div>

@@ -118,11 +118,19 @@ export const setLocalData = (score: number, floor: number) => {
 	floor && maxFloor.set(floor);
 };
 
-export const updateLocalSData = () => {
+export const updateBestScore = () => {
 	if (get(totalScore) > get(bestScore)) {
 		localStorage.setItem('bestScore', JSON.stringify(totalScore));
 	}
+}
+
+export const updateMaxFloor = () => {
 	if (get(level) > get(maxFloor)) {
 		localStorage.setItem('maxFloor', JSON.stringify(level));
 	}
+}
+
+export const updateLocalSData = () => {
+	updateBestScore();
+	updateMaxFloor();
 }
