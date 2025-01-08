@@ -64,7 +64,7 @@
         }
 
         .bg-gradient {
-            @apply bg-gradient-to-b from-violet-600 via-violet-700 to-violet-900
+            @apply bg-gradient-to-r from-ghostBlue via-violet-600 to-violet-900
         }
 
         ::-webkit-scrollbar {

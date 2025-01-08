@@ -18,17 +18,17 @@
 
 <style>
     .btn-shadow {
-        box-shadow: 0 0 0.1em 0 var(--color-medium), 0 0 0.3em 0.1em var(--color-medium), 0 0 0.5em 0.1em var(--color-dark);
+        box-shadow: 0 0 0.1em 0 var(--color-medium), 0 0 0.3em 0.1em var(--color-blue), 0 0 0.5em 0.1em var(--color-dark);
         transition: all .2s ease-in;
     }
     .btn:hover {
-        background: rgb(167,139,250);
-        box-shadow: 0 0 0.1em 0 var(--color-medium), 0 0 0.3em 0.1em var(--color-dark), 0 0 0.5em 0.1em var(--color-dark);
-        background: linear-gradient(180deg, rgba(167,139,250,1) 0%, rgba(124,58,237,1) 34%, rgba(76,29,149,1) 82%, rgba(2,0,36,1) 030402%);
+        box-shadow: 0 0 0.1em 0 var(--color-light), 0 0 0.3em 0.1em var(--color-dark), 0 0 0.5em 0.1em var(--color-dark);
+        background: rgb(76,29,149);
+        background: linear-gradient(74deg, rgba(76,29,149,1) 28%, rgba(124,58,237,1) 62%, rgba(35,152,236,1) 95%);
     }
     .active {
-        background: rgb(167,139,250);
-        box-shadow: 0 0 0.1em 0 var(--color-medium), 0 0 0.3em 0.1em var(--color-dark), 0 0 0.5em 0.1em var(--color-dark);
-        background: linear-gradient(180deg, rgba(167,139,250,1) 0%, rgba(124,58,237,1) 34%, rgba(76,29,149,1) 82%, rgba(2,0,36,1) 030402%);
+        box-shadow: 0 0 0.1em 0 var(--color-light), 0 0 0.1em 0.1em var(--color-blue), 0 0 0.5em 0.1em var(--color-blue);
+        background: rgb(35,152,236);
+        background: linear-gradient(74deg, rgba(35,152,236,1) 0%, rgba(124,58,237,1) 38%, rgba(76,29,149,1) 89%);
     }
 </style>
