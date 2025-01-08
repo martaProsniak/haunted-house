@@ -75,7 +75,7 @@
         }
 
         .shadow-gradient-light {
-            box-shadow: 1px -1px 1px 0 var(--color-pink), 1px 1px 1px 0 var(--color-blue), -1px 1px 1px 0 var(--color-green);
+            box-shadow: -1px -1px 4px 0 var(--color-green), 1px 1px 4px 0 var(--color-blue), 1px -1px 2px 2px var(--color-pink), 0 -1px 4px 2px var(--color-blue);
         }
 
         ::-webkit-scrollbar {
