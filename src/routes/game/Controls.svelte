@@ -46,7 +46,7 @@
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 {#snippet divider()}
-    <hr class="w-48 h-[1px] inline-block bg-transparent divider" />
+    <hr class="w-24 h-[1px] inline-block bg-violet-200 divider" />
 {/snippet}
 
 <ControlsModal open={showControlsModal} handleClose={closeModal}/>
@@ -64,7 +64,7 @@
 
 <style>
     .divider {
-        box-shadow: 0 0 0 1px var(--color-blue), 0 0 4px 2px  var(--color-medium), 0 0 2px 1px var(--color-pink);
+        box-shadow: 0 0 0 1px var(--color-blue), 0 0 4px 2px  var(--color-medium), 0 0 5px 2px var(--color-pink);
         border-radius: 12px;
         border: none;
     }

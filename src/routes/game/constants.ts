@@ -31,8 +31,8 @@ export const mapColorsToHex: Record<Color, string> = {
 	pink: '#ec3597',
 	green: '#45e732',
 	blue: '#2398ec',
-	rainbow: '#e9baff',
-	bomb: '#222224',
+	rainbow: '#000000',
+	bomb: '#000000',
 };
 export const colors: Record<string, BaseColor> = {
 	pink: 'pink',

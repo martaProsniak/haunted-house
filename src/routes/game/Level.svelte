@@ -8,7 +8,7 @@
     <div>
         <Header text="Floor" />
         {#key $level}
-            <p class="text-violet-300" in:scale={{duration: 400}}>{$level}</p>
+            <p class="shadow" in:scale={{duration: 400}}>{$level}</p>
         {/key}
     </div>
 </div>

@@ -12,23 +12,19 @@
     const {children, onclick, disabled, classes = '', active, ghost = false}: Props = $props();
 </script>
 
-<button {onclick} {disabled} class={`cursor-pointer btn rounded-lg py-2.5 px-2 w-full ${classes}`} class:active={active} class:btn-shadow={!ghost}>
+<button {onclick} {disabled} class={`cursor-pointer btn rounded-lg py-2.5 px-2 w-full ${classes}`} class:active={active} class:shadow-gradient={!ghost}>
     {@render children()}
 </button>
 
 <style>
-    .btn-shadow {
-        box-shadow: 0 0 0.1em 0 var(--color-medium), 0 0 0.3em 0.1em var(--color-blue), 0 0 0.5em 0.1em var(--color-dark);
-        transition: all .2s ease-in;
-    }
     .btn:hover {
         box-shadow: 0 0 0.1em 0 var(--color-light), 0 0 0.3em 0.1em var(--color-dark), 0 0 0.5em 0.1em var(--color-dark);
-        background: rgb(76,29,149);
-        background: linear-gradient(74deg, rgba(76,29,149,1) 28%, rgba(124,58,237,1) 62%, rgba(35,152,236,1) 95%);
+        background: rgb(236,53,151);
+        background: linear-gradient(53deg, rgba(236,53,151,1) 0%, rgba(124,58,237,1) 63%, rgba(35,152,236,1) 100%);
     }
     .active {
-        box-shadow: 0 0 0.1em 0 var(--color-light), 0 0 0.1em 0.1em var(--color-blue), 0 0 0.5em 0.1em var(--color-blue);
+        box-shadow: 0 0 0.1em 0 var(--color-pink), 0 0 0.1em 0.1em var(--color-blue), 0 0 0.5em 0.1em var(--color-dark);
         background: rgb(35,152,236);
-        background: linear-gradient(74deg, rgba(35,152,236,1) 0%, rgba(124,58,237,1) 38%, rgba(76,29,149,1) 89%);
+        background: linear-gradient(53deg, rgba(35,152,236,1) 0%, rgba(124,58,237,1) 63%, rgba(236,53,151,1) 100%);
     }
 </style>
