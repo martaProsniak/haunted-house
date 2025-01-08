@@ -61,11 +61,3 @@
     {@render divider()}
     <ActionButton onclick={navigateHome} text="Home" mainIcon="home" secondaryIcon="a" />
 </div>
-
-<style>
-    .divider {
-        box-shadow: 0 0 0 1px var(--color-blue), 0 0 4px 2px  var(--color-medium), 0 0 5px 2px var(--color-pink);
-        border-radius: 12px;
-        border: none;
-    }
-</style>

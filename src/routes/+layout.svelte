@@ -66,6 +66,12 @@
             filter: drop-shadow(0 0 3px var(--color-pink));
         }
 
+        .divider {
+            box-shadow: 0 0 0 1px var(--color-blue), 0 0 4px 2px  var(--color-medium), 0 0 5px 2px var(--color-pink);
+            border-radius: 12px;
+            border: none;
+        }
+
         .text-gradient {
             @apply text-transparent bg-clip-text inline-block bg-gradient-to-b from-ghostPink via-violet-600 to-ghostBlue
         }
