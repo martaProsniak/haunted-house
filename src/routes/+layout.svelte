@@ -63,7 +63,7 @@
         }
 
         svg {
-            filter: drop-shadow(0 0 3px var(--color-medium));
+            filter: drop-shadow(0 0 3px var(--color-pink));
         }
 
         .text-gradient {
@@ -76,11 +76,6 @@
 
         .bg-gradient {
             @apply bg-gradient-to-r to-ghostBlue via-violet-600 from-ghostPink
-        }
-
-        .bg-gradient-light {
-            background: rgb(138,19,82);
-            background: linear-gradient(53deg, rgba(138,19,82,1) 0%, rgba(59,20,124,1) 59%, rgba(15,78,123,1) 100%);
         }
 
         ::-webkit-scrollbar {
