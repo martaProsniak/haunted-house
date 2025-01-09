@@ -1,23 +1,22 @@
 <script lang="ts">
+    import Button from "$lib/components/Button.svelte";
+    import PauseIcon from "$lib/components/icons/PauseIcon.svelte";
+    import PlayIcon from "$lib/components/icons/PlayIcon.svelte";
+    import SpaceBarIcon from "$lib/components/icons/SpaceBarIcon.svelte";
+    import KeyboardIcon from "$lib/components/icons/KeyboardIcon.svelte";
+    import SoundOffIcon from "$lib/components/icons/SoundOffIcon.svelte";
+    import SoundOnIcon from "$lib/components/icons/SoundOnIcon.svelte";
+    import HauseIcon from "$lib/components/icons/HauseIcon.svelte";
 
-import Button from "$lib/components/Button.svelte";
-import PauseIcon from "$lib/components/icons/PauseIcon.svelte";
-import PlayIcon from "$lib/components/icons/PlayIcon.svelte";
-import SpaceBarIcon from "$lib/components/icons/SpaceBarIcon.svelte";
-import KeyboardIcon from "$lib/components/icons/KeyboardIcon.svelte";
-import SoundOffIcon from "$lib/components/icons/SoundOffIcon.svelte";
-import SoundOnIcon from "$lib/components/icons/SoundOnIcon.svelte";
-import home from '$lib/assets/home.png';
+    interface Props {
+        onclick: () => void;
+        disabled?: boolean;
+        text: string;
+        mainIcon: string;
+        secondaryIcon: string;
+    }
 
-interface Props {
-    onclick: () => void;
-    disabled?: boolean;
-    text: string;
-    mainIcon: string;
-    secondaryIcon: string;
-}
-
-const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
+    const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 
 </script>
 
@@ -46,12 +45,12 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
     {:else if icon === 'soundOn'}
         <SoundOnIcon/>
     {:else if icon === 'home'}
-        <img src={home} alt="home icon" class="w-10 h-10" />
+        <HauseIcon/>
     {/if}
     {@render iconInBrackets(text, secondaryIcon)}
 {/snippet}
 
-<div class="w-44">
+<div class="w-44 action-button">
     <Button {onclick} {disabled} ghost={true}>
         <div class="wrapper">
             {@render content(mainIcon)}
