@@ -4,7 +4,7 @@
     const {children} = $props();
 </script>
 
-<div class="text-violet-200 h-screen w-screen font-candy flex items-center justify-center py-16 max-h-screen overflow-hidden">
+<div class="text-blue-100 h-screen w-screen font-candy flex items-center justify-center py-16 max-h-screen overflow-hidden">
     {@render children()}
 </div>
 
@@ -31,7 +31,7 @@
         }
 
         .text-spooky {
-            @apply text-violet-200 transition-colors inline-block;
+            @apply text-blue-200 transition-colors inline-block;
             text-shadow:
                     1px -1px 0 var(--color-pink),
                     -1px 1px 1px var(--color-blue),
