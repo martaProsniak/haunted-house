@@ -1,30 +1,11 @@
 <script lang="ts">
     import {goto} from "$app/navigation";
     import {gameStatus, isPaused, volume} from "./gameState.svelte";
-    import {togglePause, unpauseGame, toggleSound} from "./gameState.helpers.svelte";
-    import ControlsModal from "./ControlsModal.svelte"
-    import {pauseGame} from "./gameState.helpers.svelte";
+    import {togglePause, toggleSound} from "./gameState.helpers.svelte";
     import ActionButton from "./ActionButton.svelte";
 
-    let showControlsModal = $state(false);
+    const {toggleControlsModal} = $props();
 
-    const showModal = () => {
-        pauseGame();
-        showControlsModal = true;
-    }
-
-    const closeModal = () => {
-        unpauseGame();
-        showControlsModal = false;
-    }
-
-    const toggleControlsModal = () => {
-        if (!showControlsModal) {
-            showModal();
-            return;
-        }
-        closeModal();
-    }
 
     const navigateHome = () => {
         goto("/");
@@ -45,7 +26,6 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
-<ControlsModal open={showControlsModal} handleClose={closeModal}/>
 <div class="text-xl flex flex-col items-center justify-start py-4 gap-y-12 min-h-full">
     <ActionButton onclick={togglePause} disabled={$gameStatus !== 'playing'} text={!$isPaused ? 'Pause' : 'Resume'}
                   mainIcon={!$isPaused ? 'pause' : 'play'} secondaryIcon="space"/>

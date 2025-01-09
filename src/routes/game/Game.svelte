@@ -34,10 +34,13 @@
     import {plasmaImages} from "./constants";
     import {fade} from "svelte/transition";
     import {onDestroy} from "svelte";
-    import {togglePause, prepareLevel, resetGame} from "./gameState.helpers.svelte.js";
+    import {togglePause, prepareLevel, resetGame, pauseGame, unpauseGame} from "./gameState.helpers.svelte.js";
     import music from '$lib/assets/game.mp3';
 
     import {GameAudio} from "./GameAudio.svelte.js";
+    import EndLevelModal from "./EndLevelModal.svelte";
+    import PauseModal from "./PauseModal.svelte";
+    import ControlsModal from "./ControlsModal.svelte";
 
     interface LastBullet {
         curr: Plasma;
@@ -56,6 +59,26 @@
     let lastFrameTime: number | null = null;
 
     const gameMusic = new GameAudio(music, {loop: true});
+
+    let showControlsModal = $state(false);
+
+    const showModal = () => {
+        pauseGame();
+        showControlsModal = true;
+    }
+
+    const closeModal = () => {
+        unpauseGame();
+        showControlsModal = false;
+    }
+
+    const toggleControlsModal = () => {
+        if (!showControlsModal) {
+            showModal();
+            return;
+        }
+        closeModal();
+    }
 
     const stopGameMusic = () => {
         gameMusic?.reset();
@@ -316,7 +339,7 @@
 <div class="wrapper mx-auto overflow-auto">
     <div class="container px-4 gap-x-4 py-10 overflow-auto bg-gradient-to-r from-darkViolet to-black rounded-lg shadow-md" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
         <div class="ghosts">
-            <Controls/>
+            <Controls {toggleControlsModal} />
         </div>
         <div class=" w-fit h-fit flex flex-nowrap flex-col gap-1 p-1 relative board">
             <Board/>
@@ -324,6 +347,9 @@
             <GhostsLayer {offset}/>
             <PlasmaLayer {offset}/>
             <RemovedLayer {offset}/>
+            <PauseModal />
+            <EndLevelModal />
+            <ControlsModal open={showControlsModal} handleClose={closeModal}/>
         </div>
         <div class="score">
             <GameInfo/>
