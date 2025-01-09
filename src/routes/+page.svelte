@@ -17,7 +17,7 @@
 
 <main class="w-8/12 mx-auto space-y-4">
     {#if mounted}
-        <h1 class="w-full font-bold block text-5xl md:text-8xl mt-2 shadow font-creepster" in:fade={{duration:500}}>
+        <h1 class="w-full font-bold block text-5xl md:text-8xl mt-2 text-shadow-ghost font-creepster" in:fade={{duration:500}}>
                 <FloatingText text="Haunted House" />
         </h1>
         <div class="w-full space-x-2 text-2xl xl:text-4xl" in:fade={{duration:500}}>

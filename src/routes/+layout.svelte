@@ -26,15 +26,6 @@
             animation: animate 0.5s linear infinite;
         }
 
-        .shadow {
-            font-weight: bold;
-            text-shadow:
-                    1px -1px 0 var(--color-pink),
-                    -1px 1px 1px var(--color-blue),
-                    -1px -1px 1px var(--color-blue),
-                    1px 1px 1px var(--color-dark);
-        }
-
         .bg-gradient {
             @apply bg-gradient-to-r to-ghostGreen via-ghostBlue from-ghostPink
         }
@@ -57,11 +48,11 @@
             }
         }
 
-        .shadow-ghost {
-            text-shadow: 0 2px 0.1em var(--color-pink), 0 -2px 0.1em var(--color-blue), 0 0 0.1em var(--color-green);
+        .text-shadow-ghost {
+            text-shadow: 2px 0 2px var(--color-medium), 0 -1px 0 var(--color-green), 0 2px 0.1em var(--color-blue), -1px -1px 1px var(--color-pink);
         }
 
-        .semi-transparent {
+        .bg-semi-transparent {
             background-color: var(--bg-color-semi-transparent);
         }
 
@@ -74,8 +65,8 @@
             background: radial-gradient(circle at 85% 15%, white 1px, var(--color-pink) 3%, var(--color-medium) 60%, var(--color-blue) 100%);
         }
 
-        .shadow-gradient-light {
-            box-shadow: -1px -1px 4px 0 var(--color-green), 1px 1px 4px 0 var(--color-blue), 1px -1px 2px 2px var(--color-pink), 0 -1px 4px 2px var(--color-blue);
+        .shadow-gradient-ghost {
+            box-shadow: -1px -1px 4px -2px var(--color-green), 1px 1px 4px 0 var(--color-blue), 4px -2px 4px -2px var(--color-pink), 0 -1px 4px 2px var(--color-blue);
         }
 
         ::-webkit-scrollbar {

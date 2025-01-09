@@ -53,7 +53,7 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 
 <div class="w-48">
     <Button {onclick} {disabled} ghost={true}>
-        <div class="wrapper py-3">
+        <div class="wrapper py-3     ">
             {@render content(mainIcon)}
         </div>
     </Button>

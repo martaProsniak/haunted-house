@@ -45,19 +45,12 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
-{#snippet divider()}
-    <div class="w-[4px] h-[4px] rounded-full inline-block bg-gradient border-none"></div>
-{/snippet}
-
 <ControlsModal open={showControlsModal} handleClose={closeModal}/>
-<div class="text-xl flex flex-col items-center justify-center gap-y-8 min-h-full">
+<div class="text-xl flex flex-col items-center justify-evenly gap-y-12 min-h-full">
     <ActionButton onclick={togglePause} disabled={$gameStatus !== 'playing'} text={!$isPaused ? 'Pause' : 'Resume'}
                   mainIcon={!$isPaused ? 'pause' : 'play'} secondaryIcon="space"/>
-    {@render divider()}
     <ActionButton onclick={toggleSound} text={!$volume ? 'Listen' : 'Mute'}
                   mainIcon={!$volume ? 'soundOn' : 'soundOff'} secondaryIcon="z"/>
-    {@render divider()}
     <ActionButton onclick={toggleControlsModal} text="Controls" mainIcon="pad" secondaryIcon="x"/>
-    {@render divider()}
     <ActionButton onclick={navigateHome} text="Home" mainIcon="home" secondaryIcon="a" />
 </div>

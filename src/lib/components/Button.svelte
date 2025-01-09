@@ -13,7 +13,7 @@
     const {children, onclick, disabled, classes = '', active, ghost = false}: Props = $props();
 </script>
 
-<button {onclick} {disabled} class={`cursor-pointer btn relative rounded-3xl py-2.5 px-2 w-full shadow-gradient-light ${classes}`}
+<button {onclick} {disabled} class={`cursor-pointer btn relative rounded-3xl py-2.5 px-2 w-full shadow-gradient-ghost ${classes}`}
         class:active={active}>
     {@render children()}
 </button>
