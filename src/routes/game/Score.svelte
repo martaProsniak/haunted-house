@@ -16,14 +16,13 @@
 </script>
 
 <div class="">
-    <div class="flex items-center gap-x-10">
+    <div class="flex items-center gap-x-24">
         <div>
             <Header text="Score" />
             {#key $totalScore}
                 <p class="text-shadow-ghost">{Math.trunc($tweenedTotalScore)}</p>
             {/key}
         </div>
-        <div class="w-[4px] h-[4px] shadow-gradient-ghost rounded-full inline-block bg-gradient border-none"></div>
         <div>
             <Header text="Best" />
                 <p class="text-shadow-ghost">{Math.trunc($tweenedBestScore)}</p>

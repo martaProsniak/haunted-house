@@ -50,7 +50,13 @@
         } else {
             ghost.imageUrl = ghostsImages[ghost.color]
         }
+    })
+
+    $effect(() => {
         ghost.neighbors = neighbors;
+    })
+
+    $effect(() => {
         ghost.hasPillAbove = hasPillAbove
     })
 </script>

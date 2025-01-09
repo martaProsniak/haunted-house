@@ -1,13 +1,20 @@
 import {get} from "svelte/store";
 import {volume} from "./gameState.svelte";
 
+interface Options {
+    loop?: boolean;
+    maxVolume?: number;
+}
+
 export class GameAudio {
     private audio: HTMLAudioElement;
+    maxVolume: number;
 
-    constructor(src: string, loop = false) {
+    constructor(src: string, options?: Options) {
         this.audio = new Audio(src);
-        this.audio.volume = get(volume);
-        this.audio.loop = loop;
+        this.audio.loop = options?.loop ?? false;
+        this.maxVolume = options?.maxVolume ?? 1;
+        this.audio.volume = get(volume) > this.maxVolume ? this.maxVolume : get(volume);
     }
 
     async start() {
@@ -28,7 +35,7 @@ export class GameAudio {
     }
 
     setVolume(volume: number) {
-        this.audio.volume = volume;
+        this.audio.volume = volume < this.maxVolume ? volume : this.maxVolume;
     }
 
 }

@@ -36,6 +36,7 @@
     import {onDestroy} from "svelte";
     import {togglePause, prepareLevel, resetGame} from "./gameState.helpers.svelte.js";
     import music from '$lib/assets/game.mp3';
+
     import {GameAudio} from "./GameAudio.svelte.js";
 
     interface LastBullet {
@@ -54,14 +55,18 @@
     let animationFrameId: number | null = null;
     let lastFrameTime: number | null = null;
 
-    const audio = new GameAudio(music, true);
+    const gameMusic = new GameAudio(music, {loop: true});
 
-    const stopAudio = () => {
-        audio?.reset();
+    const stopGameMusic = () => {
+        gameMusic?.reset();
+    }
+
+    const startLevelMusic = () => {
+        gameMusic?.start();
     }
 
     $effect(() => {
-        audio.setVolume($volume);
+        gameMusic.setVolume($volume);
     })
 
     $effect(() => {
@@ -71,7 +76,7 @@
     $effect(() => {
         if ($gameStatus === 'started') {
             prepareLevel();
-            audio?.start();
+            startLevelMusic();
         }
 
         if ($gameStatus === 'playing') {
@@ -81,7 +86,7 @@
         }
 
         if ($gameStatus === 'success' || $gameStatus === 'failure') {
-            stopAudio();
+            stopGameMusic();
 
             if (animationFrameId !== null) {
                 cancelAnimation();
@@ -96,7 +101,7 @@
     });
 
     onDestroy(() => {
-        stopAudio();
+        stopGameMusic();
         resetGame();
     })
 
