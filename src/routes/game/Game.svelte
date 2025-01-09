@@ -41,6 +41,8 @@
     import EndLevelModal from "./EndLevelModal.svelte";
     import PauseModal from "./PauseModal.svelte";
     import ControlsModal from "./ControlsModal.svelte";
+    import GoHomeModal from "./GoHomeModal.svelte";
+    import {goto} from "$app/navigation";
 
     interface LastBullet {
         curr: Plasma;
@@ -60,24 +62,39 @@
 
     const gameMusic = new GameAudio(music, {loop: true});
 
-    let showControlsModal = $state(false);
+    let controlsModalVisible = $state(false);
+    let goHomeModalVisible = $state(false);
 
-    const showModal = () => {
+    const showControlsModal = () => {
         pauseGame();
-        showControlsModal = true;
+        controlsModalVisible = true;
     }
 
-    const closeModal = () => {
+    const hideControlsModal = () => {
         unpauseGame();
-        showControlsModal = false;
+        controlsModalVisible = false;
     }
 
     const toggleControlsModal = () => {
-        if (!showControlsModal) {
-            showModal();
+        if (!controlsModalVisible) {
+            showControlsModal();
             return;
         }
-        closeModal();
+        hideControlsModal();
+    }
+
+    const hideGoHomeModal = () => {
+        unpauseGame();
+        goHomeModalVisible = false;
+    }
+
+    const navigateHome = () => {
+        pauseGame();
+        if ($gameStatus === 'playing') {
+            goHomeModalVisible = true;
+            return;
+        }
+        goto("/");
     }
 
     const stopGameMusic = () => {
@@ -339,7 +356,7 @@
 <div class="wrapper mx-auto overflow-auto">
     <div class="container px-4 gap-x-4 py-10 overflow-auto bg-gradient-to-r from-darkViolet to-black rounded-lg shadow-md" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
         <div class="ghosts">
-            <Controls {toggleControlsModal} />
+            <Controls {toggleControlsModal} {navigateHome} />
         </div>
         <div class=" w-fit h-fit flex flex-nowrap flex-col gap-1 p-1 relative board">
             <Board/>
@@ -349,7 +366,8 @@
             <RemovedLayer {offset}/>
             <PauseModal />
             <EndLevelModal />
-            <ControlsModal open={showControlsModal} handleClose={closeModal}/>
+            <ControlsModal open={controlsModalVisible} handleClose={hideControlsModal}/>
+            <GoHomeModal open={goHomeModalVisible} handleClose={hideGoHomeModal} handleConfirm={() => goto('/')} />
         </div>
         <div class="score">
             <GameInfo/>

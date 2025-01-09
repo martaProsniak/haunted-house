@@ -1,15 +1,9 @@
 <script lang="ts">
-    import {goto} from "$app/navigation";
     import {gameStatus, isPaused, volume} from "./gameState.svelte";
     import {togglePause, toggleSound} from "./gameState.helpers.svelte";
     import ActionButton from "./ActionButton.svelte";
 
-    const {toggleControlsModal} = $props();
-
-
-    const navigateHome = () => {
-        goto("/");
-    }
+    const {toggleControlsModal, navigateHome} = $props();
 
     const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key.toLowerCase() === "x") {
