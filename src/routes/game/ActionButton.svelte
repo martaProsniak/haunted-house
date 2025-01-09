@@ -22,7 +22,7 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 </script>
 
 {#snippet iconInBrackets(text: string, icon: string)}
-    <div class="flex items-center justify-start gap-x-0  text-base">
+    <div class="flex items-center justify-start gap-x-0 text-base">
         <span class="inline-block mr-2">{text}</span>
         <span>[</span>
         {#if icon === 'space'}
@@ -62,8 +62,5 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 <style>
     .wrapper {
         @apply flex items-center justify-start w-fit px-2 gap-x-2;
-    }
-    .wrapper:hover svg {
-        @apply fill-black !important;
     }
 </style>
