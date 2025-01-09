@@ -77,6 +77,7 @@ export const prepareLevel = () => {
 	clearEquipmentThisLevel();
 	gameStatus.set('playing');
 	isPaused.set(false);
+	score.set(0);
 };
 
 export const resetGame = () => {
@@ -90,9 +91,16 @@ export const resetGame = () => {
 	lives.set(initialLives);
 };
 
+export const progressLevel = () => {
+	level.set(get(level)+1);
+	updateLocalData();
+	gameStatus.set('started');
+}
+
 export const restartLevel = () => {
 	gameStatus.set('started');
 	isPaused.set(false);
+	totalScore.set(get(totalScore) - get(score));
 	score.set(0);
 	lives.set(initialLives);
 };
@@ -119,18 +127,30 @@ export const setLocalData = (score: number, floor: number) => {
 };
 
 export const updateBestScore = () => {
-	if (get(totalScore) > get(bestScore)) {
-		localStorage.setItem('bestScore', JSON.stringify(totalScore));
+	const total = get(totalScore);
+	const best = get(bestScore);
+
+	if (total <= best) {
+		return;
 	}
+
+	localStorage.setItem('bestScore', total.toString());
+	bestScore.set(total);
 }
 
 export const updateMaxFloor = () => {
-	if (get(level) > get(maxFloor)) {
-		localStorage.setItem('maxFloor', JSON.stringify(level));
+	const current = get(level);
+	const best = get(maxFloor);
+
+	if (current <= best) {
+		return;
 	}
+
+	localStorage.setItem('maxFloor', current.toString());
+	maxFloor.set(current);
 }
 
-export const updateLocalSData = () => {
+export const updateLocalData = () => {
 	updateBestScore();
 	updateMaxFloor();
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
     import {gameStatus, level, lives, initialLives} from "./gameState.svelte.js";
-    import {restartLevel} from "./gameState.helpers.svelte";
+    import {progressLevel, restartLevel} from "./gameState.helpers.svelte";
     import {fly} from "svelte/transition";
     import EquipmentPerLevel from "./EquipmentPerLevel.svelte";
     import Button from "$lib/components/Button.svelte";
@@ -9,8 +9,7 @@
 
     const onclick = () => {
         if ($gameStatus === 'success') {
-            $level++;
-            $gameStatus = 'started';
+            progressLevel();
         }
         if ($gameStatus === 'failure') {
             restartLevel()

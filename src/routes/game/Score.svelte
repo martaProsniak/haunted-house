@@ -1,12 +1,17 @@
 <script lang="ts">
-    import {score} from "./gameState.svelte";
+    import {totalScore, bestScore} from "./gameState.svelte";
     import { tweened } from 'svelte/motion'
     import Header from "$lib/components/Header.svelte";
 
-    let currentScore = tweened($score)
+    let tweenedTotalScore = tweened($totalScore);
+    let tweenedBestScore = tweened($bestScore);
 
     $effect(() => {
-        currentScore.set($score);
+        tweenedTotalScore.set($totalScore);
+    })
+
+    $effect(() => {
+        tweenedBestScore.set($bestScore);
     })
 </script>
 
@@ -14,16 +19,14 @@
     <div class="flex items-center gap-x-10">
         <div>
             <Header text="Score" />
-            {#key $score}
-                <p class="text-shadow-ghost">{Math.trunc($currentScore)}</p>
+            {#key $totalScore}
+                <p class="text-shadow-ghost">{Math.trunc($tweenedTotalScore)}</p>
             {/key}
         </div>
         <div class="w-[4px] h-[4px] shadow-gradient-ghost rounded-full inline-block bg-gradient border-none"></div>
         <div>
             <Header text="Best" />
-            {#key $score}
-                <p class="text-shadow-ghost">{Math.trunc($currentScore)}</p>
-            {/key}
+                <p class="text-shadow-ghost">{Math.trunc($tweenedBestScore)}</p>
         </div>
     </div>
 </div>

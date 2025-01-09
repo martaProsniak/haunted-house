@@ -6,12 +6,13 @@ import {
 	lastRow,
 	layers,
 	score,
-	lives
+	lives, totalScore
 } from './gameState.svelte.js';
 import { get } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import {colors, plasmaImages} from "./constants";
 import {increaseEquipmentThisLevel} from "./equipment.helpers.svelte";
+import {updateBestScore} from "./gameState.helpers.svelte";
 
 export const countCatchGhosts = (ghosts: Record<string, Ghost>) => {
 	Object.values(ghosts).forEach((ghost) => {
@@ -290,6 +291,8 @@ export const clearItems = (matchingItems: MatrixItem[]) => {
 	layers.ghosts = layers.ghosts.filter((ghost) => !ghostsToRemove[ghost.id]);
 	countCatchGhosts(ghostsToRemove);
 	score.set(get(score) + points);
+	totalScore.set(get(totalScore) + points);
+	updateBestScore();
 };
 
 export const checkResult = (noMoreMoves = false) => {

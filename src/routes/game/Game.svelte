@@ -82,6 +82,7 @@
 
         if ($gameStatus === 'success' || $gameStatus === 'failure') {
             stopAudio();
+
             if (animationFrameId !== null) {
                 cancelAnimation();
             }
