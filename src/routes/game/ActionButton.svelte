@@ -22,7 +22,7 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 </script>
 
 {#snippet iconInBrackets(text: string, icon: string)}
-    <div class="flex items-center justify-start gap-x-0 text-lg">
+    <div class="flex items-center justify-start gap-x-0  text-base">
         <span class="inline-block mr-2">{text}</span>
         <span>[</span>
         {#if icon === 'space'}
@@ -51,9 +51,9 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
     {@render iconInBrackets(text, secondaryIcon)}
 {/snippet}
 
-<div class="w-48">
+<div class="w-44">
     <Button {onclick} {disabled} ghost={true}>
-        <div class="wrapper py-3     ">
+        <div class="wrapper">
             {@render content(mainIcon)}
         </div>
     </Button>
@@ -61,7 +61,7 @@ const {onclick, text, disabled, mainIcon, secondaryIcon}: Props = $props();
 
 <style>
     .wrapper {
-        @apply flex items-center justify-start w-fit px-4 gap-x-3
+        @apply flex items-center justify-start w-fit px-2 gap-x-2;
     }
     .wrapper:hover svg {
         @apply fill-black !important;
