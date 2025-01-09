@@ -309,11 +309,11 @@
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 <div class="wrapper mx-auto overflow-auto">
-    <div class="container px-4 gap-x-4 py-10 overflow-auto" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
+    <div class="container px-4 gap-x-4 py-10 overflow-auto bg-gradient-to-r from-darkViolet to-black rounded-lg shadow-md" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
         <div class="ghosts">
             <Controls/>
         </div>
-        <div class=" w-fit h-fit bg-zinc-950 flex flex-nowrap flex-col gap-1 p-1 relative board">
+        <div class=" w-fit h-fit flex flex-nowrap flex-col gap-1 p-1 relative board">
             <Board/>
             <FlyingBullet bind:this={currentBullet} {initialTop} {initialLeft} {lastRow} {lastCol}/>
             <GhostsLayer {offset}/>
@@ -333,7 +333,7 @@
 
     .container {
         display: grid;
-        background-color: rgba(0, 0, 0, 0.95);
+        /*background-color: rgba(0, 0, 0, 0.15);*/
         grid-template-columns: minmax(260px, 1fr) 396px minmax(300px, 1fr);
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';

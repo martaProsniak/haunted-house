@@ -17,7 +17,7 @@
         if ((row === lastRow ) && (col === 1 || col === lastCol - 1)) {
             return pumpkinImage;
         }
-        return floorImage;
+        return '';
     }
 </script>
 
@@ -40,6 +40,7 @@
         box-sizing: border-box;
         color: white;
         font-size: 12px;
-        opacity: 0.5;
+        opacity: 1;
+        background: var(--color-dark)
     }
 </style>
