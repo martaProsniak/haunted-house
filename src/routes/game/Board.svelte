@@ -3,10 +3,18 @@
     import candleImage from '$lib/assets/candle.png'
     import pumpkinImage from '$lib/assets/pumpkin.png';
     import webImage from '$lib/assets/web.png';
+    import spiderGif from '$lib/assets/spider.gif';
+    import spiderGifSlow from '$lib/assets/spider-slow.gif';
 
     const getCellBgImg = (row:number, col: number) => {
-        if ((row === 0 || row === lastRow) && (col === 0 || col === lastCol)) {
+        if ((row === 0 && col === 0) || (row === lastRow && col === lastCol)) {
             return webImage;
+        }
+        if (row === lastRow && col === 0 ) {
+            return spiderGif;
+        }
+        if (row === 0 && col === lastCol ) {
+            return spiderGifSlow;
         }
         if ((row === 3 ) && (col === 0 || col === lastCol)) {
             return candleImage;
@@ -21,7 +29,9 @@
 {#each layers.matrix as row, rowIndex}
     <div class="w-fit flex flex-row flex-nowrap gap-1">
         {#each row as cell, cellIndex}
-            <div class="cell" style:background-image={`url("${getCellBgImg(rowIndex, cellIndex)}")`}>
+            <div class="cell" style:background-image={`url("${getCellBgImg(rowIndex, cellIndex)}")`}
+                style:transform={rowIndex !== 0 && cellIndex !== lastCol ? '' : 'rotate(180deg)'}
+            >
             </div>
         {/each}
     </div>
