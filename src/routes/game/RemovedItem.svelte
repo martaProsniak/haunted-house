@@ -27,10 +27,10 @@
             style:top={`${item.row * offset}px`}
             style:left={`${item.column * offset}px`}
             style:box-shadow={!item.isBombed ? `0 0 0 1px ${mapColorsToHex[item.color]}` : ''}
-            class="item-removed"
+            style:opacity={!item.isBombed ? 0.4 : 0.8}
+            class="item-removed transition-all"
             out:scale={{ duration: 200}}
             onoutroend={() => handleRemove() }
-
     >
     </div>
 {/if}
@@ -40,7 +40,7 @@
         width: 40px;
         height: 40px;
         position: absolute;
-        z-index: 20;
+        z-index: 9;
         box-sizing: border-box;
         font-size: 12px;
         border-radius: 4px;

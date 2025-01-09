@@ -8,7 +8,7 @@
         Object.keys(layers.removedItems).forEach((key) => {
             setTimeout(() => {
                 layers.removedItems[key] = layers.removedItems[key]?.map(() => null)
-            }, 500)
+            }, 400)
         });
     });
 
