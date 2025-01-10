@@ -52,8 +52,8 @@
 </script>
 
 {#snippet basics()}
-    <Header large={true} text="Help! Ghosts are stacking back again!"/>
-    <p>They may look cute, but they are a nuisance to local residents. They love all mischief and pranks.</p>
+    <Header large={true} text="Help! Ghosts are striking back again!"/>
+    <p>They may look cute, but they are a handful to local residents. They love all kinds of mischief and pranks.</p>
     <p>There come in three colors: pink, blue and green.</p>
 
     <div class="flex items-center gap-x-6">
