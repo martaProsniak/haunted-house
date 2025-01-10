@@ -22,6 +22,7 @@ export const initialCol = (colsCount / 2) - 1;
 export const lastRow = rowsCount - 1;
 export const lastCol = colsCount - 1;
 export const initialLives = 3;
+export const maxLevel = 15;
 
 // Stores
 export const currentRow: Writable<number> = writable(initialRow);

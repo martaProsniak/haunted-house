@@ -1,13 +1,12 @@
 <script lang="ts">
-    import {gameStatus, level, volume} from "./gameState.svelte.js";
-    import {progressLevel, restartLevel} from "./gameState.helpers.svelte";
+    import {gameStatus, level, volume, maxLevel} from "./gameState.svelte.js";
+    import {progressLevel, restartLevel, resetGame, startNextGame} from "./gameState.helpers.svelte";
     import {fly} from "svelte/transition";
     import EquipmentPerLevel from "./EquipmentPerLevel.svelte";
     import Button from "$lib/components/Button.svelte";
     import win from '$lib/assets/win.mp3';
     import lose from "$lib/assets/lose.mp3";
     import {GameAudio} from "./GameAudio.svelte";
-    import {onDestroy} from "svelte";
 
     let open = $derived($gameStatus === 'success' || $gameStatus === 'failure');
     const initialVolume = 0.3;
@@ -35,6 +34,9 @@
     })
 
     const onclick = () => {
+        if ($gameStatus === 'success' && $level === maxLevel) {
+            startNextGame();
+        }
         if ($gameStatus === 'success') {
             progressLevel();
             winSound.reset();
@@ -53,21 +55,46 @@
 </script>
 
 {#snippet success()}
-    <div class="space-y-12 px-14 w-full text-center">
+    <div class="space-y-12 px-4 w-full text-center">
         <div class="space-y-4">
             <p>Job well done!</p>
             <p>You cleared {$level}. floor!</p>
         </div>
         <div class="">
-            <span>Nice! Ghosts dropped something!</span>
+            <p>You found something!</p>
             <div class="mx-auto w-fit">
                 <EquipmentPerLevel />
             </div>
         </div>
 
+        <div class="px-8">
         <Button {onclick}>
             Next floor [ enter ]
         </Button>
+        </div>
+    </div>
+{/snippet}
+
+{#snippet endGame()}
+    <div class="space-y-12 px-4 w-full text-center">
+        <div class="space-y-4">
+            <p class="text-2xl text-shadow-ghost">Impressive! </p>
+            <p>You've cleared the whole house!</p>
+            <p class="space-y-2">
+                <span>You are the</span>
+                <span class="inline-block w-full text-shadow-ghost text-2xl">Master Ghost Catcher!</span>
+            </p>
+        </div>
+        <div class="space-y-4">
+            <p>There are other haunted houses in the neighbourhood.</p>
+            <p>You can use your epic skills to clean them too!</p>
+        </div>
+
+        <div class="px-8">
+            <Button {onclick}>
+                Next house [ enter ]
+            </Button>
+        </div>
     </div>
 {/snippet}
 
@@ -84,10 +111,11 @@
 
 {#if open}
     <dialog class="p-6 text-blue-200 bg-darkViolet w-full h-full flex items-center text-xl" {open} in:fly={{duration: 500, y: -200, delay: 600}} out:fly={{duration: 500, y: -200, delay: 200}}>
-        {#if $gameStatus === 'success'}
-            {@render success()}
-        {/if}
-        {#if $gameStatus === 'failure'}
+        {#if $gameStatus === 'success' && $level === maxLevel}
+            {@render endGame()}
+        {:else if $gameStatus === 'success'}
+                {@render success()}
+        {:else}
             {@render failure()}
         {/if}
     </dialog>

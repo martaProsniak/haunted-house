@@ -1,7 +1,7 @@
 <script lang="ts">
     import {lastCol, lastRow, layers} from "./gameState.svelte.js";
-    import candleImage from '$lib/assets/candle.png'
-    import pumpkinImage from '$lib/assets/pumpkin.png';
+    import candleImage from '$lib/assets/candle.gif'
+    import pumpkinImage from '$lib/assets/pumpkin.gif';
     import webImage from '$lib/assets/web.png';
     import spiderGif from '$lib/assets/spider.gif';
     import spiderGifSlow from '$lib/assets/spider-slow.gif';
@@ -11,10 +11,10 @@
             return webImage;
         }
         if (row === lastRow && col === 0 ) {
-            return spiderGif;
+            return spiderGifSlow;
         }
         if (row === 0 && col === lastCol ) {
-            return spiderGifSlow;
+            return spiderGif;
         }
         if ((row === 3 ) && (col === 0 || col === lastCol)) {
             return candleImage;
@@ -29,8 +29,9 @@
 {#each layers.matrix as row, rowIndex}
     <div class="w-fit flex flex-row flex-nowrap gap-1">
         {#each row as cell, cellIndex}
-            <div class="cell" style:background-image={`url("${getCellBgImg(rowIndex, cellIndex)}")`}
-                style:transform={rowIndex !== 0 && cellIndex !== lastCol ? '' : 'rotate(180deg)'}
+            <div class="cell"
+                 style:background-image={`url("${getCellBgImg(rowIndex, cellIndex)}")`}
+                style:transform={rowIndex === 0 && cellIndex === lastCol ? 'rotate(180deg)' : ''}
             >
             </div>
         {/each}

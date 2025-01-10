@@ -97,6 +97,12 @@ export const progressLevel = () => {
 	gameStatus.set('started');
 }
 
+export const startNextGame = () => {
+	level.set(1);
+	updateLocalData();
+	gameStatus.set('started');
+}
+
 export const restartLevel = () => {
 	gameStatus.set('started');
 	isPaused.set(false);

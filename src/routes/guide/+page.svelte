@@ -137,7 +137,7 @@
     </p>
 {/snippet}
 
-<main class="py-8 px-16 bg-semi-transparent w-full max-h-full min-h-1/2 overflow-hidden rounded-lg space-y-6 text-lg max-w-[1000px]">
+<main class="py-8 px-16 bg-semi-transparent w-full max-h-full min-h-1/2 overflow-auto rounded-lg space-y-6 text-lg max-w-[1000px]">
     <ul class="flex gap-x-2 flex-row overflow-x-auto justify-between p-2">
         {#each sections as section}
             <li class="w-1/6 min-w-32">

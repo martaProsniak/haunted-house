@@ -143,6 +143,7 @@
     onDestroy(() => {
         stopGameMusic();
         resetGame();
+        gameStatus.set('not-started');
     })
 
     const cancelAnimation = () => {
@@ -291,7 +292,6 @@
     }
 
     const moveDown = () => {
-
         if (!currentBullet.canMoveDown()) {
             plasmaEnded();
             return;
@@ -382,7 +382,6 @@
 
     .container {
         display: grid;
-        /*background-color: rgba(0, 0, 0, 0.15);*/
         grid-template-columns: minmax(260px, 1fr) 396px minmax(300px, 1fr);
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';
