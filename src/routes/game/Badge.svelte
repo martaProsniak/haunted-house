@@ -8,7 +8,7 @@
         left?: number;
     }
 
-    const {count, color, top = 24, left = 24}: Props = $props();
+    const {count, top = 24, left = 24}: Props = $props();
 </script>
 
 

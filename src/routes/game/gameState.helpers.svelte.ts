@@ -16,7 +16,7 @@ import {
 	equipment,
 	bestScore,
 	maxFloor,
-	volume
+	volume, equipmentThisLevel
 } from './gameState.svelte';
 import { get } from 'svelte/store';
 import { generateGhosts } from './utils';
@@ -54,6 +54,8 @@ export const startGame = () => {
 	totalScore.set(0);
 	equipment.rainbow.count = 1;
 	equipment.bomb.count = 1;
+	equipmentThisLevel.rainbow.count = 0;
+	equipmentThisLevel.bomb.count = 0;
 };
 
 const prepareGhostsLayer = () => {
@@ -98,9 +100,8 @@ export const progressLevel = () => {
 }
 
 export const startNextGame = () => {
-	level.set(1);
 	updateLocalData();
-	gameStatus.set('started');
+	startGame();
 }
 
 export const restartLevel = () => {

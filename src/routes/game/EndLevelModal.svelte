@@ -1,6 +1,6 @@
 <script lang="ts">
     import {gameStatus, level, volume, maxLevel} from "./gameState.svelte.js";
-    import {progressLevel, restartLevel, resetGame, startNextGame} from "./gameState.helpers.svelte";
+    import {progressLevel, restartLevel, startNextGame} from "./gameState.helpers.svelte";
     import {fly} from "svelte/transition";
     import EquipmentPerLevel from "./EquipmentPerLevel.svelte";
     import Button from "$lib/components/Button.svelte";

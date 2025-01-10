@@ -354,20 +354,21 @@
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
 <div class="wrapper mx-auto overflow-auto">
-    <div class="container px-4 gap-x-4 py-10 overflow-auto bg-gradient-to-r from-darkViolet to-black rounded-lg shadow-md" in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
+    <div class="container px-4 gap-x-4 py-8 overflow-auto bg-gradient-to-r from-darkViolet to-black rounded-lg shadow-md"
+         in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
         <div class="ghosts">
-            <Controls {toggleControlsModal} {navigateHome} />
+            <Controls {toggleControlsModal} {navigateHome}/>
         </div>
-        <div class=" w-fit h-fit flex flex-nowrap flex-col gap-1 p-1 relative board">
+        <div class=" w-fit h-fit flex flex-nowrap flex-col gap-1 p-0 relative board">
             <Board/>
             <FlyingBullet bind:this={currentBullet} {initialTop} {initialLeft} {lastRow} {lastCol}/>
             <GhostsLayer {offset}/>
             <PlasmaLayer {offset}/>
             <RemovedLayer {offset}/>
-            <PauseModal />
-            <EndLevelModal />
+            <PauseModal/>
+            <EndLevelModal/>
             <ControlsModal open={controlsModalVisible} handleClose={hideControlsModal}/>
-            <GoHomeModal open={goHomeModalVisible} handleClose={hideGoHomeModal} handleConfirm={() => goto('/')} />
+            <GoHomeModal open={goHomeModalVisible} handleClose={hideGoHomeModal} handleConfirm={() => goto('/')}/>
         </div>
         <div class="score">
             <GameInfo/>
@@ -392,7 +393,8 @@
 
         .board {
             grid-area: board;
-            box-shadow: 0 0 20px 20px #290b4038;
+            box-shadow: -1px -1px 4px -1px var(--color-green), 1px 1px 8px 0 var(--color-blue), 4px -2px 8px -1px var(--color-pink), 0 0 12px 1px var(--color-blue);
+
         }
 
         .score {
