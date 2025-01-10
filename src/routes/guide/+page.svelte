@@ -18,7 +18,6 @@
     import blueGhostGlued from "$lib/assets/ghost-blue-glued.png";
     import greenGhostGlued from "$lib/assets/ghost-green-glued.png";
 
-    import Logo from '$lib/components/Logo.svelte';
     import Header from "$lib/components/Header.svelte";
     import Button from "$lib/components/Button.svelte";
 
@@ -90,8 +89,9 @@
         <img class="inline" src={blueGhostGif} alt="blue ghost dancing">
         <img class="inline" src={greenGhostGif} alt="green ghost dancing">
     </div>
-    <p>Here's some good news - if you place slime in their color anywhere next to them, they will loose ability to
-        move! Plasma is veeery sticky.</p>
+    <p class="text-2xl">Immobilizing ghosts</p>
+    <p>Here's some good news - if ghost is next to plasma of the same color, it will loose ability to
+        move! Plasma slimes are veeery sticky.</p>
     <p>Try to glue ghosts in the first place! If the ghost reach your Spooky Plasma Drone, it starts howling on a
         frequency that is
         destructive to it. If you allow three ghosts around it, it's programmed to abort the mission.</p>
@@ -157,7 +157,7 @@
 
 <main
         class="py-10 px-6 bg-semi-transparent w-full h-full max-h-[640px] overflow-auto rounded-lg text-lg max-w-[1000px] container">
-    <ul class="flex flex-col justify-start items-center gap-y-6 buttons overflow-auto py-2 px-12">
+    <ul class="flex flex-col justify-start items-center gap-y-8 buttons overflow-auto py-2 px-12">
         {#each sections as section}
             <li class="w-32">
                 <Button onclick={() => changeActiveSection(section.id)} active={section.id === activeSection}

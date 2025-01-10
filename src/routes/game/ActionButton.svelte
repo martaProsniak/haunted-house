@@ -21,7 +21,7 @@
 </script>
 
 {#snippet iconInBrackets(text: string, icon: string)}
-    <div class="flex items-center justify-start gap-x-0 text-base">
+    <div class="flex items-center justify-start gap-x-0 text-lg">
         <span class="inline-block mr-2">{text}</span>
         <span>[</span>
         {#if icon === 'space'}
