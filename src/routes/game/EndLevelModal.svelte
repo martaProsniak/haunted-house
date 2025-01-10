@@ -7,6 +7,7 @@
     import win from '$lib/assets/win.mp3';
     import lose from "$lib/assets/lose.mp3";
     import {GameAudio} from "./GameAudio.svelte";
+    import StairsIcon from "$lib/components/icons/StairsIcon.svelte";
 
     let open = $derived($gameStatus === 'success' || $gameStatus === 'failure');
     const initialVolume = 0.3;
@@ -68,9 +69,12 @@
         </div>
 
         <div class="px-8">
-        <Button {onclick}>
-            Next floor [ enter ]
-        </Button>
+            <Button {onclick}>
+                <div class="flex items-center justify-center w-full gap-x-2">
+                    <StairsIcon />
+                    <span>Next floor<br>[ enter ]</span>
+                </div>
+            </Button>
         </div>
     </div>
 {/snippet}
