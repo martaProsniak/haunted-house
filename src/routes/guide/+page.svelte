@@ -156,8 +156,8 @@
 {/snippet}
 
 <main
-        class="py-10 px-6 bg-semi-transparent w-full h-full max-h-[640px] overflow-auto rounded-lg text-lg max-w-[1000px] container">
-    <ul class="flex flex-col justify-start items-center gap-y-8 buttons overflow-auto py-2 px-12">
+        class="py-10 px-6 bg-semi-transparent w-full h-full max-h-full overflow-auto rounded-lg text-lg max-w-[1400px] container">
+    <ul class="flex flex-col justify-start items-center gap-y-8 buttons overflow-auto py-2">
         {#each sections as section}
             <li class="w-32">
                 <Button onclick={() => changeActiveSection(section.id)} active={section.id === activeSection}
