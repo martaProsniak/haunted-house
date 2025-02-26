@@ -19,6 +19,8 @@
             <a class="cursor-pointer text-spooky" href="/game">Play</a>
             <span>|</span>
             <a class="cursor-pointer text-spooky" href="/guide">Guide</a>
+            <span>|</span>
+            <a class="cursor-pointer text-spooky" href="https://marta-kalwaj.web.app/" target="_blank" rel="noopener norefferer">Author</a>
         </div>
     {/if}
 </main>

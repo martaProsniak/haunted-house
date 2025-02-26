@@ -124,7 +124,7 @@
                 the ghost in the same color.</p>
         </div>
         <div class="space-y-2">
-            <p class="text-2xl">Fun Part No. 1:</p>
+            <p class="text-2xl">Fun Part No. 2:</p>
             <p>While they falling down, every slime scan surrounding space! If you match 4 or more objects in the same color,
                 they all poof! disappear.</p>
         </div>
