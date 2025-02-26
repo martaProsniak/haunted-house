@@ -17,7 +17,7 @@
         {#if mounted}
     <span
             class="inline-block"
-            in:fly="{{ y: 40, x: 0 , duration: 1500, delay:  (i * 150), easing: backOut  }}"
+            in:fly="{{ y: 40, x: 0 , duration: 1200, delay:  (i * 150), easing: backOut  }}"
     >
       {letter === ' ' ? '\u00A0' : letter}
     </span>

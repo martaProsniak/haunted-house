@@ -4,7 +4,7 @@
     const {children} = $props();
 </script>
 
-<div class="text-blue-100 h-screen w-screen font-candy flex items-center justify-center py-16 max-h-screen overflow-hidden">
+<div class="text-blue-100 h-dvh w-dvw font-candy flex items-center justify-center py-16 max-h-dvh overflow-hidden">
     {@render children()}
 </div>
 
