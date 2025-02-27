@@ -9,7 +9,7 @@
     import Header from "$lib/components/Header.svelte";
 </script>
 
-<div class="space-y-6 text-xl px-6 rounded-lg shadow-sm">
+<div class="space-y-4 text-xl px-6 rounded-lg shadow-sm">
     <NextPlasma />
     <Score />
     <div class="space-y-3">

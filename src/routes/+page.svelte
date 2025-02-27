@@ -10,7 +10,7 @@
     });
 </script>
 
-<main class="w-full md:w-8/12 px-4 mx-auto space-y-2">
+<main class="w-8/12 mx-auto px-4 space-y-2">
     {#if mounted}
         <h1 class="font-bold block text-3xl md:text-6xl mt-2 text-shadow-ghost font-creepster text-violet-200" in:fade={{duration:500}}>
                 <FloatingText text="Haunted House" />
@@ -22,3 +22,12 @@
         </div>
     {/if}
 </main>
+
+<style>
+    main {
+        position: absolute;
+        top: 50%;
+        left: 20%;
+        transform: translateY(-50%);
+    }
+</style>

@@ -34,7 +34,7 @@
 
 {#if open}
     <main transition:fade={{duration: 500}}
-          class="p-16 bg-semi-transparent max-h-full rounded-lg space-y-8 text-xl">
+          class="p-8 bg-semi-transparent rounded-lg space-y-8 text-base md:text-lg">
         <div class="space-y-2 text-center">
             <p>Haunted house, haunted walls</p>
             <p>They know lot of stories</p>
@@ -54,3 +54,13 @@
         </div>
     </main>
 {/if}
+
+<style>
+    main {
+        position: fixed;
+        inset: 0;
+        margin: auto;
+        height: fit-content;
+        width: fit-content;
+    }
+</style>

@@ -20,7 +20,7 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
-<div class="text-xl flex flex-col items-center justify-start py-4 gap-y-12 min-h-full">
+<div class="text-xl flex flex-col items-end justify-center py-0 px-6 gap-y-8 min-h-full">
     <ActionButton onclick={togglePause} disabled={$gameStatus !== 'playing'} text={!$isPaused ? 'Pause' : 'Play'}
                   mainIcon={!$isPaused ? 'pause' : 'play'} secondaryIcon="space"/>
     <ActionButton onclick={toggleSound} text={!$volume ? 'Listen' : 'Mute'}

@@ -353,13 +353,13 @@
 
 <svelte:document on:keydown={handleKeyDown}></svelte:document>
 
-<div class="wrapper mx-auto overflow-auto">
-    <div class="container px-4 gap-x-4 py-8 overflow-auto bg-gradient-to-r from-darkViolet to-black rounded-lg shadow-md"
+<div class="wrapper overflow-auto">
+    <div class="container px-4 gap-x-4 mx-auto py-8 overflow-auto bg-gradient-to-r from-darkViolet to-black rounded-lg shadow-md"
          in:fade={{duration: 200, delay: 200}} out:fade={{duration: 200, delay: 200}}>
         <div class="ghosts">
             <Controls {toggleControlsModal} {navigateHome}/>
         </div>
-        <div class=" w-fit h-fit flex flex-nowrap flex-col gap-1 p-0 relative board">
+        <div class=" w-fit h-fit flex flex-nowrap flex-col gap-1 p-0 relative board mx-auto mt-4">
             <Board/>
             <FlyingBullet bind:this={currentBullet} {initialTop} {initialLeft} {lastRow} {lastCol}/>
             <GhostsLayer {offset}/>
@@ -379,13 +379,18 @@
 <style>
     .wrapper {
         max-width: 1200px;
+        position: fixed;
+        inset: 0;
+        margin: auto;
+        height: fit-content;
     }
 
     .container {
         display: grid;
-        grid-template-columns: minmax(260px, 1fr) 396px minmax(300px, 1fr);
+        grid-template-columns: minmax(300px, 1fr) 396px minmax(300px, 1fr);
         grid-template-rows: minmax(620px, 1fr);
         grid-template-areas: 'ghosts board score';
+        max-height: 100dvh;
 
         .ghosts {
             grid-area: ghosts;
@@ -394,7 +399,6 @@
         .board {
             grid-area: board;
             box-shadow: -1px -1px 4px -1px var(--color-green), 1px 1px 8px 0 var(--color-blue), 4px -2px 8px -1px var(--color-pink), 0 0 12px 1px var(--color-blue);
-
         }
 
         .score {

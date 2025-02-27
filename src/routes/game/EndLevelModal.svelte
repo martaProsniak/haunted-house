@@ -96,17 +96,17 @@
 
         <div class="px-8">
             <Button {onclick}>
-                Next house [ enter ]
+                Next house [ Enter ]
             </Button>
         </div>
     </div>
 {/snippet}
 
 {#snippet failure()}
-    <div class="space-y-12 px-14 w-full text-center">
+    <div class="space-y-12 px-8 w-full text-center">
         <p>You lost!</p>
-        <Button {onclick} classes="font-creepster">
-            Restart [ enter ]
+        <Button {onclick}>
+            Restart [ Enter ]
         </Button>
     </div>
 {/snippet}
