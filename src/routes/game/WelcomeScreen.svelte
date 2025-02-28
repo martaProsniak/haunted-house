@@ -34,7 +34,7 @@
 
 {#if open}
     <main transition:fade={{duration: 500}}
-          class="p-8 bg-semi-transparent rounded-lg space-y-8 text-base md:text-lg">
+          class="p-8 bg-semi-transparent rounded-lg space-y-4 text-base md:text-lg">
         <div class="space-y-2 text-center">
             <p>Haunted house, haunted walls</p>
             <p>They know lot of stories</p>

@@ -156,7 +156,7 @@
 {/snippet}
 
 <main
-        class="py-10 px-6 bg-semi-transparent w-full h-full max-h-full overflow-auto rounded-lg text-lg max-w-[1400px] container">
+        class="py-10 px-6 bg-semi-transparent w-full h-full max-h-full overflow-auto rounded-lg text-lg max-w-[1400px] mx-auto container">
     <ul class="flex flex-col justify-start items-center gap-y-8 buttons overflow-auto py-2">
         {#each sections as section}
             <li class="w-32">
