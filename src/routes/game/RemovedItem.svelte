@@ -24,8 +24,8 @@
 {#if item}
     <div
             style:background-image={`url("${item.imageUrl}")`}
-            style:top={`${item.row * offset}px`}
-            style:left={`${item.column * offset}px`}
+            style:top={`${(item.row * offset) + 8}px`}
+            style:left={`${(item.column * offset) + 4}px`}
             style:box-shadow={!item.isBombed ? `0 0 0 1px ${mapColorsToHex[item.color]}` : ''}
             style:opacity={!item.isBombed ? 0.4 : 0.8}
             class="item-removed transition-all"

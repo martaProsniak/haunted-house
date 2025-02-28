@@ -93,7 +93,7 @@
 
 <div
         style:background-image={`url("${plasma.imageUrl}")`}
-        style:top={`${(plasma.row * offset) + 10}px`}
+        style:top={`${(plasma.row * offset) + 8}px`}
         style:left={`${(plasma.column * offset) + 4}px`}
         class="plasma-previous"
         out:scale={{ duration: 200}} in:scale={{duration: 100}}>

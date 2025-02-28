@@ -365,7 +365,7 @@
             <GhostsLayer {offset}/>
             <PlasmaLayer {offset}/>
             <RemovedLayer {offset}/>
-            <PauseModal/>
+<!--            <PauseModal/>-->
             <EndLevelModal/>
             <ControlsModal open={controlsModalVisible} handleClose={hideControlsModal}/>
             <GoHomeModal open={goHomeModalVisible} handleClose={hideGoHomeModal} handleConfirm={() => goto('/')}/>
