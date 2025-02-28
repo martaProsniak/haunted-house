@@ -64,8 +64,8 @@
 <div
         class="ghost"
         style:background-image={`url("${ghost.imageUrl}")`}
-        style:top={`${ghost.row * offset}px`}
-        style:left={`${ghost.column * offset}px`}
+        style:top={`${(ghost.row * offset) + 8}px`}
+        style:left={`${(ghost.column * offset) + 4}px`}
         style:box-shadow={ghost.isGlued || willMove ? `0 0 0 1px ${mapColorsToHex[ghost.color]}` : ''}
         style:background-color={ghost.isGlued ? `${mapColorsToHex[ghost.color]}` : `${mapColorsToHex[ghost.color]}` + '55'}
 ></div>

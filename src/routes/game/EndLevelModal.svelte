@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <div class="px-8">
+        <div class="px-4">
             <Button {onclick}>
                 <div class="flex items-center justify-center w-full gap-x-2">
                     <StairsIcon />
@@ -94,7 +94,7 @@
             <p>You can use your epic skills to clean them too!</p>
         </div>
 
-        <div class="px-8">
+        <div class="px-4">
             <Button {onclick}>
                 Next house [ enter ]
             </Button>
@@ -103,7 +103,7 @@
 {/snippet}
 
 {#snippet failure()}
-    <div class="space-y-12 px-14 w-full text-center">
+    <div class="space-y-12 px-10 w-full text-center">
         <p>You lost!</p>
         <Button {onclick} classes="font-creepster">
             Restart [ enter ]
